@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 420" role="img" aria-labelledby="t d">
+<title id="t">Weekly Markets Update</title><desc id="d">US and Singapore financial markets banner in blue and gold.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#06142c"/><stop offset=".55" stop-color="#07509a"/><stop offset="1" stop-color="#071a38"/></linearGradient><linearGradient id="gold"><stop stop-color="#ffd95a"/><stop offset=".55" stop-color="#f4a900"/><stop offset="1" stop-color="#ffe18a"/></linearGradient><linearGradient id="blue"><stop stop-color="#16a8ff"/><stop offset="1" stop-color="#75d7ff"/></linearGradient></defs>
+<rect width="1600" height="420" fill="url(#bg)"/>
+<g opacity=".19" fill="none" stroke="#80cfff"><path d="M0 330L160 275 280 300 420 205 560 240 700 130 850 165 990 85 1130 120 1290 55 1600 105"/><path d="M0 360H1600M0 390H1600"/></g>
+<g fill="#0b2b50" stroke="#2e7bb4" stroke-width="2" opacity=".85"><path d="M0 260V115h75v145M75 260V75h54v185M129 260V145h70v115M199 260V35h55v225M254 260V110h82v150M336 260V150h52v110"/><path d="M1210 250V130h40v120M1250 250V95h48v155M1298 250V55h45v195M1343 250V120h65v130M1408 250V80h42v170M1450 250V145h55v105"/></g>
+<g fill="none" stroke="url(#blue)" stroke-width="7" stroke-linecap="round"><path d="M280 205l95-45 80 20 95-85 75 25 90-80"/><path d="M700 40l-4 50 45-25"/></g>
+<g fill="#16a8ff" opacity=".8"><rect x="350" y="190" width="16" height="55"/><rect x="390" y="170" width="16" height="75"/><rect x="430" y="150" width="16" height="95"/><rect x="470" y="125" width="16" height="120"/><rect x="510" y="105" width="16" height="140"/></g>
+<g opacity=".25" fill="none" stroke="#6fc9ff"><ellipse cx="810" cy="100" rx="290" ry="75"/><path d="M520 100Q810 -40 1100 100Q810 245 520 100Z"/></g>
+<g fill="#e8f7ff" opacity=".8"><circle cx="560" cy="95" r="3"/><circle cx="650" cy="65" r="3"/><circle cx="740" cy="40" r="3"/><circle cx="870" cy="45" r="3"/><circle cx="970" cy="75" r="3"/><circle cx="1060" cy="105" r="3"/></g>
+<g transform="translate(45 280)" fill="#b7dfff" opacity=".7"><path d="M0 80h240v8H0zM25 70l18-40 15 40M65 70l22-58 22 58M112 70l18-34 18 34M160 70l18-52 18 52"/></g>
+<g transform="translate(1260 185)" fill="none" stroke="#d9efff" stroke-width="8" opacity=".8"><path d="M0 80h260M20 80V-5h45v85M70 80V-35h48V80M125 80V-10h42V80M175 80V15h45v65"/><path d="M-15 -8q120 -100 270 0" stroke-width="13"/></g>
+<path d="M0 330Q390 390 800 350T1600 330V420H0Z" fill="#04132c" opacity=".72"/><path d="M0 333Q390 393 800 353T1600 333" fill="none" stroke="url(#gold)" stroke-width="5"/>
+<text x="800" y="190" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="94" font-weight="800" fill="#fff" letter-spacing="-3">Weekly</text>
+<text x="800" y="280" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="100" font-weight="900" fill="url(#gold)" letter-spacing="-3">Markets Update</text>
+<text x="800" y="385" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="600" fill="#f1f7ff" letter-spacing="1">US &amp; SINGAPORE MARKETS  •  KEY INSIGHTS  •  WHAT’S NEXT</text>
+</svg>
