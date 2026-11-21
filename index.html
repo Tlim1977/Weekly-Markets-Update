@@ -10,7 +10,7 @@
 .hero{background:#06152d;overflow:hidden}.hero img{display:block;width:100%;max-height:360px;object-fit:cover;object-position:center}
 .topline{background:#081d3a;color:#cbd8e9;border-bottom:1px solid #17385e;padding:9px 4vw;display:flex;justify-content:space-between;gap:12px;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
 .shell{max-width:1440px;margin:auto;padding:26px 24px 60px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:26px}
-.sidebar{align-self:start;position:sticky;top:18px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 8px 28px #0b28500a}
+.sidebar{align-self:start;position:sticky;top:18px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 8px 28px #0b28500a}.mobile-close{display:none}
 .brand{font-weight:800;color:var(--navy);font-size:17px;line-height:1.2}.brand small{display:block;color:var(--muted);font-weight:500;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
 .navtitle{margin:24px 0 9px;color:#8793a5;font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
 .nav a{display:flex;align-items:center;gap:10px;text-decoration:none;color:#526176;padding:10px 11px;border-radius:9px;margin:3px 0;font-size:13px}.nav a.active,.nav a:hover{background:#edf5ff;color:#075ca6;font-weight:700}.nav .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
@@ -25,7 +25,7 @@ main{min-width:0}.mobilebar{display:none;align-items:center;justify-content:spac
 table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;color:#78869a;font-size:10px;text-transform:uppercase;letter-spacing:.08em;padding:10px 8px;border-bottom:1px solid var(--line)}td{padding:11px 8px;border-bottom:1px solid #edf0f5}tr:last-child td{border:0}.tag{display:inline-block;background:#edf6ff;color:#1265a5;border-radius:20px;padding:3px 8px;font-size:10px;font-weight:700}
 .watchlist{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.watch{padding:14px;border-radius:11px;background:#f6f8fb}.watch b{display:block;color:var(--navy);font-size:13px}.watch span{font-size:11px;color:var(--muted)}
 .footer{text-align:center;color:#8793a5;font-size:11px;padding:12px}
-@media(max-width:900px){.shell{grid-template-columns:1fr;padding:18px 14px 40px}.sidebar{display:none;position:static}.sidebar.open{display:block}.mobilebar{display:flex}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero img{max-height:240px}.topline{padding:8px 14px}}
+@media(max-width:900px){.shell{grid-template-columns:1fr;padding:18px 14px 40px}.sidebar{display:none;position:fixed;top:12px;left:12px;right:12px;z-index:1000;max-height:calc(100dvh - 24px);overflow-y:auto;box-shadow:0 18px 55px #06152d55}.sidebar.open{display:block}.mobile-close{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;background:#edf5ff;color:#075ca6;border-radius:9px;padding:10px 12px;margin:0 0 14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}.mobilebar{display:flex}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero img{max-height:240px}.topline{padding:8px 14px}}
 @media(max-width:560px){.twocol,.watchlist{grid-template-columns:1fr}.headrow{align-items:flex-start;flex-direction:column}.date{text-align:left}.section{padding:16px}.grid{gap:9px}.metric{padding:13px}.metric strong{font-size:22px}}
 </style>
 </head>
@@ -34,6 +34,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 <header class="hero"><img src="assets/weekly-markets-banner.svg" alt="Weekly Markets Update — US and Singapore markets"></header>
 <div class="shell">
 <aside class="sidebar" id="sidebar">
+<button class="mobile-close" type="button" onclick="document.getElementById('sidebar').classList.remove('open')">✕ Close menu</button>
 <div class="brand">WEEKLY MARKETS UPDATE<small>Independent market briefing</small></div>
 <div class="navtitle">This week's report</div>
 <nav class="nav">
@@ -49,7 +50,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 <div class="side-note">Reports are updated weekly. Select a date in the archive to revisit an earlier briefing.</div>
 </aside>
 <main>
-<div class="mobilebar"><strong style="color:#09254a">Report navigation</strong><button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰ Menu</button></div>
+<div class="mobilebar"><strong style="color:#09254a">Report navigation</strong><button class="menu-btn" type="button" aria-controls="sidebar" aria-expanded="false" onclick="const s=document.getElementById('sidebar');s.classList.toggle('open');this.setAttribute('aria-expanded',s.classList.contains('open'))">☰ Menu</button></div>
 <div class="headrow" id="overview"><div><div class="eyebrow">Weekly market briefing · Test preview</div><h1>Markets at a glance</h1></div><div class="date">WEEK ENDING<br><strong>Friday, 20 November 2026</strong></div></div>
 <div class="notice"><span>⚠️</span><div><strong>Dummy test page.</strong> The figures and commentary below are illustrative placeholders, not live market data or investment research.</div></div>
 <div class="grid">
