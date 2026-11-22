@@ -19,16 +19,17 @@ main{min-width:0}.mobilebar{display:none;align-items:center;justify-content:spac
 .eyebrow{color:#0871bd;font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:800}
 .headrow{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin:3px 0 20px}.headrow h1{margin:5px 0 0;font-size:clamp(25px,3vw,35px);line-height:1.15;color:var(--navy);letter-spacing:-.04em}.date{color:var(--muted);font-size:12px;text-align:right}
 .notice{display:flex;gap:11px;align-items:center;background:#fff8e7;border:1px solid #f4dfaa;color:#795a16;border-radius:12px;padding:12px 15px;margin-bottom:20px;font-size:12px}.notice strong{color:#65460a}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:14px 0 22px}.metric{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:0 5px 18px #0b285008}.metric label{display:block;color:var(--muted);font-size:11px;font-weight:700}.metric strong{display:block;color:var(--navy);font-size:25px;letter-spacing:-.04em;margin:6px 0 1px}.up{color:var(--green);font-size:11px;font-weight:700}.down{color:var(--red);font-size:11px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:14px 0 22px}.metric{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 5px 18px #0b285008}.metric label{display:block;color:var(--muted);font-size:11px;font-weight:700}.metric strong{display:block;color:var(--navy);font-size:23px;letter-spacing:-.04em;margin:6px 0 1px}.metric-with-chart{display:flex;align-items:center;gap:7px;min-width:0}.metric-info{flex:1;min-width:0}.metric-info .down{white-space:nowrap}.metric-chart{width:112px;min-width:92px;height:76px;overflow:hidden}.metric-chart tv-mini-chart{display:block;width:100%;height:100%}.dashboard-promo{display:flex;justify-content:space-between;align-items:center;gap:16px;background:#0b2850;color:#fff;border-radius:13px;padding:15px 18px;margin:-7px 0 21px}.dashboard-promo b,.dashboard-promo span{display:block}.dashboard-promo b{font-size:14px}.dashboard-promo span{font-size:11px;color:#c5d5e8;margin-top:3px}.dashboard-promo a{white-space:nowrap;color:#ffd36c;font-size:12px;font-weight:800;text-decoration:none}.up{color:var(--green);font-size:11px;font-weight:700}.down{color:var(--red);font-size:11px;font-weight:700}
 .section{background:#fff;border:1px solid var(--line);border-radius:15px;padding:20px;margin-bottom:17px;box-shadow:0 5px 18px #0b285008}.section h2{font-size:18px;color:var(--navy);margin:0 0 4px;letter-spacing:-.02em}.sub{color:var(--muted);font-size:12px;margin-bottom:16px}
 .twocol{display:grid;grid-template-columns:1fr 1fr;gap:15px}.market{border:1px solid var(--line);border-radius:12px;padding:15px}.market h3{margin:0;color:var(--navy);font-size:14px}.market p{color:var(--muted);font-size:12px;margin:5px 0 12px}.bar{height:8px;background:#edf1f6;border-radius:20px;overflow:hidden;margin:9px 0}.bar span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#1674c5,#55b4ed)}
 table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;color:#78869a;font-size:10px;text-transform:uppercase;letter-spacing:.08em;padding:10px 8px;border-bottom:1px solid var(--line)}td{padding:11px 8px;border-bottom:1px solid #edf0f5}tr:last-child td{border:0}.tag{display:inline-block;background:#edf6ff;color:#1265a5;border-radius:20px;padding:3px 8px;font-size:10px;font-weight:700}
 .watchlist{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.watch{padding:14px;border-radius:11px;background:#f6f8fb}.watch b{display:block;color:var(--navy);font-size:13px}.watch span{font-size:11px;color:var(--muted)}
 .footer{text-align:center;color:#8793a5;font-size:11px;padding:12px}
 @media(max-width:900px){.shell{grid-template-columns:1fr;padding:18px 14px 40px}.sidebar{display:none;position:fixed;top:var(--menu-top,160px);left:12px;right:12px;z-index:1000;max-height:calc(100dvh - var(--menu-top,160px) - 12px);overflow-y:auto;box-shadow:0 18px 55px #06152d55}.sidebar.open{display:block}.mobilebar{display:flex}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero img{max-height:240px}.topline{padding:8px 14px}}
-@media(max-width:560px){.twocol,.watchlist{grid-template-columns:1fr}.headrow{align-items:flex-start;flex-direction:column}.date{text-align:left}.section{padding:16px}.grid{gap:9px}.metric{padding:13px}.metric strong{font-size:22px}}
+@media(max-width:560px){.metric-chart{width:96px;min-width:80px}.metric{padding:11px}.metric strong{font-size:20px}.dashboard-promo{align-items:flex-start;flex-direction:column}.twocol,.watchlist{grid-template-columns:1fr}.headrow{align-items:flex-start;flex-direction:column}.date{text-align:left}.section{padding:16px}.grid{gap:9px}.metric{padding:13px}.metric strong{font-size:22px}}
 </style>
 <!-- homepage-content-refresh-2026-11-22 -->
+<script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-mini-chart.js"></script>
 </head>
 <body>
 <div class="topline"><span>Global markets • Weekly briefing</span><span>US · Singapore</span></div>
@@ -41,7 +42,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 <nav class="nav">
 <a class="active" href="#overview"><span class="dot"></span> Market overview</a>
 <a href="#us">🇺🇸 &nbsp; US markets</a><a href="#singapore">🇸🇬 &nbsp; Singapore markets</a>
-<a href="#sectors">Sector watch</a><a href="#calendar">What's next week</a>
+<a href="#sectors">Sector watch</a><a href="#calendar">What's next week</a><a href="dashboard.html">📊 &nbsp; Market Dashboard</a>
 </nav>
 <div class="navtitle">Report archive</div>
 <nav class="nav">
@@ -53,11 +54,12 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 <div class="headrow" id="overview"><div><div class="eyebrow">Weekly market briefing</div><h1>Markets at a glance</h1></div><div class="date">WEEK ENDING<br><strong>Friday, 20 November 2026</strong></div></div>
 <div class="notice"><span>📉</span><div><strong>A sharp global risk-off week.</strong> AI and semiconductor selling weighed heavily on US equities, while Singapore's STI fell below 5,000. The full report includes market drivers, company developments and next week's catalysts.</div></div>
 <div class="grid">
-<div class="metric"><label>S&P 500 · 6,910.39</label><strong class="down">−8.61%</strong><span class="down">Weekly price return</span></div>
-<div class="metric"><label>Nasdaq Composite · 22,617.73</label><strong class="down">−10.02%</strong><span class="down">Weekly price return</span></div>
-<div class="metric"><label>Dow Jones · 48,147.33</label><strong class="down">−8.02%</strong><span class="down">Weekly price return</span></div>
-<div class="metric"><label>Straits Times Index · 4,975.17</label><strong class="down">−4.91%</strong><span class="down">Weekly price return</span></div>
+<div class="metric metric-with-chart"><div class="metric-info"><label>S&P 500</label><strong>6,910.39</strong><span class="down">−8.61% · week</span></div><div class="metric-chart"><tv-mini-chart symbol="SP:SPX" timeframe="1Y" chart-only theme="light"></tv-mini-chart></div></div>
+<div class="metric metric-with-chart"><div class="metric-info"><label>Nasdaq Composite</label><strong>22,617.73</strong><span class="down">−10.02% · week</span></div><div class="metric-chart"><tv-mini-chart symbol="NASDAQ:IXIC" timeframe="1Y" chart-only theme="light"></tv-mini-chart></div></div>
+<div class="metric metric-with-chart"><div class="metric-info"><label>Dow Jones</label><strong>48,147.33</strong><span class="down">−8.02% · week</span></div><div class="metric-chart"><tv-mini-chart symbol="DJ:DJI" timeframe="1Y" chart-only theme="light"></tv-mini-chart></div></div>
+<div class="metric metric-with-chart"><div class="metric-info"><label>Straits Times Index</label><strong>4,975.17</strong><span class="down">−4.91% · week</span></div><div class="metric-chart"><tv-mini-chart symbol="FTSEST:STI" timeframe="1Y" chart-only theme="light"></tv-mini-chart></div></div>
 </div>
+<div class="dashboard-promo"><div><b>Explore the Market Dashboard</b><span>Interactive index charts, sector heatmap, volatility, rates, commodities and economic calendar.</span></div><a href="dashboard.html">Open dashboard ↗</a></div>
 <section class="section" id="us"><h2>🇺🇸 US markets</h2><div class="sub">Friday, 20 November closes · weekly price returns</div>
 <div class="twocol">
 <div class="market"><h3>Nasdaq led the decline</h3><p>Nasdaq Composite closed at 22,617.73, down 10.02% for the week and 2.7% year to date.</p><div class="bar"><span style="width:18%;background:linear-gradient(90deg,#b42318,#e87979)"></span></div><small>Russell 2000: 2,581.79 · weekly −7.48%</small></div>
