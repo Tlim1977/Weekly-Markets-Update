@@ -19,7 +19,7 @@ h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacin
 .card h2{font-size:17px;color:var(--navy);margin:0 0 3px;letter-spacing:-.02em}.sub{color:var(--muted);font-size:11px;margin-bottom:13px}
 .widget{width:100%;min-width:0}.widget tv-advanced-chart{display:block;width:100%;height:420px}.advanced-chart{height:520px}.main-chart{height:520px}.compact-chart{height:520px}.advanced-chart .tradingview-widget-container,.advanced-chart .tradingview-widget-container__widget{width:100%;height:100%}
 .market-overview{height:440px}.heatmap{height:560px}.calendar{height:560px}
-.sector-bars{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 24px}.sector-row{min-width:0}.sector-label{display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:700;color:var(--navy);margin-bottom:5px}.sector-track{height:9px;background:#edf1f6;border-radius:99px;overflow:hidden}.sector-fill{height:100%;border-radius:99px}.sector-empty{color:var(--muted);font-size:12px;grid-column:1/-1}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.sector-bars{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 24px}.sector-column{display:flex;flex-direction:column;gap:13px;min-width:0}.sector-row{min-width:0}.sector-label{display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:700;color:var(--navy);margin-bottom:5px}.sector-track{height:9px;background:#edf1f6;border-radius:99px;overflow:hidden}.sector-fill{height:100%;border-radius:99px}.sector-empty{color:var(--muted);font-size:12px;grid-column:1/-1}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .stat{border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}.stat b{display:block;color:var(--navy);font-size:13px}.stat small{color:var(--muted);font-size:10px}
 .mini-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .mini{border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0}.mini b{font-size:12px;color:var(--navy);display:block}.mini .tradingview-widget-container,.mini .tradingview-widget-container__widget{display:block;width:100%;height:105px;overflow:hidden}
@@ -69,10 +69,7 @@ h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacin
 <div id="sector-performance" class="sector-bars" aria-live="polite"><p class="sector-empty">Sector figures are awaiting the first verified daily data update. All 11 sectors will appear here.</p></div>
 <div class="tv-copyright" id="sector-updated">Data will be updated from a verified closing-price source. Figures are not live intraday.</div>
 </section>
-<section class="card"><h2>US sector heatmap</h2><div class="sub">Sector and constituent performance across the S&P 500</div><div class="widget heatmap"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
-<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
-{"exchanges":[],"dataSource":"SPX500","grouping":"sector","blockSize":"market_cap_basic","blockColor":"change","locale":"en","symbolUrl":"","colorTheme":"light","hasTopBar":true,"isDataSetEnabled":true,"isZoomEnabled":true,"hasSymbolTooltip":true,"width":"100%","height":"560"}
-</script></div></div><div class="tv-copyright">Sector heatmap by <a href="https://www.tradingview.com/" target="_blank" rel="noopener">TradingView</a>.</div></section>
+
 <section class="card"><h2>Macro indicators</h2><div class="sub">Quick one-year price context for key cross-asset indicators</div>
 <div class="mini-grid">
 <div class="mini"><b>Gold</b><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"TVC:GOLD","width":"100%","height":105,"locale":"en","dateRange":"12M","colorTheme":"light","isTransparent":true,"autosize":true,"chartOnly":true,"noTimeScale":true,"hideVolume":true}</script></div></div>
@@ -119,7 +116,13 @@ h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacin
     const values=sorted.filter(s=>Number.isFinite(s.change_pct)).map(s=>Math.abs(s.change_pct));
     const max=Math.max(1,...values);
     panel.replaceChildren();
-    sorted.forEach(s=>{
+    const leftColumn=document.createElement('div');
+    leftColumn.className='sector-column';
+    const rightColumn=document.createElement('div');
+    rightColumn.className='sector-column';
+    panel.append(leftColumn,rightColumn);
+    const leftCount=Math.ceil(sorted.length/2);
+    sorted.forEach((s,index)=>{
       const hasValue=Number.isFinite(s.change_pct);
       const positive=hasValue&&s.change_pct>=0;
       const row=document.createElement('div'); row.className='sector-row';
@@ -134,7 +137,8 @@ h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacin
       const fill=document.createElement('div'); fill.className='sector-fill';
       fill.style.width=hasValue?Math.max(1,Math.abs(s.change_pct)/max*100)+'%':'0%';
       fill.style.background=positive?'#16845b':'#c44747';
-      track.append(fill); row.append(label,track); panel.append(row);
+      track.append(fill); row.append(label,track);
+      (index<leftCount?leftColumn:rightColumn).append(row);
     });
     if(!values.length){
       updated.textContent='All 11 sectors are listed. Verified closing-price data has not been added yet, so percentage bars remain empty rather than showing estimated figures.';
