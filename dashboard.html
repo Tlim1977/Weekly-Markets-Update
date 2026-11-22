@@ -14,7 +14,7 @@
 .head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:12px 0 20px}.eyebrow{color:#0871bd;font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:800}
 h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacing:-.04em;line-height:1.1}.intro{color:var(--muted);font-size:13px;max-width:700px;margin:8px 0 0}
 .stamp{font-size:11px;color:var(--muted);text-align:right}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}.market-layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:17px;align-items:stretch}.chart-stack{min-width:0}.chart-stack .card{margin-bottom:17px}.stack-chart{height:320px}.stack-chart iframe{display:block;width:100%;height:320px;border:0}.heatmap-card{height:calc(3 * 320px + 2 * 17px + 130px);display:flex;flex-direction:column}.heatmap-card .heatmap{height:100%;min-height:0;flex:1}.heatmap-card .tradingview-widget-container,.heatmap-card .tradingview-widget-container__widget{height:100%;width:100%}
 .card{background:white;border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 5px 18px #0b285008;min-width:0;margin-bottom:17px}
 .card h2{font-size:17px;color:var(--navy);margin:0 0 3px;letter-spacing:-.02em}.sub{color:var(--muted);font-size:11px;margin-bottom:13px}
 .widget{width:100%;min-width:0}.widget tv-advanced-chart{display:block;width:100%;height:420px}.advanced-chart{height:520px}.main-chart{height:520px}.compact-chart{height:520px}.advanced-chart .tradingview-widget-container,.advanced-chart .tradingview-widget-container__widget{width:100%;height:100%}
@@ -26,8 +26,8 @@ h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacin
 .note{background:#fff8e7;border:1px solid #f4dfaa;color:#795a16;border-radius:11px;padding:12px 14px;font-size:11px;margin:16px 0}
 .footer{text-align:center;color:#8793a5;font-size:11px;padding:15px}
 .tv-copyright{font-size:10px;color:#8a96a8;margin-top:6px}.tv-copyright a{color:#60748d}
-@media(max-width:850px){.sector-bars{grid-template-columns:1fr}.wrap{padding:20px 14px 40px}.grid{grid-template-columns:1fr}.mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hero img{max-height:220px}}
-@media(max-width:520px){.head{align-items:flex-start;flex-direction:column}.stamp{text-align:left}.mini-grid{grid-template-columns:1fr 1fr}.card{padding:14px}.widget tv-advanced-chart{height:430px}.advanced-chart{height:430px}.main-chart{height:430px}.compact-chart{height:430px}.market-overview{height:430px}.heatmap{height:520px}.calendar{height:520px}}
+@media(max-width:850px){.market-layout{grid-template-columns:1fr}.heatmap-card{height:560px}.stack-chart{height:360px}.stack-chart iframe{height:360px}.sector-bars{grid-template-columns:1fr}.wrap{padding:20px 14px 40px}.grid{grid-template-columns:1fr}.mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hero img{max-height:220px}}
+@media(max-width:520px){.head{align-items:flex-start;flex-direction:column}.stamp{text-align:left}.mini-grid{grid-template-columns:1fr 1fr}.card{padding:14px}.widget tv-advanced-chart{height:360px}.advanced-chart{height:360px}.stack-chart{height:360px}.stack-chart iframe{height:360px}.market-overview{height:430px}.heatmap{height:520px}.calendar{height:520px}}
 </style>
 
 </head>
@@ -38,13 +38,30 @@ h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacin
 <a class="back" href="index.html">← Back to weekly market briefing</a>
 <div class="head"><div><div class="eyebrow">Market dashboard</div><h1>Markets in motion</h1><p class="intro">Explore major indices, sector leadership, volatility, rates, commodities and upcoming economic releases. Charts are interactive — select symbols and timeframes inside the widgets.</p></div><div class="stamp">DATA & CHARTS<br><b>Powered by TradingView</b></div></div>
 <div class="note"><b>Data note:</b> Market data is supplied by TradingView's embedded widgets. Availability and delay depend on the underlying exchange and data provider. Quotes may not match the weekly report's Friday closing snapshot exactly. This dashboard is for information only and is not investment advice.</div>
-<section class="card">
-<h2>US market · S&P 500 daily interactive chart</h2><div class="sub">SPY · Daily line chart by default · change timeframe or indicators as needed</div>
-<div class="widget advanced-chart main-chart"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>{"autosize":true,"symbol":"AMEX:SPY","interval":"D","timezone":"Asia/Singapore","theme":"light","style":"2","locale":"en","allow_symbol_change":true,"calendar":false,"support_host":"https://www.tradingview.com"}</script></div></div>
-</section>
-<div class="grid">
-<section class="card"><h2>US market · Nasdaq 100</h2><div class="sub">QQQ · Daily line chart · interactive timeframe and indicators</div><div class="widget advanced-chart compact-chart"><iframe title="QQQ Nasdaq 100 ETF interactive chart" src="https://www.tradingview.com/widgetembed/?symbol=NASDAQ%3AQQQ&interval=D&timezone=Asia%2FSingapore&theme=light&style=2&locale=en&allow_symbol_change=1&hide_top_toolbar=0&hide_legend=0&saveimage=0&toolbarbg=f1f3f6" style="width:100%;height:520px;border:0" loading="lazy" allowtransparency="true" scrolling="no"></iframe></div></section>
-<section class="card"><h2>US market · Dow Jones</h2><div class="sub">DIA · Dow Jones Industrial Average ETF proxy · Daily interactive chart</div><div class="widget advanced-chart compact-chart"><iframe title="Dow Jones DIA ETF interactive chart" src="https://www.tradingview.com/widgetembed/?symbol=AMEX%3ADIA&interval=D&timezone=Asia%2FSingapore&theme=light&style=2&locale=en&allow_symbol_change=1&hide_top_toolbar=0&hide_legend=0&saveimage=0&toolbarbg=f1f3f6" style="width:100%;height:520px;border:0" loading="lazy" allowtransparency="true" scrolling="no"></iframe></div></section>
+<div class="market-layout">
+  <div class="chart-stack">
+    <section class="card">
+      <h2>US market · S&P 500</h2><div class="sub">SPY · Daily chart · 1-year view by default</div>
+      <div class="widget advanced-chart stack-chart"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>{"autosize":true,"symbol":"AMEX:SPY","interval":"D","range":"12M","timezone":"Asia/Singapore","theme":"light","style":"2","locale":"en","allow_symbol_change":true,"calendar":false,"support_host":"https://www.tradingview.com"}</script></div></div>
+    </section>
+    <section class="card">
+      <h2>US market · Nasdaq 100</h2><div class="sub">QQQ · Daily chart · 1-year view by default</div>
+      <div class="widget advanced-chart stack-chart"><iframe title="QQQ Nasdaq 100 ETF interactive chart" src="https://www.tradingview.com/widgetembed/?symbol=NASDAQ%3AQQQ&interval=D&range=12M&timezone=Asia%2FSingapore&theme=light&style=2&locale=en&allow_symbol_change=1&hide_top_toolbar=0&hide_legend=0&saveimage=0&toolbarbg=f1f3f6" style="width:100%;height:320px;border:0" loading="lazy" allowtransparency="true" scrolling="no"></iframe></div>
+    </section>
+    <section class="card">
+      <h2>US market · Dow Jones</h2><div class="sub">DIA · Dow Jones Industrial Average ETF proxy · Daily chart · 1-year view by default</div>
+      <div class="widget advanced-chart stack-chart"><iframe title="Dow Jones DIA ETF interactive chart" src="https://www.tradingview.com/widgetembed/?symbol=AMEX%3ADIA&interval=D&range=12M&timezone=Asia%2FSingapore&theme=light&style=2&locale=en&allow_symbol_change=1&hide_top_toolbar=0&hide_legend=0&saveimage=0&toolbarbg=f1f3f6" style="width:100%;height:320px;border:0" loading="lazy" allowtransparency="true" scrolling="no"></iframe></div>
+    </section>
+  </div>
+  <section class="card heatmap-card">
+    <h2>US sector heatmap</h2><div class="sub">Sector and constituent performance across the S&P 500</div>
+    <div class="widget heatmap"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
+      {"exchanges":[],"dataSource":"SPX500","grouping":"sector","blockSize":"market_cap_basic","blockColor":"change","locale":"en","symbolUrl":"","colorTheme":"light","hasTopBar":true,"isDataSetEnabled":true,"isZoomEnabled":true,"hasSymbolTooltip":true,"width":"100%","height":"100%"}
+      </script>
+    </div></div>
+    <div class="tv-copyright">Sector heatmap by <a href="https://www.tradingview.com/" target="_blank" rel="noopener">TradingView</a>.</div>
+  </section>
 </div>
 <section class="card">
 <h2>S&P 500 sector performance · Week to date</h2>
@@ -126,5 +143,5 @@ h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacin
     panel.innerHTML='<p class="sector-empty">Sector performance data could not be loaded. Please try again later.</p>';
   }
 })();
-</script>>
+</script>
 </body></html>
