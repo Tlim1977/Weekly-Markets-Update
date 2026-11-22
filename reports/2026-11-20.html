@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Weekly US & Singapore Market Briefing — 20 November 2026</title>
+<style>
+:root{
+  --bg:#f4f6fa;--paper:#fff;--ink:#172033;--muted:#667085;--line:#e5e9f0;
+  --navy:#15233b;--blue:#315f9b;--red:#b42318;--green:#067647;--amber:#9a6700;
+  --soft-red:#fff1f0;--soft-green:#ecfdf3;--soft-blue:#eef4ff;--soft-amber:#fffaeb;
+  --shadow:0 8px 28px rgba(16,24,40,.06);--radius:16px
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.58 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:#245b9a;text-decoration:none}
+a:hover{text-decoration:underline}
+header{background:linear-gradient(130deg,#14233d,#244c79);color:#fff;padding:34px 18px 28px}
+.wrap{max-width:1080px;margin:auto;padding:0 16px}
+.kicker{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:#c7d8f1;font-weight:700}
+h1{font-size:clamp(27px,5vw,42px);line-height:1.12;margin:8px 0 10px}
+.sub{color:#d9e4f3;max-width:760px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.pill{border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:5px 10px;font-size:12px;color:#eef4ff}
+nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav .wrap{display:flex;gap:18px;overflow:auto;white-space:nowrap;padding-top:11px;padding-bottom:11px}
+nav a{font-size:13px;font-weight:650;color:#344054}
+main{padding:24px 0 46px}
+section{margin:0 0 24px;scroll-margin-top:58px}
+h2{font-size:23px;line-height:1.2;margin:0 0 12px;color:var(--navy)}
+h3{font-size:17px;line-height:1.3;margin:18px 0 7px;color:var(--navy)}
+p{margin:8px 0}
+.lead{font-size:16px;color:#344054}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.metric .label{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.metric .value{font-size:25px;font-weight:780;letter-spacing:-.03em;margin:5px 0 2px}
+.metric .detail{font-size:12px;color:var(--muted)}
+.neg{color:var(--red)!important}.pos{color:var(--green)!important}.neutral{color:var(--amber)!important}
+.note{border-left:4px solid var(--blue);background:var(--soft-blue);padding:12px 14px;border-radius:8px;margin:12px 0}
+.warn{border-left-color:var(--amber);background:var(--soft-amber)}
+.danger{border-left-color:var(--red);background:var(--soft-red)}
+.good{border-left-color:var(--green);background:var(--soft-green)}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:13px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#f8fafc;color:#475467;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+ul{padding-left:20px;margin:8px 0}
+li{margin:6px 0}
+.small{font-size:12px;color:var(--muted)}
+.tag{display:inline-block;border-radius:6px;padding:2px 7px;font-size:11px;font-weight:700;background:#eef2f6;color:#475467}
+.tag.red{background:#fee4e2;color:#b42318}.tag.green{background:#dcfae6;color:#067647}.tag.blue{background:#eaf2ff;color:#245b9a}
+.event{display:grid;grid-template-columns:112px 1fr;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.event:last-child{border-bottom:0}
+.date{font-weight:750;color:var(--navy)}
+.event p{margin:3px 0}
+.source-list{columns:2;column-gap:30px;padding-left:18px}
+.source-list li{break-inside:avoid;font-size:12px;margin:0 0 7px}
+footer{background:#fff;border-top:1px solid var(--line);padding:22px 0 32px;color:var(--muted);font-size:12px}
+@media(max-width:760px){
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .grid.two{grid-template-columns:1fr}
+ .card{padding:13px}
+ .metric .value{font-size:22px}
+ .event{grid-template-columns:84px 1fr;gap:8px}
+ .source-list{columns:1}
+}
+@media(max-width:390px){.grid{grid-template-columns:1fr 1fr}.metric .value{font-size:20px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <div class="kicker">Weekly market briefing</div>
+  <h1>US &amp; Singapore Markets</h1>
+  <div class="sub">A sharp AI-led correction in US equities spilled into Asia, pushing Singapore’s STI below 5,000. The coming week is shortened by the US Thanksgiving holiday, with inflation, GDP and major technology earnings in focus.</div>
+  <div class="meta">
+   <span class="pill">As of Saturday, 21 Nov 2026 · 08:25 SGT</span>
+   <span class="pill">Market data through Friday, 20 Nov 2026 close</span>
+   <span class="pill">US first · Singapore second</span>
+  </div>
+ </div>
+</header>
+<nav><div class="wrap">
+ <a href="../index.html">Home</a><a href="#summary">Executive view</a><a href="#us">US markets</a><a href="#sg">Singapore</a><a href="#watch">What to watch next week</a><a href="#takeaway">Investor takeaway</a><a href="#sources">Sources</a>
+</div></nav>
+<main class="wrap">
+<section id="summary">
+ <h2>Executive view</h2>
+ <p class="lead">The week was dominated by a violent de-rating of AI and semiconductor shares. The S&amp;P 500 and Dow entered correction territory, the Nasdaq erased its 2026 gain, and the STI fell 4.9% for the week. Treasury yields retreated as investors sought safety, even as hawkish Fed commentary kept December rate-hike expectations elevated.</p>
+ <div class="grid">
+  <div class="card metric"><div class="label">S&amp;P 500 · weekly</div><div class="value neg">−8.61%</div><div class="detail">Worst week since April 2025</div></div>
+  <div class="card metric"><div class="label">Nasdaq Composite · weekly</div><div class="value neg">−10.02%</div><div class="detail">Now −2.7% year to date</div></div>
+  <div class="card metric"><div class="label">STI · weekly</div><div class="value neg">−4.91%</div><div class="detail">Closed below 5,000</div></div>
+  <div class="card metric"><div class="label">US 10-year Treasury</div><div class="value">4.92%</div><div class="detail">Down 23 basis points on the week</div></div>
+ </div>
+ <div class="note danger"><strong>Risk signal:</strong> This was not a narrow one-stock event. US market breadth deteriorated sharply, Asian technology-heavy markets fell even more, and Singapore’s large banks also weakened. However, the strongest selling remained concentrated in AI-linked growth stocks.</div>
+</section>
+
+<section id="us">
+ <h2>1. United States markets</h2>
+ <p>Friday’s session extended the S&amp;P 500’s losing streak to seven sessions. The S&amp;P 500 and Dow finished more than 10% below their October record closes, meeting the conventional definition of a correction. The Nasdaq’s weekly fall was its largest since March 2020.</p>
+ <div class="grid">
+  <div class="card metric"><div class="label">S&amp;P 500 close</div><div class="value">6,910.39</div><div class="detail neg">Day −3.70% · Week −8.61%</div><div class="detail">YTD +0.9%</div></div>
+  <div class="card metric"><div class="label">Dow Jones close</div><div class="value">48,147.33</div><div class="detail neg">Day −1.93% · Week −8.02%</div><div class="detail">YTD +0.2%</div></div>
+  <div class="card metric"><div class="label">Nasdaq Composite close</div><div class="value">22,617.73</div><div class="detail neg">Day −5.28% · Week −10.02%</div><div class="detail neg">YTD −2.7%</div></div>
+  <div class="card metric"><div class="label">Russell 2000 close</div><div class="value">2,581.79</div><div class="detail neg">Day −2.76% · Week −7.48%</div><div class="detail pos">YTD +4.0%</div></div>
+ </div>
+ <p class="small">Friday closes and daily, weekly and YTD price changes. YTD figures are rounded as reported by AP; index returns exclude dividends. <a href="https://apnews.com/article/c10b797a17c2acf37924d834efebe135">Associated Press index recap</a>.</p>
+
+ <h3>What drove the sell-off</h3>
+ <ul>
+  <li><strong>AI valuation and spending doubts:</strong> Anthropic’s high-profile IPO failed to restore confidence. Its shares fell 9.1% on the second trading day, while Nvidia dropped 13.8% despite a very strong quarterly report. Investors questioned whether extraordinary AI infrastructure spending can earn an adequate return quickly enough.</li>
+  <li><strong>Semiconductors and AI infrastructure were hit hardest:</strong> The weakness spread from Nvidia to chipmakers, cloud infrastructure and data-centre suppliers. The Nasdaq fell 10% for the week, while the Philadelphia semiconductor index’s year-to-date gain had narrowed sharply.</li>
+  <li><strong>Fed and inflation concerns:</strong> Governor Lisa Cook argued that rates remain too low to bring inflation down and that further increases may be required. Reuters reported markets were pricing in a near-certain 25bp hike at the December 8–9 meeting.</li>
+  <li><strong>Company-specific pressure:</strong> Intuit fell 12.8% after lowering its annual revenue-growth forecast and agreeing to sell Mailchimp. Caterpillar fell about 5% amid concern that weaker AI-related data-centre demand could affect its power-generation equipment business.</li>
+ </ul>
+ <p>Reuters reported declining shares outnumbered advancers by 3.77 to 1 on the NYSE and 4.27 to 1 on Nasdaq. US exchange volume was 25.19 billion shares versus a 20-session average of 19.50 billion. The VIX closed at its highest level since 7 April 2025. These are signs of broad de-risking rather than a routine rotation in a handful of mega-cap names. <a href="https://www.reuters.com/legal/transactional/wall-st-futures-slip-anthropic-debut-fails-reassure-ai-investors-2026-11-20/">Reuters: Friday US market close</a>.</p>
+
+ <h3>Sector leadership and laggards</h3>
+ <div class="table-wrap"><table>
+  <thead><tr><th>Group</th><th class="num">Weekly direction</th><th>Read-through</th></tr></thead>
+  <tbody>
+   <tr><td>Consumer staples</td><td class="num pos">−1.99%</td><td>Most resilient sector; defensive earnings attracted relative demand.</td></tr>
+   <tr><td>Utilities</td><td class="num neg">−3.00%</td><td>Held up better than the broad market.</td></tr>
+   <tr><td>Real estate</td><td class="num neg">−4.26%</td><td>Less weak than growth sectors, but still declined.</td></tr>
+   <tr><td>Communication services</td><td class="num neg">−7.95%</td><td>Large platform and AI-exposed names weighed.</td></tr>
+   <tr><td>Technology</td><td class="num neg">−12.31%</td><td>Clear laggard as semiconductor and AI infrastructure valuations reset.</td></tr>
+  </tbody>
+ </table></div>
+ <p class="small">Sector figures are price-return proxies calculated from S&amp;P sector ETFs; all 11 sectors were lower for the week. They are not official S&amp;P sector total-return figures. <a href="https://wiseview.ai/news/stock-market-week-in-review-week-of-2026-11-16">Weekly sector data</a>.</p>
+
+ <h3>Macro, inflation and rates</h3>
+ <div class="grid two">
+  <div class="card">
+   <strong>Inflation</strong>
+   <p>October CPI rose <strong>0.4% month on month</strong>, after +0.6% in September. Core CPI rose 0.3% for a third consecutive month. Food rose 0.5% and energy 0.7%.</p>
+   <p class="small">Important caveat: BLS could not publish most October 2026 year-on-year CPI changes because October 2025 survey data were not collected during the federal funding lapse. Avoid treating a missing annual figure as zero. <a href="https://www.bls.gov/news.release/CPI.htm">BLS October CPI</a>.</p>
+  </div>
+  <div class="card">
+   <strong>Employment</strong>
+   <p>October payrolls increased by <strong>165,000</strong>; unemployment was <strong>4.1%</strong>. Average hourly earnings rose 0.4% month on month and 3.1% year on year.</p>
+   <p class="small">The labour market remains resilient enough to complicate the case for rate cuts. <a href="https://www.bls.gov/news.release/archives/empsit_11062026.htm">BLS October employment report</a>.</p>
+  </div>
+ </div>
+ <p>US Treasury par yields fell on Friday: the 2-year ended at 4.63% (−25bp for the week) and the 10-year at 4.92% (−23bp). That rally is consistent with safe-haven demand and concern about the growth implications of the equity rout, even as inflation and Fed rhetoric remain hawkish. <a href="https://mortgageratestoday.com/yield-curve">Treasury par-yield data and weekly changes</a>.</p>
+ <p>Consumer sentiment improved to 51.5 in November from 48.0 in October, but remained weak by historical standards. <a href="https://www.wsj.com/economy/consumers/consumer-sentiment-climbed-in-november-3e9563d8">University of Michigan survey coverage</a>.</p>
+
+ <h3>AI and financial-stability angle</h3>
+ <p>Beyond stock valuations, Fed Governor Michael Barr warned that AI could amplify cyber, operational and market risks. In the Fed’s latest Financial Stability Report survey, 87% of respondents identified AI as a salient financial-stability risk, including the possibility that an AI earnings slowdown could trigger wider equity losses. <a href="https://www.reuters.com/world/feds-barr-warns-ai-risks-financial-system-2026-11-16/">Reuters on Barr’s remarks</a>.</p>
+</section>
+
+<section id="sg">
+ <h2>2. Singapore markets</h2>
+ <p>The STI lost the 5,000 level as regional markets joined the global risk-off move. Friday’s decline was broad: 26 of 30 STI constituents fell and the other four were unchanged.</p>
+ <div class="grid">
+  <div class="card metric"><div class="label">STI close</div><div class="value">4,975.17</div><div class="detail neg">Day −2.05%</div></div>
+  <div class="card metric"><div class="label">Weekly price return</div><div class="value neg">−4.91%</div><div class="detail">From 5,231.84 on 13 Nov</div></div>
+  <div class="card metric"><div class="label">Year to date</div><div class="value pos">+7.08%</div><div class="detail">From 4,646.21 at 2025 year-end</div></div>
+  <div class="card metric"><div class="label">Friday turnover</div><div class="value">S$2.6bn</div><div class="detail">About 1.4bn securities traded</div></div>
+ </div>
+ <p class="small">STI close and Friday market statistics: <a href="https://www.businesstimes.com.sg/singapore/singapore-stocks-fall-tandem-regional-downturn-sti-down-2-1">The Business Times</a>. Weekly and YTD changes calculated from the stated closes; 2025 year-end STI close: <a href="https://www.straitstimes.com/business/companies-markets/singapore-shares-slip-on-final-trading-day-of-the-year-sti-down-0-2//">The Straits Times</a>.</p>
+ <div class="note"><strong>Market breadth:</strong> losers beat gainers 493 to 163 on Friday. That is much weaker than the STI’s 30-stock breadth alone suggests and indicates pressure across the broader market.</div>
+
+ <h3>Key STI constituents and corporate movers</h3>
+ <div class="table-wrap"><table>
+  <thead><tr><th>Counter</th><th class="num">Friday close</th><th class="num">Daily move</th><th>Comment</th></tr></thead>
+  <tbody>
+   <tr><td>DBS</td><td class="num">S$66.11</td><td class="num neg">−1.8%</td><td>Large-cap bank weakness added to index pressure.</td></tr>
+   <tr><td>OCBC</td><td class="num">S$26.54</td><td class="num neg">−3.2%</td><td>Largest fall among the three local banks.</td></tr>
+   <tr><td>UOB</td><td class="num">S$35.42</td><td class="num neg">−2.0%</td><td>Also lower amid the global risk-off move.</td></tr>
+   <tr><td>Seatrium</td><td class="num">S$1.56</td><td class="num neg">−8.8%</td><td>STI’s weakest constituent. A broker target-price downgrade added to market-wide selling. Company guidance still pointed to materially higher FY2026 underlying net profit.</td></tr>
+  </tbody>
+ </table></div>
+ <p>Seatrium reported a S$12.2bn net order book at end-September, with 35 projects and deliveries extending to 2033. Its FY2026 underlying net profit is expected to be materially higher than FY2025, excluding one-off items. This is a company-specific positive operating update that did not prevent the share price from falling sharply in the risk-off session. <a href="https://www.businesstimes.com.sg/companies-markets/seatrium-net-order-book-stands-s12-2-billion-it-expects-materially-higher-fy2026-underlying-net">The Business Times: Seatrium update</a>.</p>
+ <p><strong>Riverstone (Next 50):</strong> 3QFY2026 revenue rose 27.3% year on year to RM315.1m and net profit rose 34.7% to RM70.1m, supported by cleanroom and healthcare glove volumes. The company also announced that its CEO will step down on 1 December, with Chong Chu Mee taking over while Wong Teek Son remains executive chairman. The AI/data-centre link is a demand tailwind for cleanroom gloves, but margin and raw-material costs remain worth monitoring. <a href="https://www.theedgesingapore.com/capital/results/riverstones-3qfy2026-net-profit-347-y-o-y-rm701-mil-ceo-wong-teek-son-step-down">The Edge Singapore</a>.</p>
+
+ <h3>REITs, trusts and distributions</h3>
+ <ul>
+  <li>Singapore REITs were not immune to the sell-off. On Wednesday, 18 November, 29 of 38 S-REITs fell; Mapletree Industrial Trust was reported down 4.05% that session. <a href="https://www.kucoin.com/news/flash/singapore-reits-drop-1-56-on-nov-18-ntt-dc-reit-offers-11-23-yield">Midweek REIT market recap</a>.</li>
+  <li><strong>Distribution dates matter:</strong> Frasers Logistics &amp; Commercial Trust and NTT DC REIT both went ex-distribution on 18 November. SGX records show payment dates of 23 December for FLCT and 18 December for NTT DC REIT. Price drops around an ex-date may partly reflect the distribution leaving the unit price; do not read the whole move as a change in operating value. <a href="https://links.sgx.com/1.0.0/corporate-actions/2277164">FLCT SGX record</a> · <a href="https://links.sgx.com/1.0.0/corporate-actions/2282560">NTT DC REIT SGX record</a>.</li>
+  <li>For income-oriented trusts, the key cross-currents remain funding costs, refinancing spreads, occupancy and rental reversions. The global rise in rate expectations is a sector headwind even when local property fundamentals are stable.</li>
+ </ul>
+
+ <h3>Singapore macro and MAS</h3>
+ <ul>
+  <li><strong>Growth:</strong> Advance estimates showed 3Q2026 GDP growth of 5.4% year on year, moderating from 6.2% in 2Q. The 2026 GDP growth forecast had previously been raised to 4.5%–5.5%. The full 3Q Economic Survey is due on 24 November.</li>
+  <li><strong>Trade:</strong> October non-oil domestic exports expanded 79.8% year on year, following 68.3% growth in September. The 3Q wholesale-trade series showed domestic sales up 19.5% and foreign sales up 38.2% year on year.</li>
+  <li><strong>Inflation and policy:</strong> September headline CPI inflation was 2.2% year on year. MAS kept the S$NEER policy-band slope unchanged in October and projected 2026 core inflation at 1.5%–2.0%, with headline inflation around 2.0%. It expects inflation to ease more clearly from mid-2027.</li>
+ </ul>
+ <p class="small">Sources: <a href="https://www.singstat.gov.sg/find-data/explore-data-themes/economy-prices/national-accounts/latest-news-data">SingStat national accounts</a>, <a href="https://www.singstat.gov.sg/">SingStat latest releases</a>, <a href="https://www.singstat.gov.sg/news/singapore-consumer-price-index-sep2026">September CPI</a>, and <a href="https://www.mas.gov.sg/news/monetary-policy-statements/2026/mas-monetary-policy-statement-14oct26">MAS October policy statement</a>.</p>
+</section>
+
+<section id="watch">
+ <h2>3. What to watch next week</h2>
+ <p class="small">Week of Monday, 23 November to Friday, 27 November 2026. US times are Eastern Time unless stated. Singapore time is SGT. US markets are closed on Thanksgiving, Thursday 26 November, and close early at 1:00 p.m. ET on Friday 27 November.</p>
+ <div class="card">
+  <div class="event">
+   <div class="date">Mon<br>23 Nov</div>
+   <div><span class="tag blue">Singapore data</span> <strong>October CPI for general households</strong> — scheduled by SingStat; the calendar lists the date but not a release time. Watch the headline and components for imported food, energy and services price pressure.</div>
+  </div>
+  <div class="event">
+   <div class="date">Mon<br>23 Nov</div>
+   <div><span class="tag blue">US earnings</span> <strong>HPE and Agilent</strong> report after the US close. HPE is relevant to AI servers, networking and data-centre infrastructure; Agilent offers a read on laboratory and analytical-instrument demand. HPE’s call is scheduled for 5:00 p.m. ET; Agilent’s call is scheduled for 1:30 p.m. Pacific. <a href="https://www.hpe.com/us/en/newsroom/press-release/2026/11/hpe-to-present-live-audio-webcast-of-fiscal-2026-fourth-quarter-earnings-conference-call.html">HPE</a> · <a href="https://www.agilent.com/about/newsroom/presrel/2026/29oct-gp26021.html">Agilent</a>.</div>
+  </div>
+  <div class="event">
+   <div class="date">Tue<br>24 Nov</div>
+   <div><span class="tag blue">Singapore data</span> <strong>3Q2026 Economic Survey / GDP</strong> at 8:00 a.m. SGT. The full release will clarify sector contributions, productivity and the extent to which technology-related exports are driving growth. <a href="https://www.meti.gov.sg/newsroom/release-of-third-quarter-2026-economic-survey-of-singapore/">MTI release notice</a>.</div>
+  </div>
+  <div class="event">
+   <div class="date">Tue<br>24 Nov</div>
+   <div><span class="tag blue">US earnings</span> <strong>Analog Devices</strong> releases results at 7:00 a.m. ET; its call is 10:00 a.m. ET. <strong>Dell</strong> discusses 3Q FY2027 results at 3:30 p.m. Central, with results and guidance due before the call. <strong>Autodesk</strong> has its FY2027 Q3 call at 5:00 p.m. ET. ADI and Dell are particularly relevant to semiconductors, AI servers and enterprise infrastructure; Autodesk is a read-through for design software and business spending. <a href="https://www.analog.com/en/newsroom/press-releases/2026/10-22-2026-adi-report-4q-fy2026-financial-results.html">ADI</a> · <a href="https://investors.delltechnologies.com/news-events/press-releases/detail/1661/dell-technologies-to-hold-conference-call-nov-24-to-discuss-third-quarter-fiscal-2027-financial-results">Dell</a> · <a href="https://investors.autodesk.com/index.php/news-releases/news-release-details/autodesk-extends-invitation-join-financial-results-conference-53">Autodesk</a>.</div>
+  </div>
+  <div class="event">
+   <div class="date">Mon–Wed<br>23–25 Nov</div>
+   <div><span class="tag">US Treasury auctions</span> <strong>2-year note Monday, 5-year note Tuesday and 7-year note Wednesday</strong>; competitive bidding closes at 1:00 p.m. ET for the notes. The results will test demand for duration after yields fell sharply this week. Weak auctions could push yields back up and pressure rate-sensitive equities, REITs and long-duration growth stocks. <a href="https://fiscaldata.treasury.gov/datasets/upcoming-auctions/">US Treasury auction dataset</a>.</div>
+  </div>
+  <div class="event">
+   <div class="date">Wed<br>25 Nov</div>
+   <div><span class="tag red">High impact · US macro</span> <strong>GDP second estimate and corporate profits for 3Q; Personal Income and Outlays for October</strong> at 8:30 a.m. ET (9:30 p.m. SGT). The PCE price index in the same report is the key inflation input for the Fed. A hotter reading could reinforce rate-hike pricing; a softer reading may ease pressure on bonds and growth shares. <a href="https://www.bea.gov/news/schedule?output=1">BEA release calendar</a>.</div>
+  </div>
+  <div class="event">
+   <div class="date">Wed<br>25 Nov</div>
+   <div><span class="tag">US labour / Fed</span> <strong>Initial jobless claims</strong> are moved forward to 8:30 a.m. ET (9:30 p.m. SGT) because Thursday is Thanksgiving. The Fed’s <strong>Beige Book</strong> is scheduled for 2:00 p.m. ET (3:00 a.m. SGT Thursday). No FOMC rate decision is scheduled next week; the published calendar lists the Beige Book, with the next policy meeting on 8–9 December. Both claims and the Beige Book provide clues on labour conditions, pricing and regional business activity. <a href="https://oui.doleta.gov/unemploy/archive.asp">Department of Labor claims schedule</a> · <a href="https://www.federalreserve.gov/newsevents/2026-November.htm">Federal Reserve calendar</a>.</div>
+  </div>
+  <div class="event">
+   <div class="date">Wed<br>25 Nov</div>
+   <div><span class="tag blue">US earnings</span> <strong>Deere</strong> holds its 4Q2026 earnings call at 9:00 a.m. Central. Investors will watch equipment demand, farm economics and construction trends. <a href="https://www.deere.com/en-us/john-deere-news/fy26-q4-announcement">Deere announcement</a>.</div>
+  </div>
+  <div class="event">
+   <div class="date">Thu<br>26 Nov</div>
+   <div><span class="tag">US holiday</span> <strong>Thanksgiving — US stock markets closed.</strong> Lower cross-market liquidity around the holiday can make moves in the preceding sessions more abrupt.</div>
+  </div>
+  <div class="event">
+   <div class="date">Fri<br>27 Nov</div>
+   <div><span class="tag">US shortened session</span> <strong>NYSE and Nasdaq close at 1:00 p.m. ET.</strong> Thin post-holiday trading can magnify price gaps. <a href="https://www.nyse.com/trade/hours-calendars">NYSE holiday calendar</a> · <a href="https://www.nasdaq.com/holidayandtradinghours">Nasdaq holiday calendar</a>.</div>
+  </div>
+  <div class="event">
+   <div class="date">Fri<br>27 Nov</div>
+   <div><span class="tag blue">Singapore data</span> SingStat’s calendar lists <strong>3Q business receipts for services industries</strong>, the annual <strong>Labour Force Participation Rate</strong> and an information paper on real personal disposable income. The calendar does not specify release times. These releases may help refine the domestic-services and household-income picture. <a href="https://www.singstat.gov.sg/data-tools-services/advance-release-calendar">SingStat advance release calendar</a>.</div>
+  </div>
+ </div>
+
+ <h3>Potential risks — not scheduled events</h3>
+ <ul>
+  <li><strong>AI capex and monetisation:</strong> Watch whether management commentary from HPE, Dell and chip suppliers supports or undermines the expected return on data-centre spending.</li>
+  <li><strong>US policy and export controls:</strong> Further debate over AI infrastructure, data-centre construction and advanced-chip exports could affect semiconductor and cloud-equipment valuations. No specific new policy announcement is confirmed in the calendar reviewed.</li>
+  <li><strong>Geopolitics and energy:</strong> Middle East developments could change oil prices and inflation expectations. This remains a risk scenario, not a scheduled catalyst.</li>
+  <li><strong>Fed repricing:</strong> The December 8–9 meeting is the next policy decision. The market may react sharply if PCE and the Beige Book reinforce the case for tighter policy.</li>
+ </ul>
+</section>
+
+<section id="takeaway">
+ <h2>4. Overall investor takeaway</h2>
+ <div class="card">
+  <ul>
+   <li><strong>Separate the AI valuation shock from the economic data.</strong> Strong recent payroll growth and ongoing AI demand do not remove the risk that valuations and capital spending expectations had become stretched.</li>
+   <li><strong>Rates remain a key transmission channel.</strong> Falling Treasury yields this week offered some relief, but the Fed’s hawkish stance and upcoming PCE data could quickly reverse that move. Rate-sensitive REITs and long-duration equities remain exposed.</li>
+   <li><strong>Singapore is more defensive, not insulated.</strong> Banks, industrial names and REITs were sold alongside regional markets. The STI’s positive YTD return is still intact, but its short-term trend has weakened materially.</li>
+   <li><strong>Use the holiday week carefully.</strong> The US has only three full sessions plus a half-day. Earnings, PCE and Treasury auctions are concentrated into a few sessions, so liquidity may be thinner and price gaps more pronounced.</li>
+  </ul>
+  <p><strong>Bottom line:</strong> The next test is whether the AI sell-off stabilises while inflation and earnings data remain consistent with resilient growth. Until that becomes clearer, volatility and stock-specific dispersion are likely to remain elevated.</p>
+ </div>
+ <p class="small">This is general market commentary, not personalised investment advice. I’m not a financial advisor.</p>
+</section>
+
+<section id="sources">
+ <h2>5. Sources and methodology</h2>
+ <p>Index closes and returns use the latest completed regular session on Friday, 20 November 2026. Singapore weekly and YTD returns are calculated from the STI close on 13 November 2026 and the final 2025 close respectively. US weekly and YTD index returns are reported by AP and rounded as published. Treasury yields are daily par-yield observations. Event times are shown in the source market’s time zone; where an official calendar did not provide a time, this report does not infer one.</p>
+ <ul class="source-list">
+  <li><a href="https://apnews.com/article/c10b797a17c2acf37924d834efebe135">AP — US index closes, weekly and YTD returns</a></li>
+  <li><a href="https://www.reuters.com/legal/transactional/wall-st-futures-slip-anthropic-debut-fails-reassure-ai-investors-2026-11-20/">Reuters — AI sell-off, breadth, Fed comments</a></li>
+  <li><a href="https://www.bls.gov/news.release/CPI.htm">BLS — October 2026 CPI</a></li>
+  <li><a href="https://www.bls.gov/news.release/archives/empsit_11062026.htm">BLS — October 2026 employment</a></li>
+  <li><a href="https://www.reuters.com/business/feds-cook-says-rate-hikes-needed-lower-high-inflation-2026-11-20/">Reuters — Lisa Cook on inflation and rates</a></li>
+  <li><a href="https://mortgageratestoday.com/yield-curve">US Treasury par-yield curve figures</a></li>
+  <li><a href="https://www.businesstimes.com.sg/singapore/singapore-stocks-fall-tandem-regional-downturn-sti-down-2-1">Business Times — STI close, banks, breadth and turnover</a></li>
+  <li><a href="https://www.straitstimes.com/business/companies-markets/singapore-shares-slip-on-final-trading-day-of-the-year-sti-down-0-2//">The Straits Times — 2025 STI year-end close</a></li>
+  <li><a href="https://www.singstat.gov.sg/">SingStat — GDP, trade and wholesale data</a></li>
+  <li><a href="https://www.mas.gov.sg/news/monetary-policy-statements/2026/mas-monetary-policy-statement-14oct26">MAS — October 2026 policy statement</a></li>
+  <li><a href="https://www.businesstimes.com.sg/companies-markets/seatrium-net-order-book-stands-s12-2-billion-it-expects-materially-higher-fy2026-underlying-net">Business Times — Seatrium update</a></li>
+  <li><a href="https://www.theedgesingapore.com/capital/results/riverstones-3qfy2026-net-profit-347-y-o-y-rm701-mil-ceo-wong-teek-son-step-down">The Edge — Riverstone update</a></li>
+  <li><a href="https://links.sgx.com/1.0.0/corporate-actions/2277164">SGX — FLCT distribution record</a></li>
+  <li><a href="https://links.sgx.com/1.0.0/corporate-actions/2282560">SGX — NTT DC REIT distribution record</a></li>
+  <li><a href="https://www.bea.gov/news/schedule?output=1">BEA — GDP and PCE calendar</a></li>
+  <li><a href="https://www.federalreserve.gov/newsevents/2026-November.htm">Federal Reserve — November calendar and Beige Book</a></li>
+  <li><a href="https://fiscaldata.treasury.gov/datasets/upcoming-auctions/">US Treasury — upcoming auctions</a></li>
+  <li><a href="https://www.singstat.gov.sg/data-tools-services/advance-release-calendar">SingStat — advance release calendar</a></li>
+ </ul>
+</section>
+</main>
+<footer><div class="wrap">Prepared for the week ending 20 November 2026 · Data checked Saturday, 21 November 2026, 08:25 SGT · All figures are subject to source corrections. This report is informational only and does not constitute a recommendation to buy or sell any security.</div></footer>
+</body>
+</html>
