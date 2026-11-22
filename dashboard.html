@@ -71,4 +71,46 @@ h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacin
 </section>
 <div class="footer">Weekly Markets Update · US & Singapore · Market data widgets powered by TradingView · For information only.</div>
 </div>
+<script>
+(async function loadSectorPerformance(){
+  const panel=document.getElementById('sector-performance');
+  const baseline=document.getElementById('sector-baseline');
+  const updated=document.getElementById('sector-updated');
+  try{
+    const response=await fetch('data/sector-performance.json',{cache:'no-store'});
+    if(!response.ok) throw new Error('Sector data unavailable');
+    const data=await response.json();
+    if(data.baseline_date){
+      baseline.textContent='Compared with '+data.baseline_date+' closing price'+(data.baseline_rule?' · '+data.baseline_rule:'');
+    }
+    if(data.updated_at){
+      updated.textContent='Last updated: '+data.updated_at+' · Closing prices only; not live intraday data.';
+    }
+    const ready=(data.sectors||[]).filter(s=>Number.isFinite(s.change_pct));
+    if(!ready.length){
+      panel.innerHTML='<p class="sector-empty">The 11 sector tickers are configured. Verified closing-price figures have not been entered yet; no values are being estimated or fabricated.</p>';
+      return;
+    }
+    const max=Math.max(1,...ready.map(s=>Math.abs(s.change_pct)));
+    panel.innerHTML=ready.sort((a,b)=>b.change_pct-a.change_pct).map(s=>{
+      const positive=s.change_pct>=0;
+      const width=Math.max(1,Math.abs(s.change_pct)/max*100);
+      const row=document.createElement('div');
+      row.className='sector-row';
+      const label=document.createElement('div');
+      label.className='sector-label';
+      const name=document.createElement('span'); name.textContent=s.name+' ('+s.ticker+')';
+      const value=document.createElement('span'); value.textContent=(positive?'+':'')+s.change_pct.toFixed(2)+'%';
+      value.style.color=positive?'#16845b':'#c44747';
+      label.append(name,value);
+      const track=document.createElement('div'); track.className='sector-track';
+      const fill=document.createElement('div'); fill.className='sector-fill';
+      fill.style.width=width+'%'; fill.style.background=positive?'#16845b':'#c44747';
+      track.append(fill); row.append(label,track); return row;
+    }).map(row=>row.outerHTML).join('');
+  }catch(error){
+    panel.innerHTML='<p class="sector-empty">Sector performance data could not be loaded. Please try again later.</p>';
+  }
+})();
+</script>
 </body></html>
