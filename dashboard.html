@@ -17,7 +17,7 @@ h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacin
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
 .card{background:white;border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 5px 18px #0b285008;min-width:0;margin-bottom:17px}
 .card h2{font-size:17px;color:var(--navy);margin:0 0 3px;letter-spacing:-.02em}.sub{color:var(--muted);font-size:11px;margin-bottom:13px}
-.widget{width:100%;min-width:0}.widget tv-advanced-chart{display:block;width:100%;height:420px}.advanced-chart{height:420px}.main-chart{height:440px}.compact-chart{height:340px}.advanced-chart .tradingview-widget-container,.advanced-chart .tradingview-widget-container__widget{width:100%;height:100%}
+.widget{width:100%;min-width:0}.widget tv-advanced-chart{display:block;width:100%;height:420px}.advanced-chart{height:520px}.main-chart{height:520px}.compact-chart{height:520px}.advanced-chart .tradingview-widget-container,.advanced-chart .tradingview-widget-container__widget{width:100%;height:100%}
 .market-overview{height:440px}.heatmap{height:560px}.calendar{height:560px}
 .sector-bars{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 24px}.sector-row{min-width:0}.sector-label{display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:700;color:var(--navy);margin-bottom:5px}.sector-track{height:9px;background:#edf1f6;border-radius:99px;overflow:hidden}.sector-fill{height:100%;border-radius:99px}.sector-empty{color:var(--muted);font-size:12px;grid-column:1/-1}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .stat{border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}.stat b{display:block;color:var(--navy);font-size:13px}.stat small{color:var(--muted);font-size:10px}
@@ -27,7 +27,7 @@ h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacin
 .footer{text-align:center;color:#8793a5;font-size:11px;padding:15px}
 .tv-copyright{font-size:10px;color:#8a96a8;margin-top:6px}.tv-copyright a{color:#60748d}
 @media(max-width:850px){.sector-bars{grid-template-columns:1fr}.wrap{padding:20px 14px 40px}.grid{grid-template-columns:1fr}.mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hero img{max-height:220px}}
-@media(max-width:520px){.head{align-items:flex-start;flex-direction:column}.stamp{text-align:left}.mini-grid{grid-template-columns:1fr 1fr}.card{padding:14px}.widget tv-advanced-chart{height:390px}.advanced-chart{height:390px}.main-chart{height:400px}.compact-chart{height:320px}.market-overview{height:430px}.heatmap{height:520px}.calendar{height:520px}}
+@media(max-width:520px){.head{align-items:flex-start;flex-direction:column}.stamp{text-align:left}.mini-grid{grid-template-columns:1fr 1fr}.card{padding:14px}.widget tv-advanced-chart{height:430px}.advanced-chart{height:430px}.main-chart{height:430px}.compact-chart{height:430px}.market-overview{height:430px}.heatmap{height:520px}.calendar{height:520px}}
 </style>
 
 </head>
@@ -43,7 +43,7 @@ h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacin
 <div class="widget advanced-chart main-chart"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>{"autosize":true,"symbol":"AMEX:SPY","interval":"D","timezone":"Asia/Singapore","theme":"light","style":"2","locale":"en","allow_symbol_change":true,"calendar":false,"support_host":"https://www.tradingview.com"}</script></div></div>
 </section>
 <div class="grid">
-<section class="card"><h2>US market · Nasdaq 100</h2><div class="sub">QQQ · Daily line chart · interactive timeframe and indicators</div><div class="widget advanced-chart compact-chart"><iframe title="QQQ Nasdaq 100 ETF interactive chart" src="https://www.tradingview.com/widgetembed/?symbol=NASDAQ%3AQQQ&interval=D&timezone=Asia%2FSingapore&theme=light&style=2&locale=en&allow_symbol_change=1&hide_top_toolbar=0&hide_legend=0&saveimage=0&toolbarbg=f1f3f6" style="width:100%;height:340px;border:0" loading="lazy" allowtransparency="true" scrolling="no"></iframe></div></section>
+<section class="card"><h2>US market · Nasdaq 100</h2><div class="sub">QQQ · Daily line chart · interactive timeframe and indicators</div><div class="widget advanced-chart compact-chart"><iframe title="QQQ Nasdaq 100 ETF interactive chart" src="https://www.tradingview.com/widgetembed/?symbol=NASDAQ%3AQQQ&interval=D&timezone=Asia%2FSingapore&theme=light&style=2&locale=en&allow_symbol_change=1&hide_top_toolbar=0&hide_legend=0&saveimage=0&toolbarbg=f1f3f6" style="width:100%;height:520px;border:0" loading="lazy" allowtransparency="true" scrolling="no"></iframe></div></section>
 <section class="card"><h2>US market · Dow Jones</h2><div class="sub">DIA · Dow Jones Industrial Average ETF proxy · Daily interactive chart</div><div class="widget advanced-chart compact-chart"><iframe title="Dow Jones DIA ETF interactive chart" src="https://www.tradingview.com/widgetembed/?symbol=AMEX%3ADIA&interval=D&timezone=Asia%2FSingapore&theme=light&style=2&locale=en&allow_symbol_change=1&hide_top_toolbar=0&hide_legend=0&saveimage=0&toolbarbg=f1f3f6" style="width:100%;height:520px;border:0" loading="lazy" allowtransparency="true" scrolling="no"></iframe></div></section>
 </div>
 <section class="card">
@@ -81,36 +81,50 @@ h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacin
     if(!response.ok) throw new Error('Sector data unavailable');
     const data=await response.json();
     if(data.baseline_date){
-      baseline.textContent='Compared with '+data.baseline_date+' closing price'+(data.baseline_rule?' · '+data.baseline_rule:'');
+      baseline.textContent='Compared with '+data.baseline_date+' closing price';
     }
     if(data.updated_at){
       updated.textContent='Last updated: '+data.updated_at+' · Closing prices only; not live intraday data.';
     }
-    const ready=(data.sectors||[]).filter(s=>Number.isFinite(s.change_pct));
-    if(!ready.length){
-      panel.innerHTML='<p class="sector-empty">The 11 sector tickers are configured. Verified closing-price figures have not been entered yet; no values are being estimated or fabricated.</p>';
+    const sectors=data.sectors||[];
+    if(!sectors.length){
+      panel.innerHTML='<p class="sector-empty">Sector list is not available yet.</p>';
       return;
     }
-    const max=Math.max(1,...ready.map(s=>Math.abs(s.change_pct)));
-    panel.innerHTML=ready.sort((a,b)=>b.change_pct-a.change_pct).map(s=>{
-      const positive=s.change_pct>=0;
-      const width=Math.max(1,Math.abs(s.change_pct)/max*100);
-      const row=document.createElement('div');
-      row.className='sector-row';
-      const label=document.createElement('div');
-      label.className='sector-label';
+    const sorted=[...sectors].sort((a,b)=>{
+      const av=Number.isFinite(a.change_pct)?a.change_pct:null;
+      const bv=Number.isFinite(b.change_pct)?b.change_pct:null;
+      if(av===null&&bv===null)return a.name.localeCompare(b.name);
+      if(av===null)return 1;
+      if(bv===null)return -1;
+      return bv-av;
+    });
+    const values=sorted.filter(s=>Number.isFinite(s.change_pct)).map(s=>Math.abs(s.change_pct));
+    const max=Math.max(1,...values);
+    panel.replaceChildren();
+    sorted.forEach(s=>{
+      const hasValue=Number.isFinite(s.change_pct);
+      const positive=hasValue&&s.change_pct>=0;
+      const row=document.createElement('div'); row.className='sector-row';
+      const label=document.createElement('div'); label.className='sector-label';
       const name=document.createElement('span'); name.textContent=s.name+' ('+s.ticker+')';
-      const value=document.createElement('span'); value.textContent=(positive?'+':'')+s.change_pct.toFixed(2)+'%';
-      value.style.color=positive?'#16845b':'#c44747';
+      const value=document.createElement('span');
+      value.textContent=hasValue?((positive?'+':'')+s.change_pct.toFixed(2)+'%'):'—';
+      if(hasValue)value.style.color=positive?'#16845b':'#c44747';
+      else value.style.color='#8793a5';
       label.append(name,value);
       const track=document.createElement('div'); track.className='sector-track';
       const fill=document.createElement('div'); fill.className='sector-fill';
-      fill.style.width=width+'%'; fill.style.background=positive?'#16845b':'#c44747';
-      track.append(fill); row.append(label,track); return row;
-    }).map(row=>row.outerHTML).join('');
+      fill.style.width=hasValue?Math.max(1,Math.abs(s.change_pct)/max*100)+'%':'0%';
+      fill.style.background=positive?'#16845b':'#c44747';
+      track.append(fill); row.append(label,track); panel.append(row);
+    });
+    if(!values.length){
+      updated.textContent='All 11 sectors are listed. Verified closing-price data has not been added yet, so percentage bars remain empty rather than showing estimated figures.';
+    }
   }catch(error){
     panel.innerHTML='<p class="sector-empty">Sector performance data could not be loaded. Please try again later.</p>';
   }
 })();
-</script>
+</script>>
 </body></html>
