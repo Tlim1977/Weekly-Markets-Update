@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#071a35">
+<title>Market Dashboard | Weekly Markets Update</title>
+<style>
+:root{--navy:#06152d;--navy2:#0b2850;--blue:#1476c8;--gold:#f4b52d;--ink:#17243a;--muted:#66758b;--paper:#f3f6fb;--line:#e3e9f2}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.topline{background:#081d3a;color:#cbd8e9;padding:9px 4vw;display:flex;justify-content:space-between;gap:12px;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.hero{background:#06152d;overflow:hidden}.hero img{display:block;width:100%;max-height:300px;object-fit:cover;object-position:center}
+.wrap{max-width:1440px;margin:auto;padding:26px 24px 56px}
+.back{color:#1265a5;text-decoration:none;font-size:12px;font-weight:800}
+.head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:12px 0 20px}.eyebrow{color:#0871bd;font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:800}
+h1{margin:4px 0 0;color:var(--navy);font-size:clamp(26px,3vw,38px);letter-spacing:-.04em;line-height:1.1}.intro{color:var(--muted);font-size:13px;max-width:700px;margin:8px 0 0}
+.stamp{font-size:11px;color:var(--muted);text-align:right}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+.card{background:white;border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 5px 18px #0b285008;min-width:0;margin-bottom:17px}
+.card h2{font-size:17px;color:var(--navy);margin:0 0 3px;letter-spacing:-.02em}.sub{color:var(--muted);font-size:11px;margin-bottom:13px}
+.widget{width:100%;min-width:0}.widget tv-advanced-chart{display:block;width:100%;height:510px}
+.market-overview{height:440px}.heatmap{height:560px}.calendar{height:560px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}.stat b{display:block;color:var(--navy);font-size:13px}.stat small{color:var(--muted);font-size:10px}
+.mini-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.mini{border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0}.mini b{font-size:12px;color:var(--navy);display:block}.mini tv-mini-chart{display:block;width:100%;height:105px}
+.note{background:#fff8e7;border:1px solid #f4dfaa;color:#795a16;border-radius:11px;padding:12px 14px;font-size:11px;margin:16px 0}
+.footer{text-align:center;color:#8793a5;font-size:11px;padding:15px}
+.tv-copyright{font-size:10px;color:#8a96a8;margin-top:6px}.tv-copyright a{color:#60748d}
+@media(max-width:850px){.wrap{padding:20px 14px 40px}.grid{grid-template-columns:1fr}.mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hero img{max-height:220px}}
+@media(max-width:520px){.head{align-items:flex-start;flex-direction:column}.stamp{text-align:left}.mini-grid{grid-template-columns:1fr 1fr}.card{padding:14px}.widget tv-advanced-chart{height:430px}.market-overview{height:430px}.heatmap{height:520px}.calendar{height:520px}}
+</style>
+<script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-advanced-chart.js"></script>
+<script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-mini-chart.js"></script>
+</head>
+<body>
+<div class="topline"><span>Global markets • Interactive dashboard</span><span>US · Singapore</span></div>
+<header class="hero"><a href="index.html"><img src="assets/weekly-markets-banner.png" alt="Weekly Markets Update — US and Singapore markets"></a></header>
+<div class="wrap">
+<a class="back" href="index.html">← Back to weekly market briefing</a>
+<div class="head"><div><div class="eyebrow">Market dashboard</div><h1>Markets in motion</h1><p class="intro">Explore major indices, sector leadership, volatility, rates, commodities and upcoming economic releases. Charts are interactive — select symbols and timeframes inside the widgets.</p></div><div class="stamp">DATA & CHARTS<br><b>Powered by TradingView</b></div></div>
+<div class="note"><b>Data note:</b> Market data is supplied by TradingView's embedded widgets. Availability and delay depend on the underlying exchange and data provider. Quotes may not match the weekly report's Friday closing snapshot exactly. This dashboard is for information only and is not investment advice.</div>
+<section class="card">
+<h2>Global indices · 1-year view</h2><div class="sub">Select an index from the list to change the chart. Switch between indices, futures, bonds and forex.</div>
+<div class="widget market-overview"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+{"colorTheme":"light","dateRange":"12M","showChart":true,"locale":"en","isTransparent":false,"showFloatingTooltip":true,"plotLineColorGrowing":"rgba(20,118,200,1)","plotLineColorFalling":"rgba(196,71,71,1)","gridLineColor":"rgba(230,235,242,0.65)","scaleFontColor":"#66758b","belowLineFillColorGrowing":"rgba(20,118,200,0.10)","belowLineFillColorFalling":"rgba(196,71,71,0.08)","belowLineFillColorGrowingBottom":"rgba(20,118,200,0)","belowLineFillColorFallingBottom":"rgba(196,71,71,0)","symbolActiveColor":"rgba(20,118,200,0.10)","tabs":[{"title":"Indices","symbols":[{"s":"SP:SPX","d":"S&P 500"},{"s":"NASDAQ:IXIC","d":"Nasdaq Composite"},{"s":"DJ:DJI","d":"Dow Jones"},{"s":"TVC:RUT","d":"Russell 2000"},{"s":"FTSEST:STI","d":"Straits Times Index"}],"originalTitle":"Indices"},{"title":"Futures","symbols":[{"s":"CME_MINI:ES1!","d":"S&P 500 E-mini"},{"s":"CME_MINI:NQ1!","d":"Nasdaq 100 E-mini"},{"s":"COMEX:GC1!","d":"Gold"},{"s":"NYMEX:CL1!","d":"WTI Crude Oil"}],"originalTitle":"Futures"},{"title":"Forex","symbols":[{"s":"FX_IDC:USDSGD","d":"USD / SGD"},{"s":"FX:EURUSD","d":"EUR / USD"},{"s":"FX:USDJPY","d":"USD / JPY"}],"originalTitle":"Forex"}],"width":"100%","height":"440","showSymbolLogo":true,"showChart":true}
+</script></div></div>
+<div class="tv-copyright">Interactive market overview by <a href="https://www.tradingview.com/" target="_blank" rel="noopener">TradingView</a>.</div>
+</section>
+<div class="grid">
+<section class="card"><h2>US market · S&P 500</h2><div class="sub">Interactive daily chart · adjust timeframe and indicators</div><div class="widget"><tv-advanced-chart symbol="SP:SPX" interval="1D" timezone="Asia/Singapore" theme="light" autosize></tv-advanced-chart></div></section>
+<section class="card"><h2>US sector heatmap</h2><div class="sub">Sector and constituent performance across the S&P 500</div><div class="widget heatmap"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
+{"exchanges":[],"dataSource":"SPX500","grouping":"sector","blockSize":"market_cap_basic","blockColor":"change","locale":"en","symbolUrl":"","colorTheme":"light","hasTopBar":true,"isDataSetEnabled":true,"isZoomEnabled":true,"hasSymbolTooltip":true,"width":"100%","height":"560"}
+</script></div></div><div class="tv-copyright">Sector heatmap by <a href="https://www.tradingview.com/" target="_blank" rel="noopener">TradingView</a>.</div></section>
+</div>
+<section class="card"><h2>Market risk & macro indicators</h2><div class="sub">Quick one-year price context for key cross-asset indicators</div>
+<div class="mini-grid">
+<div class="mini"><b>VIX · Volatility</b><tv-mini-chart symbol="CBOE:VIX" timeframe="1Y" theme="light"></tv-mini-chart></div>
+<div class="mini"><b>US 10-year yield</b><tv-mini-chart symbol="TVC:US10Y" timeframe="1Y" theme="light"></tv-mini-chart></div>
+<div class="mini"><b>Gold</b><tv-mini-chart symbol="TVC:GOLD" timeframe="1Y" theme="light"></tv-mini-chart></div>
+<div class="mini"><b>WTI crude oil</b><tv-mini-chart symbol="TVC:USOIL" timeframe="1Y" theme="light"></tv-mini-chart></div>
+<div class="mini"><b>USD / SGD</b><tv-mini-chart symbol="FX_IDC:USDSGD" timeframe="1Y" theme="light"></tv-mini-chart></div>
+<div class="mini"><b>Bitcoin / USD</b><tv-mini-chart symbol="COINBASE:BTCUSD" timeframe="1Y" theme="light"></tv-mini-chart></div>
+</div></section>
+<section class="card"><h2>Upcoming economic events</h2><div class="sub">Calendar of scheduled macroeconomic releases and central-bank events. Check event time zones before trading.</div>
+<div class="widget calendar"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-economic-calendar.js" async>
+{"colorTheme":"light","isTransparent":false,"width":"100%","height":"560","locale":"en","importanceFilter":"-1,0,1","countryFilter":"us,sg"}
+</script></div></div><div class="tv-copyright">Economic calendar by <a href="https://www.tradingview.com/" target="_blank" rel="noopener">TradingView</a>.</div>
+</section>
+<div class="footer">Weekly Markets Update · US & Singapore · Market data widgets powered by TradingView · For information only.</div>
+</div>
+</body></html>
