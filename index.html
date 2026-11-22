@@ -15,7 +15,7 @@
 .navtitle{margin:24px 0 9px;color:#8793a5;font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
 .nav a{display:flex;align-items:center;gap:10px;text-decoration:none;color:#526176;padding:10px 11px;border-radius:9px;margin:3px 0;font-size:13px}.nav a.active,.nav a:hover{background:#edf5ff;color:#075ca6;font-weight:700}.nav .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
 .side-note{margin-top:25px;padding:13px;border-radius:11px;background:#f5f8fc;color:#728096;font-size:11px}
-main{min-width:0}.mobilebar{display:none;align-items:center;justify-content:space-between;margin-bottom:14px}.menu-btn{border:1px solid var(--line);background:white;border-radius:9px;padding:9px 13px;color:var(--navy);font-weight:700}
+main{min-width:0}.mobilebar{display:none;align-items:center;justify-content:space-between;max-width:1440px;margin:0 auto;padding:10px 14px;background:#f3f6fb}.menu-btn{border:1px solid var(--line);background:white;border-radius:9px;padding:9px 13px;color:var(--navy);font-weight:700}
 .eyebrow{color:#0871bd;font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:800}
 .headrow{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin:3px 0 20px}.headrow h1{margin:5px 0 0;font-size:clamp(25px,3vw,35px);line-height:1.15;color:var(--navy);letter-spacing:-.04em}.date{color:var(--muted);font-size:12px;text-align:right}
 .notice{display:flex;gap:11px;align-items:center;background:#fff8e7;border:1px solid #f4dfaa;color:#795a16;border-radius:12px;padding:12px 15px;margin-bottom:20px;font-size:12px}.notice strong{color:#65460a}
@@ -25,16 +25,16 @@ main{min-width:0}.mobilebar{display:none;align-items:center;justify-content:spac
 table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;color:#78869a;font-size:10px;text-transform:uppercase;letter-spacing:.08em;padding:10px 8px;border-bottom:1px solid var(--line)}td{padding:11px 8px;border-bottom:1px solid #edf0f5}tr:last-child td{border:0}.tag{display:inline-block;background:#edf6ff;color:#1265a5;border-radius:20px;padding:3px 8px;font-size:10px;font-weight:700}
 .watchlist{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.watch{padding:14px;border-radius:11px;background:#f6f8fb}.watch b{display:block;color:var(--navy);font-size:13px}.watch span{font-size:11px;color:var(--muted)}
 .footer{text-align:center;color:#8793a5;font-size:11px;padding:12px}
-@media(max-width:900px){.shell{grid-template-columns:1fr;padding:18px 14px 40px}.sidebar{display:none;position:fixed;top:12px;left:12px;right:12px;z-index:1000;max-height:calc(100dvh - 24px);overflow-y:auto;box-shadow:0 18px 55px #06152d55}.sidebar.open{display:block}.mobile-close{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;background:#edf5ff;color:#075ca6;border-radius:9px;padding:10px 12px;margin:0 0 14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}.mobilebar{display:flex}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero img{max-height:240px}.topline{padding:8px 14px}}
+@media(max-width:900px){.shell{grid-template-columns:1fr;padding:18px 14px 40px}.sidebar{display:none;position:fixed;top:var(--menu-top,160px);left:12px;right:12px;z-index:1000;max-height:calc(100dvh - var(--menu-top,160px) - 12px);overflow-y:auto;box-shadow:0 18px 55px #06152d55}.sidebar.open{display:block}.mobilebar{display:flex}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero img{max-height:240px}.topline{padding:8px 14px}}
 @media(max-width:560px){.twocol,.watchlist{grid-template-columns:1fr}.headrow{align-items:flex-start;flex-direction:column}.date{text-align:left}.section{padding:16px}.grid{gap:9px}.metric{padding:13px}.metric strong{font-size:22px}}
 </style>
 </head>
 <body>
 <div class="topline"><span>Global markets • Weekly briefing</span><span>US · Singapore</span></div>
 <header class="hero"><img src="assets/weekly-markets-banner.svg" alt="Weekly Markets Update — US and Singapore markets"></header>
+<div class="mobilebar" id="mobilebar"><strong style="color:#09254a">Report navigation</strong><button class="menu-btn" id="menuToggle" type="button" aria-controls="sidebar" aria-expanded="false">☰ Menu</button></div>
 <div class="shell">
 <aside class="sidebar" id="sidebar">
-<button class="mobile-close" type="button" onclick="document.getElementById('sidebar').classList.remove('open')">✕ Close menu</button>
 <div class="brand">WEEKLY MARKETS UPDATE<small>Independent market briefing</small></div>
 <div class="navtitle">This week's report</div>
 <nav class="nav">
@@ -50,14 +50,13 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 <div class="side-note">Reports are updated weekly. Select a date in the archive to revisit an earlier briefing.</div>
 </aside>
 <main>
-<div class="mobilebar"><strong style="color:#09254a">Report navigation</strong><button class="menu-btn" type="button" aria-controls="sidebar" aria-expanded="false" onclick="const s=document.getElementById('sidebar');s.classList.toggle('open');this.setAttribute('aria-expanded',s.classList.contains('open'))">☰ Menu</button></div>
 <div class="headrow" id="overview"><div><div class="eyebrow">Weekly market briefing · Test preview</div><h1>Markets at a glance</h1></div><div class="date">WEEK ENDING<br><strong>Friday, 20 November 2026</strong></div></div>
-<div class="notice"><span>⚠️</span><div><strong>Dummy test page.</strong> The figures and commentary below are illustrative placeholders, not live market data or investment research.</div></div>
+<div class="notice"><span>⚠️</span><div><strong>Latest report.</strong> The latest weekly briefing is based on market data through Friday, 20 November 2026. See the full report for detailed analysis, sources and next-week catalysts.</div></div>
 <div class="grid">
-<div class="metric"><label>S&P 500</label><strong>6,742.18</strong><span class="up">▲ 1.24% this week</span></div>
-<div class="metric"><label>NASDAQ Composite</label><strong>22,815.40</strong><span class="up">▲ 1.86% this week</span></div>
-<div class="metric"><label>STI</label><strong>4,128.65</strong><span class="up">▲ 0.72% this week</span></div>
-<div class="metric"><label>US 10Y Treasury</label><strong>4.08%</strong><span class="down">▼ 0.06 percentage points</span></div>
+<div class="metric"><label>S&P 500</label><strong>6,910.39</strong><span class="up">▼ 8.61% this week</span></div>
+<div class="metric"><label>NASDAQ Composite</label><strong>22,617.73</strong><span class="up">▼ 10.02% this week</span></div>
+<div class="metric"><label>STI</label><strong>4,975.17</strong><span class="up">▼ 4.91% this week</span></div>
+<div class="metric"><label>US 10Y Treasury</label><strong>4.92%</strong><span class="down">▼ 0.23 percentage points</span></div>
 </div>
 <section class="section" id="us"><h2>🇺🇸 US markets</h2><div class="sub">A quick read on the major US benchmarks · illustrative data</div><div class="twocol">
 <div class="market"><h3>Equities edged higher</h3><p>Technology and communication services lead the hypothetical weekly advance.</p><div class="bar"><span style="width:76%"></span></div><small>Illustrative market breadth: 76% of tracked sectors positive</small></div>
@@ -65,7 +64,18 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 <section class="section" id="singapore"><h2>🇸🇬 Singapore markets</h2><div class="sub">Local market pulse and selected counters · illustrative data</div><table><thead><tr><th>Counter</th><th>Weekly move</th><th>Sample takeaway</th></tr></thead><tbody><tr><td><b>DBS</b></td><td class="up">+1.1%</td><td>Banking sector watch</td></tr><tr><td><b>UOB</b></td><td class="up">+0.6%</td><td>Credit and NIM trends</td></tr><tr><td><b>OCBC</b></td><td class="down">−0.2%</td><td>Valuation and dividends</td></tr><tr><td><b>STI REIT basket</b></td><td class="up">+0.8%</td><td>Rates and distribution outlook</td></tr></tbody></table></section>
 <section class="section" id="sectors"><h2>Sector watch</h2><div class="sub">Themes worth monitoring in the coming sessions</div><div class="watchlist"><div class="watch"><b>AI & semiconductors</b><span>Demand, capex and earnings guidance</span></div><div class="watch"><b>Banks & financials</b><span>Net interest margins and credit quality</span></div><div class="watch"><b>REITs & rates</b><span>Refinancing costs and distribution growth</span></div></div></section>
 <section class="section" id="calendar"><h2>What's next week</h2><div class="sub">Example calendar layout — dates and events will be verified in the live report</div><table><thead><tr><th>When</th><th>Event to watch</th><th>Why it matters</th></tr></thead><tbody><tr><td>Mon–Tue</td><td>Key economic releases</td><td>Could shift rate expectations</td></tr><tr><td>Wed</td><td>Central-bank commentary</td><td>Policy outlook and bond yields</td></tr><tr><td>Thu–Fri</td><td>Company earnings & market liquidity</td><td>Guidance, positioning and holiday effects</td></tr></tbody></table></section>
-<section class="section" id="archive"><h2>Report archive</h2><div class="sub">Older weekly reports will appear here as dated links. This is a sample entry for layout testing.</div><a href="#overview" style="color:#1265a5;font-weight:700;text-decoration:none">20 November 2026 — Test report preview ↗</a></section>
+<section class="section" id="archive"><h2>Report archive</h2><div class="sub">Older weekly reports will appear here as dated links. This is a sample entry for layout testing.</div><a href="reports/2026-11-20.html" style="color:#1265a5;font-weight:700;text-decoration:none">20 November 2026 — Full weekly report ↗</a></section>
 <div class="footer">Weekly Markets Update · US & Singapore · For information only, not investment advice.</div>
 </main></div>
+<script>
+(function(){
+ const s=document.getElementById("sidebar"),b=document.getElementById("menuToggle"),bar=document.getElementById("mobilebar");
+ if(!s||!b||!bar)return;
+ function setTop(){document.documentElement.style.setProperty("--menu-top",Math.ceil(bar.getBoundingClientRect().bottom)+"px")}
+ function close(){s.classList.remove("open");b.setAttribute("aria-expanded","false")}
+ b.addEventListener("click",()=>{setTop();const opened=s.classList.toggle("open");b.setAttribute("aria-expanded",String(opened))});
+ window.addEventListener("resize",setTop);window.addEventListener("scroll",setTop,{passive:true});
+ s.querySelectorAll("a").forEach(a=>a.addEventListener("click",close));setTop();
+})();
+</script>
 </body></html>
