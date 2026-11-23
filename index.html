@@ -105,7 +105,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     <div class="volrow"><span class="vol-label">US volatility <button class="info-btn" type="button" data-score-modal="us-vol-modal" aria-label="US volatility guide">i</button></span><span id="us-vol-state" class="score-pill">Pending</span></div>
     <div class="volrow"><span class="vol-label">SG volatility <button class="info-btn" type="button" data-score-modal="sg-vol-modal" aria-label="Singapore volatility guide">i</button></span><span id="sg-vol-state" class="score-pill">Pending</span></div>
   </div>
-  <div class="scorecard-foot"><span id="scorecard-updated">Market data date: pending</span><button type="button" data-score-modal="method-modal">How is this calculated? ↗</button></div>
+  <div class="scorecard-foot"><span id="scorecard-updated">Market data dates: awaiting first verified close</span><button type="button" data-score-modal="method-modal">How is this calculated? ↗</button></div>
   <div class="score-data-note">The scorecard will only display a market view when its underlying indicators are available. No estimated or invented readings are shown.</div>
 </section>
 <div class="score-modal" id="method-modal" role="dialog" aria-modal="true" aria-labelledby="method-title">
@@ -118,7 +118,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
       <tr><td>Momentum</td><td>15%</td><td>Recent price strength and direction</td></tr>
     </tbody></table>
     <p><b>Score guide:</b> +40 to +100 Strongly bullish; +15 to +39 Bullish; −14 to +14 Neutral; −15 to −39 Bearish; −40 to −100 Strongly bearish.</p>
-    <p>Volatility is assessed separately. High volatility means larger expected or observed price swings, not necessarily falling prices.</p>
+    <p>For Singapore, the sector component is omitted and the remaining index-trend, breadth and momentum weights are proportionally adjusted to total 100%. Volatility is assessed separately. High volatility means larger expected or observed price swings, not necessarily falling prices.</p>
     <div class="score-data-note">The score will remain unavailable until all required indicator feeds are connected and validated.</div>
   </div>
 </div>
@@ -137,7 +137,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 <div class="score-modal" id="sg-vol-modal" role="dialog" aria-modal="true" aria-labelledby="sg-vol-title">
   <div class="score-modal-card"><div class="score-modal-head"><h3 id="sg-vol-title">🇸🇬 Singapore volatility guide</h3><button class="score-modal-close" type="button" aria-label="Close">×</button></div>
     <p>Uses the Straits Times Index's 20-day realised volatility, calculated from its daily returns and annualised. This measures how much the index has actually fluctuated.</p>
-    <p>Calm, Normal, Elevated and High Stress bands will use Singapore-specific historical thresholds. We will publish the thresholds in this popup once the historical data series has been connected and validated.</p>
+    <p id="sg-vol-thresholds">Calm, Normal, Elevated and High Stress bands use Singapore-specific historical thresholds derived from the trailing five years of STI volatility data.</p>
     <div class="score-data-note">The US VIX thresholds are not reused for Singapore because the two measurements are different.</div>
   </div>
 </div>
@@ -204,7 +204,16 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     set('us-market-state',data.us?.market_state);set('us-market-note',data.us?.summary);
     set('sg-market-state',data.singapore?.market_state);set('sg-market-note',data.singapore?.summary);
     set('us-vol-state',data.us?.volatility);set('sg-vol-state',data.singapore?.volatility);
-    set('scorecard-updated',data.market_data_as_of?'Market data as of '+data.market_data_as_of:(data.updated_at?'Data updated '+data.updated_at:'Market data date: pending'));
+    const dates=data.market_data_as_of||{};
+    const usDate=typeof dates==='object'?dates.us:null;
+    const sgDate=typeof dates==='object'?dates.singapore:null;
+    const dateLabel=(usDate||sgDate)?'Market data as of — US: '+(usDate||'pending')+' · Singapore: '+(sgDate||'pending'):'Market data dates: awaiting first verified close';
+    set('scorecard-updated',dateLabel);
+    const sgThresholds=data.singapore?.indicators?.thresholds_pct;
+    if(sgThresholds){
+      const el=document.getElementById('sg-vol-thresholds');
+      if(el)el.textContent='Based on the trailing five years of STI 20-day annualised realised volatility: Calm below '+sgThresholds.calm_below+'%; Normal below '+sgThresholds.normal_below+'%; Elevated below '+sgThresholds.elevated_below+'%; High Stress at or above '+sgThresholds.elevated_below+'%. These percentile-based bands are recalculated as history grows.';
+    }
     document.querySelectorAll('.score-pill').forEach(el=>{
       const v=el.textContent.toLowerCase();
       if(v.includes('bullish')||v==='calm'||v==='normal')el.classList.add(v==='calm'?'calm':'bullish');
