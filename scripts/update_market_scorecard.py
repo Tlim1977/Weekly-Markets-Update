@@ -1,0 +1,331 @@
+#!/usr/bin/env python3
+"""Build the daily US and Singapore market-conditions scorecard.
+
+Prices are daily Yahoo Finance historical closes retrieved with yfinance.
+This is a convenience data feed, not an exchange-certified feed. The script
+keeps the previous valid market block if a new source fetch fails validation.
+"""
+from __future__ import annotations
+
+import csv
+import io
+import json
+import math
+import os
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+from urllib.request import Request, urlopen
+
+import pandas as pd
+import yfinance as yf
+
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / "data" / "market-scorecard.json"
+STI_FILE = ROOT / "data" / "sti-constituents.json"
+SP500_URL = (
+    "https://raw.githubusercontent.com/datasets/"
+    "s-and-p-500-companies-financials/main/data/constituents.csv"
+)
+SECTORS = ["XLK", "XLC", "XLF", "XLY", "XLP", "XLV",
+           "XLI", "XLE", "XLB", "XLRE", "XLU"]
+
+
+def download_sp500_symbols() -> list[str]:
+    req = Request(SP500_URL, headers={"User-Agent": "Mozilla/5.0"})
+    with urlopen(req, timeout=30) as response:
+        rows = csv.DictReader(io.StringIO(response.read().decode("utf-8-sig")))
+        symbols = []
+        for row in rows:
+            symbol = (row.get("Symbol") or row.get("symbol") or "").strip()
+            if symbol:
+                symbols.append(symbol.replace(".", "-"))
+    if len(symbols) < 450:
+        raise RuntimeError(f"Unexpected S&P 500 universe size: {len(symbols)}")
+    return sorted(set(symbols))
+
+
+def download_prices(tickers: list[str], period: str = "18mo") -> dict[str, pd.Series]:
+    """Download in modest batches; tolerate individual ticker failures."""
+    result: dict[str, pd.Series] = {}
+    unique = list(dict.fromkeys(tickers))
+    for start in range(0, len(unique), 70):
+        batch = unique[start:start + 70]
+        try:
+            frame = yf.download(
+                tickers=batch,
+                period=period,
+                interval="1d",
+                auto_adjust=True,
+                group_by="ticker",
+                threads=True,
+                progress=False,
+                timeout=35,
+            )
+        except Exception as exc:
+            print(f"Batch {start // 70 + 1} download failed: {exc}", file=sys.stderr)
+            continue
+        if frame is None or frame.empty:
+            continue
+        for ticker in batch:
+            try:
+                if isinstance(frame.columns, pd.MultiIndex):
+                    levels = [frame.columns.get_level_values(i) for i in range(frame.columns.nlevels)]
+                    if ticker in levels[0]:
+                        series = frame[ticker]["Close"]
+                    elif ticker in levels[-1]:
+                        series = frame.xs(ticker, axis=1, level=-1)["Close"]
+                    else:
+                        continue
+                else:
+                    if len(batch) != 1 or "Close" not in frame.columns:
+                        continue
+                    series = frame["Close"]
+                series = pd.to_numeric(series, errors="coerce").dropna()
+                if not series.empty:
+                    series.index = pd.to_datetime(series.index).tz_localize(None)
+                    result[ticker] = series[~series.index.duplicated(keep="last")].sort_index()
+            except Exception:
+                continue
+    return result
+
+
+def latest_on_or_before(series: pd.Series, as_of: pd.Timestamp) -> pd.Series:
+    return series.loc[series.index <= as_of]
+
+
+def trend_score(index_series: pd.Series) -> tuple[int, dict]:
+    s = index_series.dropna()
+    if len(s) < 205:
+        raise RuntimeError("Insufficient index history for 200-day trend")
+    close = float(s.iloc[-1])
+    sma50 = float(s.tail(50).mean())
+    sma200 = float(s.tail(200).mean())
+    score = (50 if close > sma50 else -50) + (50 if sma50 > sma200 else -50)
+    return score, {"close": close, "sma50": sma50, "sma200": sma200,
+                   "above_50d": close > sma50, "golden_trend": sma50 > sma200}
+
+
+def breadth(prices: dict[str, pd.Series], symbols: list[str], as_of: pd.Timestamp,
+            minimum_fraction: float) -> tuple[float, int, int]:
+    above = 0
+    valid = 0
+    for symbol in symbols:
+        series = prices.get(symbol)
+        if series is None:
+            continue
+        s = latest_on_or_before(series, as_of)
+        if len(s) < 55:
+            continue
+        # Exclude symbols whose latest available close is stale by more than four days.
+        if (as_of - s.index[-1]).days > 4:
+            continue
+        valid += 1
+        if float(s.iloc[-1]) > float(s.tail(50).mean()):
+            above += 1
+    if valid < math.ceil(len(symbols) * minimum_fraction):
+        raise RuntimeError(
+            f"Insufficient constituent coverage: {valid}/{len(symbols)}"
+        )
+    return above / valid * 100.0, above, valid
+
+
+def momentum_score(index_series: pd.Series) -> tuple[float, int]:
+    s = index_series.dropna()
+    if len(s) < 22:
+        raise RuntimeError("Insufficient history for 20-day momentum")
+    ret = float(s.iloc[-1] / s.iloc[-21] - 1.0)
+    return ret * 100.0, max(-100, min(100, round(ret * 2000)))
+
+
+def classify(score: float) -> str:
+    if score >= 40:
+        return "Strongly bullish"
+    if score >= 15:
+        return "Bullish"
+    if score > -15:
+        return "Neutral"
+    if score > -40:
+        return "Bearish"
+    return "Strongly bearish"
+
+
+def vix_label(value: float) -> str:
+    if value < 15:
+        return "Calm"
+    if value <= 20:
+        return "Normal"
+    if value <= 30:
+        return "Elevated"
+    return "High Stress"
+
+
+def singapore_volatility(index_series: pd.Series) -> tuple[str, dict]:
+    returns = index_series.pct_change().dropna()
+    rolling = returns.rolling(20).std() * math.sqrt(252) * 100
+    valid = rolling.dropna()
+    if len(valid) < 252:
+        raise RuntimeError("Insufficient STI history for volatility thresholds")
+    current = float(valid.iloc[-1])
+    history = valid.tail(1260)
+    p25, p75, p90 = [float(history.quantile(q)) for q in (0.25, 0.75, 0.90)]
+    if current < p25:
+        label = "Calm"
+    elif current < p75:
+        label = "Normal"
+    elif current < p90:
+        label = "Elevated"
+    else:
+        label = "High Stress"
+    return f"{label} · {current:.1f}% annualised", {
+        "realised_20d_annualised_pct": round(current, 2),
+        "thresholds_pct": {"calm_below": round(p25, 2),
+                           "normal_below": round(p75, 2),
+                           "elevated_below": round(p90, 2)},
+        "threshold_method": "Rolling 20-day annualised realised volatility; trailing five-year 25th, 75th and 90th percentiles."
+    }
+
+
+def build_us() -> tuple[dict, str]:
+    symbols = download_sp500_symbols()
+    universe = symbols + ["^GSPC", "^VIX"] + SECTORS
+    prices = download_prices(universe, "18mo")
+    if "^GSPC" not in prices or "^VIX" not in prices:
+        raise RuntimeError("S&P 500 or VIX history unavailable")
+    index = prices["^GSPC"]
+    as_of = index.index[-1]
+    index = latest_on_or_before(index, as_of)
+    trend, trend_detail = trend_score(index)
+    pct_above, above, covered = breadth(prices, symbols, as_of, 0.80)
+    sector_above = 0
+    sector_valid = 0
+    for ticker in SECTORS:
+        series = prices.get(ticker)
+        if series is None:
+            continue
+        s = latest_on_or_before(series, as_of)
+        if len(s) >= 55 and (as_of - s.index[-1]).days <= 4:
+            sector_valid += 1
+            if float(s.iloc[-1]) > float(s.tail(50).mean()):
+                sector_above += 1
+    if sector_valid < 9:
+        raise RuntimeError(f"Insufficient sector ETF coverage: {sector_valid}/11")
+    sector_pct = sector_above / sector_valid * 100
+    sector_component = (sector_pct - 50) * 2
+    breadth_component = (pct_above - 50) * 2
+    momentum_pct, momentum_component = momentum_score(index)
+    composite = trend * .35 + breadth_component * .30 + sector_component * .20 + momentum_component * .15
+    vix_series = prices["^VIX"]
+    vix_series = latest_on_or_before(vix_series, as_of)
+    if vix_series.empty or (as_of - vix_series.index[-1]).days > 4:
+        raise RuntimeError("VIX observation is stale")
+    vix = float(vix_series.iloc[-1])
+    summary = (
+        f"{above}/{covered} S&P 500 stocks above their 50-day average; "
+        f"{sector_above}/{sector_valid} sectors above their 50-day average; "
+        f"S&P 500 20-day momentum {momentum_pct:+.1f}%."
+    )
+    return {
+        "market_state": classify(composite),
+        "summary": summary,
+        "volatility": f"{vix_label(vix)} · VIX {vix:.1f}",
+        "as_of": as_of.strftime("%Y-%m-%d"),
+        "directional_score": round(composite, 1),
+        "indicators": {
+            "index_close": round(trend_detail["close"], 2),
+            "sma_50": round(trend_detail["sma50"], 2),
+            "sma_200": round(trend_detail["sma200"], 2),
+            "constituents_above_50d_pct": round(pct_above, 1),
+            "constituents_covered": covered,
+            "sector_etfs_above_50d": sector_above,
+            "sector_etfs_covered": sector_valid,
+            "momentum_20d_pct": round(momentum_pct, 2),
+            "vix": round(vix, 2)
+        }
+    }, as_of.strftime("%Y-%m-%d")
+
+
+def build_singapore() -> tuple[dict, str]:
+    sti_data = json.loads(STI_FILE.read_text(encoding="utf-8"))
+    constituents = sti_data["tickers"]
+    symbols = [x["ticker"] for x in constituents]
+    prices = download_prices(["^STI"] + symbols, "5y")
+    if "^STI" not in prices:
+        raise RuntimeError("STI index history unavailable")
+    index = prices["^STI"]
+    as_of = index.index[-1]
+    index = latest_on_or_before(index, as_of)
+    trend, trend_detail = trend_score(index)
+    pct_above, above, covered = breadth(prices, symbols, as_of, 0.75)
+    momentum_pct, momentum_component = momentum_score(index)
+    # Singapore has no directly comparable 11-sector ETF basket. Renormalise
+    # the agreed trend/breadth/momentum weights to total 100%.
+    breadth_component = (pct_above - 50) * 2
+    composite = trend * .4375 + breadth_component * .375 + momentum_component * .1875
+    vol_label, vol_detail = singapore_volatility(index)
+    summary = (
+        f"{above}/{covered} STI constituents above their 50-day average; "
+        f"STI 20-day momentum {momentum_pct:+.1f}%."
+    )
+    return {
+        "market_state": classify(composite),
+        "summary": summary,
+        "volatility": vol_label,
+        "as_of": as_of.strftime("%Y-%m-%d"),
+        "directional_score": round(composite, 1),
+        "indicators": {
+            "index_close": round(trend_detail["close"], 2),
+            "sma_50": round(trend_detail["sma50"], 2),
+            "sma_200": round(trend_detail["sma200"], 2),
+            "constituents_above_50d_pct": round(pct_above, 1),
+            "constituents_covered": covered,
+            "momentum_20d_pct": round(momentum_pct, 2),
+            **vol_detail
+        }
+    }, as_of.strftime("%Y-%m-%d")
+
+
+def main() -> None:
+    existing = {}
+    if OUT.exists():
+        try:
+            existing = json.loads(OUT.read_text(encoding="utf-8"))
+        except Exception:
+            existing = {}
+    data = {
+        "status": "partial",
+        "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "market_data_as_of": existing.get("market_data_as_of", {}),
+        "us": existing.get("us", {}),
+        "singapore": existing.get("singapore", {}),
+        "sources": {
+            "prices": "Yahoo Finance historical daily closes via yfinance; delayed/availability may vary.",
+            "sp500_universe": SP500_URL,
+            "sti_universe": "data/sti-constituents.json; State Street SPDR STI ETF prospectus and FTSE Russell September 2026 review."
+        },
+        "methodology": {
+            "us_weights_pct": {"index_trend": 35, "market_breadth": 30, "sector_participation": 20, "momentum": 15},
+            "singapore_weights_pct": {"index_trend": 43.75, "market_breadth": 37.5, "momentum": 18.75},
+            "note": "Latest available completed trading session, not a weekly average. Singapore weights are renormalised because there is no directly comparable 11-sector ETF basket."
+        },
+        "note": "Latest available completed trading-session snapshot. A market block is replaced only after its data passes coverage and freshness checks."
+    }
+    successful = []
+    for key, builder in (("us", build_us), ("singapore", build_singapore)):
+        try:
+            block, date = builder()
+            data[key] = block
+            data["market_data_as_of"][key] = date
+            successful.append(key)
+            print(f"{key} scorecard updated for {date}: {block['market_state']}")
+        except Exception as exc:
+            print(f"{key} scorecard not updated; retaining previous valid block: {exc}", file=sys.stderr)
+    if not successful:
+        raise RuntimeError("Neither market block passed validation; no scorecard update written.")
+    data["status"] = "verified" if len(successful) == 2 else "partial"
+    OUT.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"Updated scorecard JSON: {', '.join(successful)}")
+
+
+if __name__ == "__main__":
+    main()
