@@ -1,0 +1,15 @@
+{
+  "status": "pending",
+  "updated_at": null,
+  "us": {
+    "market_state": null,
+    "summary": null,
+    "volatility": null
+  },
+  "singapore": {
+    "market_state": null,
+    "summary": null,
+    "volatility": null
+  },
+  "note": "Populate only after verified indicator feeds are connected."
+}
