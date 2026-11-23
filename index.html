@@ -30,7 +30,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 
 .scorecard{margin:0 0 21px;padding:17px 18px}
 .scorecard-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
-.scorecard-head h2{margin:0;color:var(--navy);font-size:17px}
+.scorecard-head h2{margin:0;color:var(--navy);font-size:17px}\n.scorecard-date{margin-top:4px;color:var(--muted);font-size:11px;font-weight:700}
 .scorecard-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
 .scorebox{border:1px solid var(--line);border-radius:11px;padding:12px;background:#fbfcfe;min-width:0}
 .scorebox label{display:block;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
@@ -94,7 +94,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 
 <section class="section scorecard" id="weekly-scorecard" aria-labelledby="scorecard-title">
   <div class="scorecard-head">
-    <div><div class="eyebrow">Market conditions</div><h2 id="scorecard-title">📊 Market Conditions Scorecard</h2></div>
+    <div><div class="eyebrow">Market conditions</div><h2 id="scorecard-title">📊 Market Conditions Scorecard</h2><div id="scorecard-updated" class="scorecard-date">Market data dates: awaiting first verified close</div></div>
     <button class="info-btn" type="button" data-score-modal="method-modal" aria-label="How market scores are calculated" title="How scores are calculated">i</button>
   </div>
   <div class="scorecard-grid">
@@ -105,7 +105,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     <div class="volrow"><span class="vol-label">US volatility <button class="info-btn" type="button" data-score-modal="us-vol-modal" aria-label="US volatility guide">i</button></span><span id="us-vol-state" class="score-pill">Pending</span></div>
     <div class="volrow"><span class="vol-label">SG volatility <button class="info-btn" type="button" data-score-modal="sg-vol-modal" aria-label="Singapore volatility guide">i</button></span><span id="sg-vol-state" class="score-pill">Pending</span></div>
   </div>
-  <div class="scorecard-foot"><span id="scorecard-updated">Market data dates: awaiting first verified close</span><button type="button" data-score-modal="method-modal">How is this calculated? ↗</button></div>
+  <div class="scorecard-foot"><span>Latest completed trading-session snapshot · not a weekly average</span><button type="button" data-score-modal="method-modal">How is this calculated? ↗</button></div>
   <div class="score-data-note">The scorecard will only display a market view when its underlying indicators are available. No estimated or invented readings are shown.</div>
 </section>
 <div class="score-modal" id="method-modal" role="dialog" aria-modal="true" aria-labelledby="method-title">
