@@ -35,6 +35,8 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 .scorebox{border:1px solid var(--line);border-radius:11px;padding:12px;background:#fbfcfe;min-width:0}
 .scorebox label{display:block;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
 .scorebox strong{display:block;color:var(--navy);font-size:19px;line-height:1.25;margin:5px 0 2px}
+.scorebox strong.state-bullish{color:var(--green)}
+.scorebox strong.state-bearish{color:var(--red)}
 .scorebox small{display:block;color:var(--muted);font-size:11px}
 .scorecard-vol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:11px}
 .volrow{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:12px}
@@ -203,6 +205,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     const set=(id,value)=>{const el=document.getElementById(id);if(el&&value)el.textContent=value;};
     set('us-market-state',data.us?.market_state);set('us-market-note',data.us?.summary);
     set('sg-market-state',data.singapore?.market_state);set('sg-market-note',data.singapore?.summary);
+    [['us-market-state',data.us?.market_state],['sg-market-state',data.singapore?.market_state]].forEach(([id,state])=>{const el=document.getElementById(id);if(!el)return;el.classList.remove('state-bullish','state-bearish');const label=String(state||'').toLowerCase();if(label.includes('bullish'))el.classList.add('state-bullish');else if(label.includes('bearish'))el.classList.add('state-bearish');});
     set('us-vol-state',data.us?.volatility);set('sg-vol-state',data.singapore?.volatility);
     const dates=data.market_data_as_of||{};
     const usDate=typeof dates==='object'?dates.us:null;
