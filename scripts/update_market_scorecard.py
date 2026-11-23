@@ -295,7 +295,7 @@ def main() -> None:
     data = {
         "status": "partial",
         "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "market_data_as_of": existing.get("market_data_as_of", {}),
+        "market_data_as_of": existing.get("market_data_as_of") or {},
         "us": existing.get("us", {}),
         "singapore": existing.get("singapore", {}),
         "sources": {
