@@ -1,0 +1,126 @@
+{
+  "as_of": "2026-08-11",
+  "source": "State Street SPDR STI ETF prospectus; September 2026 FTSE Russell review made no constituent changes.",
+  "tickers": [
+    {
+      "ticker": "D05.SI",
+      "name": "DBS Group Holdings"
+    },
+    {
+      "ticker": "O39.SI",
+      "name": "OCBC"
+    },
+    {
+      "ticker": "U11.SI",
+      "name": "UOB"
+    },
+    {
+      "ticker": "Z74.SI",
+      "name": "Singtel"
+    },
+    {
+      "ticker": "S68.SI",
+      "name": "Singapore Exchange"
+    },
+    {
+      "ticker": "BN4.SI",
+      "name": "Keppel"
+    },
+    {
+      "ticker": "S63.SI",
+      "name": "ST Engineering"
+    },
+    {
+      "ticker": "C38U.SI",
+      "name": "CapitaLand Integrated Commercial Trust"
+    },
+    {
+      "ticker": "J36.SI",
+      "name": "Jardine Matheson"
+    },
+    {
+      "ticker": "BS6.SI",
+      "name": "Yangzijiang Shipbuilding"
+    },
+    {
+      "ticker": "C6L.SI",
+      "name": "Singapore Airlines"
+    },
+    {
+      "ticker": "A17U.SI",
+      "name": "CapitaLand Ascendas REIT"
+    },
+    {
+      "ticker": "9CI.SI",
+      "name": "CapitaLand Investment"
+    },
+    {
+      "ticker": "F34.SI",
+      "name": "Wilmar"
+    },
+    {
+      "ticker": "U96.SI",
+      "name": "Sembcorp Industries"
+    },
+    {
+      "ticker": "U14.SI",
+      "name": "UOL Group"
+    },
+    {
+      "ticker": "G13.SI",
+      "name": "Genting Singapore"
+    },
+    {
+      "ticker": "5E2.SI",
+      "name": "Seatrium"
+    },
+    {
+      "ticker": "AJBU.SI",
+      "name": "Keppel DC REIT"
+    },
+    {
+      "ticker": "V03.SI",
+      "name": "Venture Corporation"
+    },
+    {
+      "ticker": "M44U.SI",
+      "name": "Mapletree Logistics Trust"
+    },
+    {
+      "ticker": "ME8U.SI",
+      "name": "Mapletree Industrial Trust"
+    },
+    {
+      "ticker": "C09.SI",
+      "name": "City Developments"
+    },
+    {
+      "ticker": "S58.SI",
+      "name": "SATS"
+    },
+    {
+      "ticker": "Y92.SI",
+      "name": "Thai Beverage"
+    },
+    {
+      "ticker": "N2IU.SI",
+      "name": "Mapletree Pan Asia Commercial Trust"
+    },
+    {
+      "ticker": "J69U.SI",
+      "name": "Frasers Centrepoint Trust"
+    },
+    {
+      "ticker": "BUOU.SI",
+      "name": "Frasers Logistics & Commercial Trust"
+    },
+    {
+      "ticker": "D01.SI",
+      "name": "DFI Retail Group"
+    },
+    {
+      "ticker": "H78.SI",
+      "name": "Hongkong Land"
+    }
+  ]
+}
