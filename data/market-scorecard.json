@@ -11,5 +11,6 @@
     "summary": null,
     "volatility": null
   },
-  "note": "Populate only after verified indicator feeds are connected."
+  "note": "Latest available market close snapshot, not an average of weekly returns. Populate only after verified indicator feeds are connected.",
+  "market_data_as_of": null
 }
