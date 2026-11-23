@@ -216,7 +216,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     }
     document.querySelectorAll('.score-pill').forEach(el=>{
       const v=el.textContent.toLowerCase();
-      if(v.includes('bullish')||v==='calm'||v==='normal')el.classList.add(v==='calm'?'calm':'bullish');
+      if(v.includes('bullish')||v.includes('calm'))el.classList.add(v.includes('calm')?'calm':'bullish');
       else if(v.includes('bearish')||v.includes('stress'))el.classList.add('stress');
       else if(v.includes('elevated'))el.classList.add('elevated');
     });
