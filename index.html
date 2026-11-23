@@ -27,6 +27,36 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 .footer{text-align:center;color:#8793a5;font-size:11px;padding:12px}
 @media(max-width:900px){.shell{grid-template-columns:1fr;padding:18px 14px 40px}.sidebar{display:none;position:fixed;top:var(--menu-top,160px);left:12px;right:12px;z-index:1000;max-height:calc(100dvh - var(--menu-top,160px) - 12px);overflow-y:auto;box-shadow:0 18px 55px #06152d55}.sidebar.open{display:block}.mobilebar{display:flex}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero img{max-height:240px}.topline{padding:8px 14px}}
 @media(max-width:560px){.metric-chart{width:96px;min-width:80px}.metric{padding:11px}.metric strong{font-size:20px}.dashboard-promo{align-items:flex-start;flex-direction:column}.twocol,.watchlist{grid-template-columns:1fr}.headrow{align-items:flex-start;flex-direction:column}.date{text-align:left}.section{padding:16px}.grid{gap:9px}.metric{padding:13px}.metric strong{font-size:22px}}
+
+.scorecard{margin:0 0 21px;padding:17px 18px}
+.scorecard-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.scorecard-head h2{margin:0;color:var(--navy);font-size:17px}
+.scorecard-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.scorebox{border:1px solid var(--line);border-radius:11px;padding:12px;background:#fbfcfe;min-width:0}
+.scorebox label{display:block;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.scorebox strong{display:block;color:var(--navy);font-size:19px;line-height:1.25;margin:5px 0 2px}
+.scorebox small{display:block;color:var(--muted);font-size:11px}
+.scorecard-vol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:11px}
+.volrow{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:12px}
+.vol-label{display:flex;align-items:center;gap:6px;font-weight:700;color:var(--ink)}
+.info-btn{display:inline-flex;align-items:center;justify-content:center;width:21px;height:21px;border:1px solid #cbd6e4;border-radius:50%;background:#fff;color:#526176;font-size:12px;font-weight:800;cursor:pointer;padding:0}
+.info-btn:hover{background:#edf5ff;color:#075ca6}
+.score-pill{display:inline-block;border-radius:20px;padding:3px 9px;font-size:10px;font-weight:800;background:#eef1f5;color:#68768a;white-space:nowrap}
+.score-pill.bullish,.score-pill.calm{background:#e7f6ef;color:#08734e}.score-pill.bearish,.score-pill.stress{background:#fdecec;color:#b42318}.score-pill.elevated{background:#fff2dc;color:#9a5b00}
+.scorecard-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;color:var(--muted);font-size:10px}
+.scorecard-foot button{border:0;background:none;color:#1265a5;font-weight:800;font-size:11px;cursor:pointer;padding:3px}
+.score-modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:18px;background:#06152d88}
+.score-modal.open{display:flex}
+.score-modal-card{width:min(100%,520px);max-height:min(85vh,700px);overflow:auto;background:#fff;border-radius:16px;padding:20px;box-shadow:0 20px 60px #06152d55}
+.score-modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.score-modal-head h3{margin:0;color:var(--navy);font-size:17px}
+.score-modal-close{border:0;background:#eef2f7;border-radius:50%;width:30px;height:30px;font-size:19px;cursor:pointer;color:#526176}
+.score-modal-card p,.score-modal-card li{font-size:12px;color:#526176;line-height:1.55}
+.score-modal-card table{margin:8px 0 14px}
+.score-modal-card th,.score-modal-card td{padding:8px 6px}
+.score-data-note{margin-top:10px;padding:9px 11px;border-radius:9px;background:#f5f8fc;color:#66758b;font-size:10px}
+@media(max-width:560px){.scorecard{padding:14px}.scorecard-grid{gap:8px}.scorebox{padding:10px}.scorebox strong{font-size:17px}.scorecard-vol{gap:7px}.volrow{padding:8px;font-size:11px}.scorecard-foot{align-items:flex-start;flex-direction:column}}
+
 </style>
 <!-- homepage-content-refresh-2026-11-22 -->
 
@@ -61,6 +91,57 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 <div class="metric metric-with-chart"><div class="metric-info"><label>Straits Times Index</label><strong>4,975.17</strong><span class="down">−4.91% · week</span></div></div>
 </div>
 <p class="chart-note">TradingView charts may occasionally fail to load. This does not affect the written market report or its content.</p>
+
+<section class="section scorecard" id="weekly-scorecard" aria-labelledby="scorecard-title">
+  <div class="scorecard-head">
+    <div><div class="eyebrow">Market conditions</div><h2 id="scorecard-title">📊 Weekly Market Scorecard</h2></div>
+    <button class="info-btn" type="button" data-score-modal="method-modal" aria-label="How market scores are calculated" title="How scores are calculated">i</button>
+  </div>
+  <div class="scorecard-grid">
+    <div class="scorebox"><label>🇺🇸 US market</label><strong id="us-market-state">Awaiting data</strong><small id="us-market-note">Verified indicators are being connected</small></div>
+    <div class="scorebox"><label>🇸🇬 Singapore market</label><strong id="sg-market-state">Awaiting data</strong><small id="sg-market-note">Verified indicators are being connected</small></div>
+  </div>
+  <div class="scorecard-vol">
+    <div class="volrow"><span class="vol-label">US volatility <button class="info-btn" type="button" data-score-modal="us-vol-modal" aria-label="US volatility guide">i</button></span><span id="us-vol-state" class="score-pill">Pending</span></div>
+    <div class="volrow"><span class="vol-label">SG volatility <button class="info-btn" type="button" data-score-modal="sg-vol-modal" aria-label="Singapore volatility guide">i</button></span><span id="sg-vol-state" class="score-pill">Pending</span></div>
+  </div>
+  <div class="scorecard-foot"><span id="scorecard-updated">Waiting for verified market data</span><button type="button" data-score-modal="method-modal">How is this calculated? ↗</button></div>
+  <div class="score-data-note">The scorecard will only display a market view when its underlying indicators are available. No estimated or invented readings are shown.</div>
+</section>
+<div class="score-modal" id="method-modal" role="dialog" aria-modal="true" aria-labelledby="method-title">
+  <div class="score-modal-card"><div class="score-modal-head"><h3 id="method-title">How market scores are calculated</h3><button class="score-modal-close" type="button" aria-label="Close">×</button></div>
+    <p>Each market receives a directional score from −100 to +100. The score is translated into a plain-English market condition.</p>
+    <table><thead><tr><th>Indicator</th><th>Weight</th><th>What it measures</th></tr></thead><tbody>
+      <tr><td>Index trend</td><td>35%</td><td>Position versus 50-day and 200-day moving averages</td></tr>
+      <tr><td>Market breadth</td><td>30%</td><td>How widely gains or losses are shared across stocks</td></tr>
+      <tr><td>Sector performance</td><td>20%</td><td>How many sectors are participating in the move</td></tr>
+      <tr><td>Momentum</td><td>15%</td><td>Recent price strength and direction</td></tr>
+    </tbody></table>
+    <p><b>Score guide:</b> +40 to +100 Strongly bullish; +15 to +39 Bullish; −14 to +14 Neutral; −15 to −39 Bearish; −40 to −100 Strongly bearish.</p>
+    <p>Volatility is assessed separately. High volatility means larger expected or observed price swings, not necessarily falling prices.</p>
+    <div class="score-data-note">The score will remain unavailable until all required indicator feeds are connected and validated.</div>
+  </div>
+</div>
+<div class="score-modal" id="us-vol-modal" role="dialog" aria-modal="true" aria-labelledby="us-vol-title">
+  <div class="score-modal-card"><div class="score-modal-head"><h3 id="us-vol-title">🇺🇸 US volatility guide</h3><button class="score-modal-close" type="button" aria-label="Close">×</button></div>
+    <p>Uses the CBOE VIX, which reflects options-market expectations for S&P 500 volatility over approximately the next 30 days.</p>
+    <table><thead><tr><th>Level</th><th>VIX</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td><span class="score-pill calm">Calm</span></td><td>Below 15</td><td>Relatively settled conditions</td></tr>
+      <tr><td><span class="score-pill calm">Normal</span></td><td>15–20</td><td>Typical market fluctuations</td></tr>
+      <tr><td><span class="score-pill elevated">Elevated</span></td><td>20–30</td><td>Greater uncertainty and larger swings</td></tr>
+      <tr><td><span class="score-pill stress">High Stress</span></td><td>Above 30</td><td>Significant uncertainty and sharp moves possible</td></tr>
+    </tbody></table>
+    <p>These are practical guideposts, not official market boundaries.</p>
+  </div>
+</div>
+<div class="score-modal" id="sg-vol-modal" role="dialog" aria-modal="true" aria-labelledby="sg-vol-title">
+  <div class="score-modal-card"><div class="score-modal-head"><h3 id="sg-vol-title">🇸🇬 Singapore volatility guide</h3><button class="score-modal-close" type="button" aria-label="Close">×</button></div>
+    <p>Uses the Straits Times Index's 20-day realised volatility, calculated from its daily returns and annualised. This measures how much the index has actually fluctuated.</p>
+    <p>Calm, Normal, Elevated and High Stress bands will use Singapore-specific historical thresholds. We will publish the thresholds in this popup once the historical data series has been connected and validated.</p>
+    <div class="score-data-note">The US VIX thresholds are not reused for Singapore because the two measurements are different.</div>
+  </div>
+</div>
+
 <div class="dashboard-promo"><div><b>Explore the Market Dashboard</b><span>Interactive index charts, sector heatmap, volatility, rates, commodities and economic calendar.</span></div><a href="dashboard.html">Open dashboard ↗</a></div>
 <section class="section" id="us"><h2><img class="flag-icon" src="https://flagcdn.com/w40/us.png" alt="" aria-hidden="true"> US markets</h2><div class="sub">Friday, 20 November closes · weekly price returns</div>
 <div class="twocol">
@@ -101,5 +182,37 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
  window.addEventListener("resize",setTop);window.addEventListener("scroll",setTop,{passive:true});
  s.querySelectorAll("a").forEach(a=>a.addEventListener("click",close));setTop();
 })();
+</script>
+<script>
+
+(function(){
+  const openers=document.querySelectorAll('[data-score-modal]');
+  let activeModal=null;
+  function closeModal(){if(activeModal){activeModal.classList.remove('open');activeModal=null;}}
+  openers.forEach(btn=>btn.addEventListener('click',()=>{
+    closeModal();activeModal=document.getElementById(btn.getAttribute('data-score-modal'));
+    if(activeModal)activeModal.classList.add('open');
+  }));
+  document.querySelectorAll('.score-modal').forEach(modal=>{
+    modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+    const close=modal.querySelector('.score-modal-close');
+    if(close)close.addEventListener('click',closeModal);
+  });
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+  fetch('data/market-scorecard.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('No scorecard data');return r.json();}).then(data=>{
+    const set=(id,value)=>{const el=document.getElementById(id);if(el&&value)el.textContent=value;};
+    set('us-market-state',data.us?.market_state);set('us-market-note',data.us?.summary);
+    set('sg-market-state',data.singapore?.market_state);set('sg-market-note',data.singapore?.summary);
+    set('us-vol-state',data.us?.volatility);set('sg-vol-state',data.singapore?.volatility);
+    set('scorecard-updated',data.updated_at?'Data as of '+data.updated_at:'Verified market data');
+    document.querySelectorAll('.score-pill').forEach(el=>{
+      const v=el.textContent.toLowerCase();
+      if(v.includes('bullish')||v==='calm'||v==='normal')el.classList.add(v==='calm'?'calm':'bullish');
+      else if(v.includes('bearish')||v.includes('stress'))el.classList.add('stress');
+      else if(v.includes('elevated'))el.classList.add('elevated');
+    });
+  }).catch(()=>{});
+})();
+
 </script>
 </body></html>
