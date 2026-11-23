@@ -1,6 +1,12 @@
 name: Update market conditions scorecard
 
 on:
+  push:
+    branches: ["main"]
+    paths:
+      - "scripts/update_market_scorecard.py"
+      - "data/sti-constituents.json"
+      - ".github/workflows/market-scorecard.yml"
   schedule:
     # 09:30 Singapore time, after the Singapore close and the prior US session.
     - cron: "30 1 * * 1-6"
