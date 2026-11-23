@@ -13,7 +13,7 @@
 .sidebar{align-self:start;position:sticky;top:18px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 8px 28px #0b28500a}.mobile-close{display:none}
 .brand{font-weight:800;color:var(--navy);font-size:17px;line-height:1.2}.brand small{display:block;color:var(--muted);font-weight:500;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
 .navtitle{margin:24px 0 9px;color:#8793a5;font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
-.nav a{display:flex;align-items:center;gap:10px;text-decoration:none;color:#526176;padding:10px 11px;border-radius:9px;margin:3px 0;font-size:13px}.nav a.active,.nav a:hover{background:#edf5ff;color:#075ca6;font-weight:700}.nav .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.nav a{display:flex;align-items:center;gap:10px;text-decoration:none;color:#526176;padding:10px 11px;border-radius:9px;margin:3px 0;font-size:13px}.flag-icon{display:inline-block;width:22px;height:16px;object-fit:cover;border-radius:2px;flex:0 0 auto;vertical-align:middle}.nav a.active,.nav a:hover{background:#edf5ff;color:#075ca6;font-weight:700}.nav .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
 .side-note{margin-top:25px;padding:13px;border-radius:11px;background:#f5f8fc;color:#728096;font-size:11px}
 main{min-width:0}.mobilebar{display:none;align-items:center;justify-content:space-between;max-width:1440px;margin:0 auto;padding:10px 14px;background:#f3f6fb}.menu-btn{border:1px solid var(--line);background:white;border-radius:9px;padding:9px 13px;color:var(--navy);font-weight:700}
 .eyebrow{color:#0871bd;font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:800}
@@ -41,7 +41,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 <div class="navtitle">20 November report</div>
 <nav class="nav">
 <a class="active" href="#overview"><span class="dot"></span> Market overview</a>
-<a href="#us">&#x1F1FA;&#x1F1F8; US markets</a><a href="#singapore">&#x1F1F8;&#x1F1EC; Singapore markets</a>
+<a href="#us"><img class="flag-icon" src="https://flagcdn.com/w40/us.png" alt="" aria-hidden="true"> US markets</a><a href="#singapore"><img class="flag-icon" src="https://flagcdn.com/w40/sg.png" alt="" aria-hidden="true"> Singapore markets</a>
 <a href="#sectors">Sector watch</a><a href="#calendar">What's next week</a><a href="dashboard.html">📊 &nbsp; Market Dashboard</a>
 </nav>
 <div class="navtitle">Report archive</div>
@@ -62,12 +62,12 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 </div>
 <p class="chart-note">TradingView charts may occasionally fail to load. This does not affect the written market report or its content.</p>
 <div class="dashboard-promo"><div><b>Explore the Market Dashboard</b><span>Interactive index charts, sector heatmap, volatility, rates, commodities and economic calendar.</span></div><a href="dashboard.html">Open dashboard ↗</a></div>
-<section class="section" id="us"><h2>&#x1F1FA;&#x1F1F8; US markets</h2><div class="sub">Friday, 20 November closes · weekly price returns</div>
+<section class="section" id="us"><h2><img class="flag-icon" src="https://flagcdn.com/w40/us.png" alt="" aria-hidden="true"> US markets</h2><div class="sub">Friday, 20 November closes · weekly price returns</div>
 <div class="twocol">
 <div class="market"><h3>Nasdaq led the decline</h3><p>Nasdaq Composite closed at 22,617.73, down 10.02% for the week and 2.7% year to date.</p><div class="bar"><span style="width:18%;background:linear-gradient(90deg,#b42318,#e87979)"></span></div><small>Russell 2000: 2,581.79 · weekly −7.48%</small></div>
 <div class="market"><h3>Treasury yields retreated</h3><p>US 10-year Treasury yield ended at 4.92%, down 23 basis points on the week.</p><div class="bar"><span style="width:49%"></span></div><small>Investors sought safety, while Fed commentary remained hawkish.</small></div>
 </div></section>
-<section class="section" id="singapore"><h2>&#x1F1F8;&#x1F1EC; Singapore markets</h2><div class="sub">STI closed below 5,000 after a broad market decline.</div>
+<section class="section" id="singapore"><h2><img class="flag-icon" src="https://flagcdn.com/w40/sg.png" alt="" aria-hidden="true"> Singapore markets</h2><div class="sub">STI closed below 5,000 after a broad market decline.</div>
 <table><thead><tr><th>Counter</th><th>Friday close</th><th>Daily move</th><th>Report highlight</th></tr></thead><tbody>
 <tr><td><b>DBS</b></td><td>S$66.11</td><td class="down">−1.8%</td><td>Large-cap bank weakness</td></tr>
 <tr><td><b>OCBC</b></td><td>S$26.54</td><td class="down">−3.2%</td><td>Largest fall among the three local banks</td></tr>
