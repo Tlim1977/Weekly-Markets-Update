@@ -96,10 +96,11 @@ def latest_on_or_before(series: pd.Series, as_of: pd.Timestamp) -> pd.Series:
 
 
 
-def weekly_market_status(index_series: pd.Series, calendar_name: str,
-                         timezone_name: str) -> dict:
-    """Return this week's weekday closes, distinguishing holidays from missing data."""
-    today = pd.Timestamp.now(tz=timezone_name).date()
+def weekly_market_status(index_series: pd.Series, calendar_name: str) -> dict:
+    """Return Singapore-calendar week's weekday closes, distinguishing holidays from missing data."""
+    # Both markets use the Singapore calendar week so their bars reset together
+    # at Monday 00:00 Singapore time, even while the US is still on Sunday.
+    today = pd.Timestamp.now(tz="Asia/Singapore").date()
     monday = today - timedelta(days=today.weekday())
     friday = monday + timedelta(days=4)
     calendar = xcals.get_calendar(calendar_name)
@@ -280,7 +281,7 @@ def build_us() -> tuple[dict, str]:
             "momentum_20d_pct": round(momentum_pct, 2),
             "vix": round(vix, 2)
         },
-        "weekly_status": weekly_market_status(index, "XNYS", "America/New_York")
+        "weekly_status": weekly_market_status(index, "XNYS")
     }, as_of.strftime("%Y-%m-%d")
 
 
@@ -321,7 +322,7 @@ def build_singapore() -> tuple[dict, str]:
             "momentum_20d_pct": round(momentum_pct, 2),
             **vol_detail
         },
-        "weekly_status": weekly_market_status(index, "XSES", "Asia/Singapore")
+        "weekly_status": weekly_market_status(index, "XSES")
     }, as_of.strftime("%Y-%m-%d")
 
 
