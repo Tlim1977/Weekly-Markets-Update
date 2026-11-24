@@ -260,6 +260,25 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     set('us-vol-state',data.us?.volatility);set('sg-vol-state',data.singapore?.volatility);
     renderWeeklyStatus('us-weekly-days',data.weekly_status?.us);
     renderWeeklyStatus('sg-weekly-days',data.weekly_status?.singapore);
+    const weekly=data.weekly_status?.singapore||data.weekly_status?.us;
+    const weeklyDays=weekly?.days||[];
+    const startText=weeklyDays[0]?.date||weekly?.week_start;
+    const endText=weeklyDays[4]?.date;
+    if(startText&&endText){
+      const startDate=new Date(startText+'T00:00:00+08:00');
+      const endDate=new Date(endText+'T00:00:00+08:00');
+      const dayFmt=new Intl.DateTimeFormat('en-GB',{day:'numeric'});
+      const monthFmt=new Intl.DateTimeFormat('en-GB',{month:'short'});
+      const yearFmt=new Intl.DateTimeFormat('en-GB',{year:'numeric'});
+      const sameMonth=startDate.getMonth()===endDate.getMonth()&&startDate.getFullYear()===endDate.getFullYear();
+      const sameYear=startDate.getFullYear()===endDate.getFullYear();
+      const period=sameMonth
+        ? dayFmt.format(startDate)+' – '+dayFmt.format(endDate)+' '+monthFmt.format(endDate)+' '+yearFmt.format(endDate)
+        : sameYear
+          ? dayFmt.format(startDate)+' '+monthFmt.format(startDate)+' – '+dayFmt.format(endDate)+' '+monthFmt.format(endDate)+' '+yearFmt.format(endDate)
+          : dayFmt.format(startDate)+' '+monthFmt.format(startDate)+' '+yearFmt.format(startDate)+' – '+dayFmt.format(endDate)+' '+monthFmt.format(endDate)+' '+yearFmt.format(endDate);
+      set('weekly-status-title','This Week at a Glance ('+period+')');
+    }
     const dates=data.market_data_as_of||{};
     const usDate=typeof dates==='object'?dates.us:null;
     const sgDate=typeof dates==='object'?dates.singapore:null;
