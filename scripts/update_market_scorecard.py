@@ -336,6 +336,7 @@ def main() -> None:
         "status": "partial",
         "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "market_data_as_of": existing.get("market_data_as_of") or {},
+        "weekly_status": existing.get("weekly_status", {}),
         "us": existing.get("us", {}),
         "singapore": existing.get("singapore", {}),
         "sources": {
