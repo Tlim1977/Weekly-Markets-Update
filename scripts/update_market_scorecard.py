@@ -103,9 +103,9 @@ def weekly_market_status(index_series: pd.Series, calendar_name: str,
     monday = today - timedelta(days=today.weekday())
     friday = monday + timedelta(days=4)
     calendar = xcals.get_calendar(calendar_name)
-    sessions = calendar.sessions_in_range(
-        pd.Timestamp(monday, tz="UTC"), pd.Timestamp(friday, tz="UTC")
-    )
+    # Pass ISO date strings; exchange_calendars normalises session labels
+    # internally and avoids pandas datetime.timezone compatibility issues.
+    sessions = calendar.sessions_in_range(monday.isoformat(), friday.isoformat())
     session_dates = {session.date() for session in sessions}
     days = []
     prices = index_series.dropna().sort_index()
