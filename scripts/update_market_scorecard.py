@@ -13,11 +13,12 @@ import json
 import math
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.request import Request, urlopen
 
 import pandas as pd
+import exchange_calendars as xcals
 import yfinance as yf
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -92,6 +93,43 @@ def download_prices(tickers: list[str], period: str = "18mo") -> dict[str, pd.Se
 
 def latest_on_or_before(series: pd.Series, as_of: pd.Timestamp) -> pd.Series:
     return series.loc[series.index <= as_of]
+
+
+
+def weekly_market_status(index_series: pd.Series, calendar_name: str,
+                         timezone_name: str) -> dict:
+    """Return this week's weekday closes, distinguishing holidays from missing data."""
+    today = pd.Timestamp.now(tz=timezone_name).date()
+    monday = today - timedelta(days=today.weekday())
+    friday = monday + timedelta(days=4)
+    calendar = xcals.get_calendar(calendar_name)
+    sessions = calendar.sessions_in_range(
+        pd.Timestamp(monday, tz="UTC"), pd.Timestamp(friday, tz="UTC")
+    )
+    session_dates = {session.date() for session in sessions}
+    days = []
+    prices = index_series.dropna().sort_index()
+    for offset, label in enumerate(["Mon", "Tue", "Wed", "Thu", "Fri"]):
+        day = monday + timedelta(days=offset)
+        day_text = day.isoformat()
+        if day not in session_dates:
+            days.append({"day": label, "date": day_text, "status": "holiday"})
+        elif day > today:
+            days.append({"day": label, "date": day_text, "status": "pending"})
+        else:
+            stamp = pd.Timestamp(day)
+            if stamp not in prices.index:
+                days.append({"day": label, "date": day_text, "status": "pending"})
+                continue
+            previous = prices.loc[prices.index < stamp]
+            if previous.empty:
+                days.append({"day": label, "date": day_text, "status": "pending"})
+                continue
+            change = (float(prices.loc[stamp]) / float(previous.iloc[-1]) - 1.0) * 100.0
+            status = "flat" if abs(change) < 0.00005 else ("up" if change > 0 else "down")
+            days.append({"day": label, "date": day_text, "status": status,
+                         "change_pct": round(change, 2)})
+    return {"week_start": monday.isoformat(), "days": days}
 
 
 def trend_score(index_series: pd.Series) -> tuple[int, dict]:
@@ -241,7 +279,8 @@ def build_us() -> tuple[dict, str]:
             "sector_etfs_covered": sector_valid,
             "momentum_20d_pct": round(momentum_pct, 2),
             "vix": round(vix, 2)
-        }
+        },
+        "weekly_status": weekly_market_status(index, "XNYS", "America/New_York")
     }, as_of.strftime("%Y-%m-%d")
 
 
@@ -281,7 +320,8 @@ def build_singapore() -> tuple[dict, str]:
             "constituents_covered": covered,
             "momentum_20d_pct": round(momentum_pct, 2),
             **vol_detail
-        }
+        },
+        "weekly_status": weekly_market_status(index, "XSES", "Asia/Singapore")
     }, as_of.strftime("%Y-%m-%d")
 
 
@@ -315,6 +355,7 @@ def main() -> None:
         try:
             block, date = builder()
             data[key] = block
+            data.setdefault("weekly_status", {})[key] = block.pop("weekly_status")
             data["market_data_as_of"][key] = date
             successful.append(key)
             print(f"{key} scorecard updated for {date}: {block['market_state']}")
