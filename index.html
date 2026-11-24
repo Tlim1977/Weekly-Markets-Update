@@ -59,6 +59,27 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 .score-data-note{margin-top:10px;padding:9px 11px;border-radius:9px;background:#f5f8fc;color:#66758b;font-size:10px}
 @media(max-width:560px){.scorecard{padding:14px}.scorecard-grid{gap:8px}.scorebox{padding:10px}.scorebox strong{font-size:17px}.scorecard-vol{gap:7px}.volrow{padding:8px;font-size:11px}.scorecard-foot{align-items:flex-start;flex-direction:column}}
 
+
+.weekly-status{padding:14px 18px;margin-top:-5px;margin-bottom:21px}
+.weekly-status h2{font-size:15px;margin:0 0 3px;color:var(--navy)}
+.weekly-status .sub{margin:0 0 12px;font-size:11px}
+.weekly-status-row{display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:10px;margin:9px 0}
+.weekly-status-market{font-size:12px;font-weight:800;color:var(--navy)}
+.weekly-status-days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.weekly-status-day{min-width:0;text-align:center}
+.weekly-status-segment{height:9px;width:100%;border-radius:3px;background:#e8edf3}
+.weekly-status-segment.up{background:#07865b}
+.weekly-status-segment.down{background:#c44747}
+.weekly-status-segment.flat{background:#8793a5}
+.weekly-status-segment.holiday{background:transparent}
+.weekly-status-segment.pending{background:#e8edf3;border:1px dashed #cbd5e1}
+.weekly-status-label{display:block;margin-top:4px;color:var(--muted);font-size:9px;line-height:1.2}
+.weekly-status-legend{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0 0 52px;color:var(--muted);font-size:10px}
+.weekly-status-legend span{display:inline-flex;align-items:center;gap:5px}
+.weekly-status-legend i{display:inline-block;width:8px;height:8px;border-radius:2px}
+.weekly-status-legend .legend-up{background:#07865b}.weekly-status-legend .legend-down{background:#c44747}.weekly-status-legend .legend-empty{border:1px solid #cbd5e1}
+@media(max-width:560px){.weekly-status{padding:13px 14px}.weekly-status-row{grid-template-columns:34px minmax(0,1fr);gap:7px}.weekly-status-days{gap:5px}.weekly-status-legend{margin-left:41px;gap:9px}}
+
 </style>
 <!-- homepage-content-refresh-2026-11-22 -->
 
@@ -109,6 +130,13 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
   </div>
   <div class="scorecard-foot"><span>Latest completed trading-session snapshot · not a weekly average</span><button type="button" data-score-modal="method-modal">How is this calculated? ↗</button></div>
   <div class="score-data-note">The scorecard will only display a market view when its underlying indicators are available. No estimated or invented readings are shown.</div>
+</section>
+<section class="section weekly-status" id="weekly-market-status" aria-labelledby="weekly-status-title">
+  <h2 id="weekly-status-title">This Week at a Glance</h2>
+  <div class="sub">Daily index moves · current Monday to Friday</div>
+  <div class="weekly-status-row"><span class="weekly-status-market">🇺🇸 US</span><div class="weekly-status-days" id="us-weekly-days" aria-label="US daily market moves"></div></div>
+  <div class="weekly-status-row"><span class="weekly-status-market">🇸🇬 SG</span><div class="weekly-status-days" id="sg-weekly-days" aria-label="Singapore daily market moves"></div></div>
+  <div class="weekly-status-legend"><span><i class="legend-up"></i>Green day</span><span><i class="legend-down"></i>Red day</span><span><i class="legend-empty"></i>Market holiday</span></div>
 </section>
 <div class="score-modal" id="method-modal" role="dialog" aria-modal="true" aria-labelledby="method-title">
   <div class="score-modal-card"><div class="score-modal-head"><h3 id="method-title">How market scores are calculated</h3><button class="score-modal-close" type="button" aria-label="Close">×</button></div>
@@ -201,12 +229,37 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     if(close)close.addEventListener('click',closeModal);
   });
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+  function renderWeeklyStatus(containerId, marketData){
+    const container=document.getElementById(containerId);
+    if(!container)return;
+    container.textContent='';
+    const days=marketData?.days||[];
+    ['Mon','Tue','Wed','Thu','Fri'].forEach(label=>{
+      const item=days.find(day=>day.day===label);
+      const cell=document.createElement('div');cell.className='weekly-status-day';
+      const segment=document.createElement('div');
+      const status=item?.status||'pending';
+      segment.className='weekly-status-segment '+status;
+      let detail=item?.date||'Data pending';
+      if(status==='up'||status==='down'||status==='flat'){
+        const change=Number(item.change_pct);
+        detail+=' · '+(change>0?'+':'')+change.toFixed(2)+'%';
+      }else if(status==='holiday'){detail+=' · Market holiday';}
+      else{detail+=' · Awaiting close';}
+      segment.title=detail;
+      segment.setAttribute('aria-label',detail);
+      const caption=document.createElement('span');caption.className='weekly-status-label';caption.textContent=label;
+      cell.append(segment,caption);container.appendChild(cell);
+    });
+  }
   fetch('data/market-scorecard.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('No scorecard data');return r.json();}).then(data=>{
     const set=(id,value)=>{const el=document.getElementById(id);if(el&&value)el.textContent=value;};
     set('us-market-state',data.us?.market_state);set('us-market-note',data.us?.summary);
     set('sg-market-state',data.singapore?.market_state);set('sg-market-note',data.singapore?.summary);
     [['us-market-state',data.us?.market_state],['sg-market-state',data.singapore?.market_state]].forEach(([id,state])=>{const el=document.getElementById(id);if(!el)return;el.classList.remove('state-bullish','state-bearish');const label=String(state||'').toLowerCase();if(label.includes('bullish'))el.classList.add('state-bullish');else if(label.includes('bearish'))el.classList.add('state-bearish');});
     set('us-vol-state',data.us?.volatility);set('sg-vol-state',data.singapore?.volatility);
+    renderWeeklyStatus('us-weekly-days',data.weekly_status?.us);
+    renderWeeklyStatus('sg-weekly-days',data.weekly_status?.singapore);
     const dates=data.market_data_as_of||{};
     const usDate=typeof dates==='object'?dates.us:null;
     const sgDate=typeof dates==='object'?dates.singapore:null;
