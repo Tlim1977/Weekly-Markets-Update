@@ -1,9 +1,9 @@
 {
   "status": "verified",
-  "updated_at": "2026-11-25T04:39:34+00:00",
+  "updated_at": "2026-11-25T20:00:52+00:00",
   "market_data_as_of": {
-    "us": "2026-11-24",
-    "singapore": "2026-11-25"
+    "us": "2026-11-25",
+    "singapore": "2026-11-24"
   },
   "weekly_status": {
     "us": {
@@ -24,7 +24,8 @@
         {
           "day": "Wed",
           "date": "2026-11-25",
-          "status": "pending"
+          "status": "down",
+          "change_pct": -0.28
         },
         {
           "day": "Thu",
@@ -56,8 +57,7 @@
         {
           "day": "Wed",
           "date": "2026-11-25",
-          "status": "down",
-          "change_pct": -0.15
+          "status": "pending"
         },
         {
           "day": "Thu",
@@ -74,40 +74,40 @@
   },
   "us": {
     "market_state": "Neutral",
-    "summary": "280/482 S&P 500 stocks above their 50-day average; 6/11 sectors above their 50-day average; S&P 500 20-day momentum -6.8%.",
-    "volatility": "Elevated · VIX 26.4",
-    "as_of": "2026-11-24",
-    "directional_score": -8.3,
+    "summary": "304/482 S&P 500 stocks above their 50-day average; 7/11 sectors above their 50-day average; S&P 500 20-day momentum -7.3%.",
+    "volatility": "Elevated · VIX 28.2",
+    "as_of": "2026-11-25",
+    "directional_score": -1.7,
     "indicators": {
-      "index_close": 7201.09,
-      "sma_50": 7609.91,
-      "sma_200": 7351.29,
-      "constituents_above_50d_pct": 58.1,
+      "index_close": 7180.7,
+      "sma_50": 7602.49,
+      "sma_200": 7352.48,
+      "constituents_above_50d_pct": 63.1,
       "constituents_covered": 482,
-      "sector_etfs_above_50d": 6,
+      "sector_etfs_above_50d": 7,
       "sector_etfs_covered": 11,
-      "momentum_20d_pct": -6.75,
-      "vix": 26.36
+      "momentum_20d_pct": -7.27,
+      "vix": 28.19
     }
   },
   "singapore": {
-    "market_state": "Bearish",
-    "summary": "7/30 STI constituents above their 50-day average; STI 20-day momentum -8.3%.",
+    "market_state": "Strongly bearish",
+    "summary": "6/30 STI constituents above their 50-day average; STI 20-day momentum -8.4%.",
     "volatility": "High Stress · 14.7% annualised",
-    "as_of": "2026-11-25",
-    "directional_score": -38.8,
+    "as_of": "2026-11-24",
+    "directional_score": -41.2,
     "indicators": {
-      "index_close": 4951.5,
-      "sma_50": 5409.52,
-      "sma_200": 5262.03,
-      "constituents_above_50d_pct": 23.3,
+      "index_close": 4958.87,
+      "sma_50": 5423.26,
+      "sma_200": 5261.95,
+      "constituents_above_50d_pct": 20.0,
       "constituents_covered": 30,
-      "momentum_20d_pct": -8.26,
-      "realised_20d_annualised_pct": 14.69,
+      "momentum_20d_pct": -8.44,
+      "realised_20d_annualised_pct": 14.66,
       "thresholds_pct": {
         "calm_below": 8.28,
         "normal_below": 11.44,
-        "elevated_below": 14.47
+        "elevated_below": 14.46
       },
       "threshold_method": "Rolling 20-day annualised realised volatility; trailing five-year 25th, 75th and 90th percentiles."
     }
