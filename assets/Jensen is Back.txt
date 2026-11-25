@@ -1,0 +1,20 @@
+Jensen Huang Is Back at NVIDIA — What the Board Said, and What It Didn't Settle
+Morning news · Solo · ~1 min
+
+Jensen Huang is back in charge at NVIDIA effective immediately, but the investigation behind his return is still open, and here's what the board actually said.
+
+NVIDIA's Board has voted unanimously to reinstate Jensen Huang as President and CEO, effective 23 November. The release describes government input on national security as part of the decision. But it also leaves an investigation open — and that gap between what was decided and what is still unresolved is the real story in this episode.
+Alongside the reinstatement, NVIDIA is setting up a new National Security and Export Control Committee, and has begun a search for a Chief Compliance Officer. So the headline is a return; the detail is a company adding oversight at the very top while questions remain unanswered.
+
+Takeaways
+- Jensen Huang was reinstated effective November 23, 2026, as President, CEO and Board director after a unanimous Board vote.
+- The Board said it was satisfied with Huang's candor and ability to lead, and that, based on input from senior levels of the U.S. government, it is confident his reinstatement poses no national security risk.
+- Colette Kress was thanked for her service as interim CEO and continues as Chief Financial Officer, while Harvey C. Jones remains Board chair.
+- The independent directors' investigation prompted by reporting that Huang was the target of a foreign intelligence effort will proceed to conclusion, with Huang supporting it and committed to cooperating.
+- NVIDIA has formed a National Security and Export Control Committee of independent directors and begun a search for a new Chief Compliance Officer, and says it will continue cooperating with ongoing government investigations and inquiries.
+
+Question what you heard
+- What reasons did the Board give for reinstating Jensen Huang, and what government input did it cite?
+- What investigation is still open, and what does the release say — and not say — about the reported foreign intelligence effort?
+- What new oversight has NVIDIA created, including the National Security and Export Control Committee and the new Chief Compliance Officer role?
+- What should listeners watch for next to know whether the remaining questions behind this announcement are resolved?
