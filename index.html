@@ -329,6 +329,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
   const parts=(fmt,date)=>Object.fromEntries(fmt.formatToParts(date).map(p=>[p.type,p.value]));
   const usHolidays=new Set(['2026-01-01','2026-01-19','2026-02-16','2026-04-03','2026-05-25','2026-06-19','2026-07-03','2026-09-07','2026-11-26','2026-12-25']);
   const sgHolidays=new Set(['2026-01-01','2026-02-17','2026-02-18','2026-03-21','2026-05-01','2026-05-27','2026-06-01','2026-08-10','2026-11-09','2026-12-25']);
+  const usEarlyCloses=new Set(['2026-11-27','2026-12-24']);
   function localParts(date,zone){
     const p=parts(new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}),date);
     return {date:p.year+'-'+p.month+'-'+p.day,weekday:p.weekday,minute:Number(p.hour)*60+Number(p.minute)};
@@ -346,7 +347,8 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     if(uz)uz.textContent=parts(usZone,now).timeZoneName;
     if(st)st.textContent=sgTime.format(now);
     const weekday=x=>!['Sat','Sun'].includes(x.weekday);
-    const usOpen=weekday(u)&&!usHolidays.has(u.date)&&u.minute>=570&&u.minute<960;
+    const usClose=usEarlyCloses.has(u.date)?780:960;
+    const usOpen=weekday(u)&&!usHolidays.has(u.date)&&u.minute>=570&&u.minute<usClose;
     const sgOpen=weekday(g)&&!sgHolidays.has(g.date)&&((g.minute>=540&&g.minute<720)||(g.minute>=780&&g.minute<1020));
     setStatus('us-market-status',usOpen);
     setStatus('sg-market-status',sgOpen);
