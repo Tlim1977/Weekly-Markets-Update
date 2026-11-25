@@ -343,6 +343,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     el.textContent=label|| (isOpen?'Market Open':'Market Closed');
     el.classList.toggle('open',!!isOpen);
   }
+  const weekday=x=>!['Sat','Sun'].includes(x.weekday);
   function tick(){
     const now=new Date();
     const u=localParts(now,'America/New_York'),g=localParts(now,'Asia/Singapore');
@@ -350,7 +351,6 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     if(ut)ut.textContent=usTime.format(now);
     if(uz)uz.textContent=parts(usZone,now).timeZoneName;
     if(st)st.textContent=sgTime.format(now);
-    const weekday=x=>!['Sat','Sun'].includes(x.weekday);
     const usClose=usEarlyCloses.has(u.date)?780:960;
     const usOpen=weekday(u)&&!usHolidays.has(u.date)&&u.minute>=570&&u.minute<usClose;
     const sgOpen=weekday(g)&&!sgHolidays.has(g.date)&&((g.minute>=540&&g.minute<720)||(g.minute>=780&&g.minute<1020));
@@ -362,18 +362,28 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
   let bellReady=false;
   let lastMinuteKey=null;
   const bellNote=document.getElementById('opening-bell-note');
+  function showBellState(state){
+    if(!bellNote)return;
+    bellNote.classList.toggle('ready',state==='on');
+    if(state==='on')bellNote.textContent='🔔 Opening bell ON';
+    else if(state==='enabling')bellNote.textContent='🔄 Enabling opening bell…';
+    else if(state==='unavailable')bellNote.textContent='🔕 Opening bell unavailable in this browser';
+    else bellNote.textContent='🔕 Opening bell OFF — tap anywhere to enable';
+  }
   function unlockBell(){
     if(bellReady)return;
     const AudioCtx=window.AudioContext||window.webkitAudioContext;
-    if(!AudioCtx)return;
+    if(!AudioCtx){showBellState('unavailable');return;}
+    showBellState('enabling');
     try{
-      bellAudio=new AudioCtx();
+      if(!bellAudio)bellAudio=new AudioCtx();
       bellAudio.resume().then(()=>{
-        bellReady=true;
-        if(bellNote){bellNote.textContent='🔔 Opening bell enabled';bellNote.classList.add('ready');}
-      }).catch(()=>{});
-    }catch(e){}
+        bellReady=bellAudio.state==='running';
+        showBellState(bellReady?'on':'off');
+      }).catch(()=>showBellState('off'));
+    }catch(e){showBellState('off');}
   }
+  showBellState('off');
   window.addEventListener('pointerdown',unlockBell,{once:true,passive:true});
   window.addEventListener('keydown',unlockBell,{once:true});
   function ringOpeningBell(){
@@ -427,6 +437,10 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     checkOpeningBell(u,g);
     tick();
   },1000);
+  // Refresh immediately when a mobile browser restores the page after suspending it.
+  window.addEventListener('pageshow',tick);
+  window.addEventListener('focus',tick);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});
 })();
 </script>
 
