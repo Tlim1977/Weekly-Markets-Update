@@ -88,8 +88,11 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 .clock-zone{font-size:9px;color:var(--muted);font-weight:700;margin-left:5px;letter-spacing:0}
 .clock-status{flex:0 0 auto;border-radius:20px;padding:4px 7px;font-size:9px;line-height:1.2;font-weight:800;background:#fdecec;color:#b42318;white-space:nowrap}
 .clock-status.open{background:#e7f6ef;color:#08734e}
-.opening-bell-note{margin:-10px 0 17px;color:#78869a;font-size:10px;text-align:right}
-.opening-bell-note.ready{color:#08734e;font-weight:700}
+.opening-bell-note{margin:-10px 0 17px;color:#78869a;font-size:10px;text-align:right;min-height:28px;display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.opening-bell-note button{border:1px solid #cbd6e4;border-radius:18px;background:#fff;color:#526176;padding:5px 10px;font:700 10px/1.2 inherit;cursor:pointer}
+.opening-bell-note button:hover{background:#edf5ff;color:#075ca6}
+.opening-bell-note.ready button{border-color:#a8ddc4;background:#e7f6ef;color:#08734e}
+.opening-bell-status{color:#78869a;font-size:10px}
 
 @media(max-width:560px){.market-clocks{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-bottom:14px}.market-clock{padding:8px 9px;display:block}.clock-time{font-size:17px}.clock-status{display:inline-block;margin-top:5px}.clock-zone{font-size:8px;margin-left:3px}}
 
@@ -128,7 +131,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     <span class="clock-status" id="sg-market-status">Market Closed</span>
   </div>
 </div>
-<div class="opening-bell-note" id="opening-bell-note" aria-live="polite">Tap anywhere once to enable the market opening bell 🔔</div>
+<div class="opening-bell-note" id="opening-bell-note"><span class="opening-bell-status" id="opening-bell-status" aria-live="polite">Bell is off</span><button type="button" id="enable-opening-bell">🔔 Enable opening bell</button></div>
 <div class="headrow" id="overview"><div><div class="eyebrow">Weekly market briefing</div><h1>Markets at a glance</h1><p class="glance-hint">The full weekly report is available further down this page.</p></div><div class="date">WEEK ENDING<br><strong>Friday, 20 November 2026</strong></div></div>
 <div class="notice"><span>📉</span><div><strong>A sharp global risk-off week.</strong> AI and semiconductor selling weighed heavily on US equities, while Singapore's STI fell below 5,000. The full report includes market drivers, company developments and next week's catalysts.</div></div>
 <div class="grid">
@@ -361,31 +364,45 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
   let bellAudio=null;
   let bellReady=false;
   let lastMinuteKey=null;
-  const bellNote=document.getElementById('opening-bell-note');
+  const bellStatus=document.getElementById('opening-bell-status');
+  const bellButton=document.getElementById('enable-opening-bell');
   function showBellState(state){
-    if(!bellNote)return;
-    bellNote.classList.toggle('ready',state==='on');
-    if(state==='on')bellNote.textContent='🔔 Opening bell ON';
-    else if(state==='enabling')bellNote.textContent='🔄 Enabling opening bell…';
-    else if(state==='unavailable')bellNote.textContent='🔕 Opening bell unavailable in this browser';
-    else bellNote.textContent='🔕 Opening bell OFF — tap anywhere to enable';
+    if(!bellStatus||!bellButton)return;
+    const note=document.getElementById('opening-bell-note');
+    if(note)note.classList.toggle('ready',state==='on');
+    if(state==='on'){
+      bellStatus.textContent='Opening bell is on';
+      bellButton.textContent='🔔 Bell enabled';
+      bellButton.setAttribute('aria-pressed','true');
+    }else if(state==='enabling'){
+      bellStatus.textContent='Enabling…';
+      bellButton.textContent='Please wait…';
+      bellButton.setAttribute('aria-pressed','false');
+    }else if(state==='unavailable'){
+      bellStatus.textContent='Audio is not supported by this browser';
+      bellButton.textContent='Bell unavailable';
+      bellButton.setAttribute('aria-pressed','false');
+    }else{
+      bellStatus.textContent='Bell is off';
+      bellButton.textContent='🔔 Enable opening bell';
+      bellButton.setAttribute('aria-pressed','false');
+    }
   }
-  function unlockBell(){
+  async function unlockBell(){
     if(bellReady)return;
     const AudioCtx=window.AudioContext||window.webkitAudioContext;
     if(!AudioCtx){showBellState('unavailable');return;}
     showBellState('enabling');
     try{
       if(!bellAudio)bellAudio=new AudioCtx();
-      bellAudio.resume().then(()=>{
-        bellReady=bellAudio.state==='running';
-        showBellState(bellReady?'on':'off');
-      }).catch(()=>showBellState('off'));
-    }catch(e){showBellState('off');}
+      // resume() is called directly from the button gesture to satisfy mobile autoplay rules.
+      await bellAudio.resume();
+      bellReady=bellAudio.state==='running';
+      showBellState(bellReady?'on':'off');
+    }catch(e){bellReady=false;showBellState('off');}
   }
   showBellState('off');
-  window.addEventListener('pointerdown',unlockBell,{once:true,passive:true});
-  window.addEventListener('keydown',unlockBell,{once:true});
+  if(bellButton)bellButton.addEventListener('click',unlockBell);
   function ringOpeningBell(){
     if(!bellReady||!bellAudio||bellAudio.state!=='running')return;
     const strikes=[0,0.34,0.72];
