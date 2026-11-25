@@ -366,22 +366,29 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
   let lastMinuteKey=null;
   const bellStatus=document.getElementById('opening-bell-status');
   const bellButton=document.getElementById('enable-opening-bell');
+  const bellPreferenceKey='market-opening-bell-enabled';
+  let bellPreference=false;
+  try{bellPreference=localStorage.getItem(bellPreferenceKey)==='1';}catch(e){}
   function showBellState(state){
     if(!bellStatus||!bellButton)return;
     const note=document.getElementById('opening-bell-note');
-    if(note)note.classList.toggle('ready',state==='on');
+    if(note)note.classList.toggle('ready',state==='on'||state==='saved');
     if(state==='on'){
       bellStatus.textContent='Opening bell is on';
       bellButton.textContent='🔔 Bell enabled';
       bellButton.setAttribute('aria-pressed','true');
+    }else if(state==='saved'){
+      bellStatus.textContent='Bell preference saved · tap to activate sound';
+      bellButton.textContent='🔔 Activate bell audio';
+      bellButton.setAttribute('aria-pressed','true');
     }else if(state==='enabling'){
       bellStatus.textContent='Enabling…';
       bellButton.textContent='Please wait…';
-      bellButton.setAttribute('aria-pressed','false');
+      bellButton.setAttribute('aria-pressed',String(bellPreference));
     }else if(state==='unavailable'){
       bellStatus.textContent='Audio is not supported by this browser';
       bellButton.textContent='Bell unavailable';
-      bellButton.setAttribute('aria-pressed','false');
+      bellButton.setAttribute('aria-pressed',String(bellPreference));
     }else{
       bellStatus.textContent='Bell is off';
       bellButton.textContent='🔔 Enable opening bell';
@@ -389,7 +396,6 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     }
   }
   async function unlockBell(){
-    if(bellReady)return;
     const AudioCtx=window.AudioContext||window.webkitAudioContext;
     if(!AudioCtx){showBellState('unavailable');return;}
     showBellState('enabling');
@@ -398,10 +404,18 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
       // resume() is called directly from the button gesture to satisfy mobile autoplay rules.
       await bellAudio.resume();
       bellReady=bellAudio.state==='running';
-      showBellState(bellReady?'on':'off');
-    }catch(e){bellReady=false;showBellState('off');}
+      if(bellReady){
+        bellPreference=true;
+        try{localStorage.setItem(bellPreferenceKey,'1');}catch(e){}
+        showBellState('on');
+      }else{
+        showBellState(bellPreference?'saved':'off');
+      }
+    }catch(e){bellReady=false;showBellState(bellPreference?'saved':'off');}
   }
-  showBellState('off');
+  // Remember the user's choice across browser restarts. A fresh tap may still be
+  // required because mobile browsers suspend audio contexts after a new session.
+  showBellState(bellPreference?'saved':'off');
   if(bellButton)bellButton.addEventListener('click',unlockBell);
   function ringOpeningBell(){
     if(!bellReady||!bellAudio||bellAudio.state!=='running')return;
