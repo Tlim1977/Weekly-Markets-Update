@@ -80,6 +80,16 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 .weekly-status-legend .legend-up{background:#07865b}.weekly-status-legend .legend-down{background:#c44747}.weekly-status-legend .legend-empty{border:1px solid #cbd5e1}
 @media(max-width:560px){.weekly-status{padding:13px 14px}.weekly-status-row{grid-template-columns:34px minmax(0,1fr);gap:7px}.weekly-status-days{gap:5px}.weekly-status-legend{margin-left:41px;gap:9px}}
 
+
+.market-clocks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 18px}
+.market-clock{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0;background:#fff;border:1px solid var(--line);border-radius:11px;padding:9px 12px;box-shadow:0 4px 14px #0b285006}
+.clock-main{min-width:0}.clock-market{font-size:10px;font-weight:800;color:#65748a;letter-spacing:.04em;text-transform:uppercase}
+.clock-time{font-size:19px;line-height:1.2;font-weight:800;letter-spacing:-.035em;color:var(--navy);font-variant-numeric:tabular-nums;white-space:nowrap}
+.clock-zone{font-size:9px;color:var(--muted);font-weight:700;margin-left:5px;letter-spacing:0}
+.clock-status{flex:0 0 auto;border-radius:20px;padding:4px 7px;font-size:9px;line-height:1.2;font-weight:800;background:#fdecec;color:#b42318;white-space:nowrap}
+.clock-status.open{background:#e7f6ef;color:#08734e}
+@media(max-width:560px){.market-clocks{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-bottom:14px}.market-clock{padding:8px 9px;display:block}.clock-time{font-size:17px}.clock-status{display:inline-block;margin-top:5px}.clock-zone{font-size:8px;margin-left:3px}}
+
 </style>
 <!-- homepage-content-refresh-2026-11-22 -->
 
@@ -104,6 +114,17 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 <div class="side-note">Open the full weekly report for detailed analysis, source links and the complete event calendar.</div>
 </aside>
 <main>
+
+<div class="market-clocks" aria-label="Live market clocks">
+  <div class="market-clock">
+    <div class="clock-main"><div class="clock-market">🇺🇸 US Market</div><div><span class="clock-time" id="us-clock">--:--:--</span><span class="clock-zone" id="us-zone">ET</span></div></div>
+    <span class="clock-status" id="us-market-status">Market Closed</span>
+  </div>
+  <div class="market-clock">
+    <div class="clock-main"><div class="clock-market">🇸🇬 Singapore Market</div><div><span class="clock-time" id="sg-clock">--:--:--</span><span class="clock-zone">SGT</span></div></div>
+    <span class="clock-status" id="sg-market-status">Market Closed</span>
+  </div>
+</div>
 <div class="headrow" id="overview"><div><div class="eyebrow">Weekly market briefing</div><h1>Markets at a glance</h1><p class="glance-hint">The full weekly report is available further down this page.</p></div><div class="date">WEEK ENDING<br><strong>Friday, 20 November 2026</strong></div></div>
 <div class="notice"><span>📉</span><div><strong>A sharp global risk-off week.</strong> AI and semiconductor selling weighed heavily on US equities, while Singapore's STI fell below 5,000. The full report includes market drivers, company developments and next week's catalysts.</div></div>
 <div class="grid">
@@ -299,4 +320,39 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 })();
 
 </script>
+
+<script>
+(function(){
+  const usTime=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
+  const usZone=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',timeZoneName:'short'});
+  const sgTime=new Intl.DateTimeFormat('en-SG',{timeZone:'Asia/Singapore',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
+  const parts=(fmt,date)=>Object.fromEntries(fmt.formatToParts(date).map(p=>[p.type,p.value]));
+  const usHolidays=new Set(['2026-01-01','2026-01-19','2026-02-16','2026-04-03','2026-05-25','2026-06-19','2026-07-03','2026-09-07','2026-11-26','2026-12-25']);
+  const sgHolidays=new Set(['2026-01-01','2026-02-17','2026-02-18','2026-03-21','2026-05-01','2026-05-27','2026-06-01','2026-08-10','2026-11-09','2026-12-25']);
+  function localParts(date,zone){
+    const p=parts(new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}),date);
+    return {date:p.year+'-'+p.month+'-'+p.day,weekday:p.weekday,minute:Number(p.hour)*60+Number(p.minute)};
+  }
+  function setStatus(id,isOpen,label){
+    const el=document.getElementById(id);if(!el)return;
+    el.textContent=label|| (isOpen?'Market Open':'Market Closed');
+    el.classList.toggle('open',!!isOpen);
+  }
+  function tick(){
+    const now=new Date();
+    const u=localParts(now,'America/New_York'),g=localParts(now,'Asia/Singapore');
+    const ut=document.getElementById('us-clock'),uz=document.getElementById('us-zone'),st=document.getElementById('sg-clock');
+    if(ut)ut.textContent=usTime.format(now);
+    if(uz)uz.textContent=parts(usZone,now).timeZoneName;
+    if(st)st.textContent=sgTime.format(now);
+    const weekday=x=>!['Sat','Sun'].includes(x.weekday);
+    const usOpen=weekday(u)&&!usHolidays.has(u.date)&&u.minute>=570&&u.minute<960;
+    const sgOpen=weekday(g)&&!sgHolidays.has(g.date)&&((g.minute>=540&&g.minute<720)||(g.minute>=780&&g.minute<1020));
+    setStatus('us-market-status',usOpen);
+    setStatus('sg-market-status',sgOpen);
+  }
+  tick();setInterval(tick,1000);
+})();
+</script>
+
 </body></html>
