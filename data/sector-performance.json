@@ -1,8 +1,8 @@
 {
-  "updated_at": "2026-11-25T07:11:24+08:00",
+  "updated_at": "2026-11-26T07:11:37+08:00",
   "baseline_date": "2026-11-20",
-  "latest_close_date": "2026-11-24",
-  "latest_close_date_sg": "2026-11-25",
+  "latest_close_date": "2026-11-25",
+  "latest_close_date_sg": "2026-11-26",
   "calculation": "(latest close / baseline close - 1) * 100",
   "baseline_rule": "Previous Friday close, or preceding available trading session if Friday is a US market holiday.",
   "status": "verified",
@@ -10,57 +10,57 @@
     {
       "name": "Information Technology",
       "ticker": "XLK",
-      "change_pct": -2.24
+      "change_pct": -3.05
     },
     {
       "name": "Communication Services",
       "ticker": "XLC",
-      "change_pct": 1.64
+      "change_pct": 2.55
     },
     {
       "name": "Financials",
       "ticker": "XLF",
-      "change_pct": 0.95
+      "change_pct": 1.67
     },
     {
       "name": "Consumer Discretionary",
       "ticker": "XLY",
-      "change_pct": 1.59
+      "change_pct": 1.39
     },
     {
       "name": "Consumer Staples",
       "ticker": "XLP",
-      "change_pct": 2.25
+      "change_pct": 2.72
     },
     {
       "name": "Health Care",
       "ticker": "XLV",
-      "change_pct": 4.09
+      "change_pct": 3.51
     },
     {
       "name": "Industrials",
       "ticker": "XLI",
-      "change_pct": 0.15
+      "change_pct": 0.99
     },
     {
       "name": "Energy",
       "ticker": "XLE",
-      "change_pct": -0.72
+      "change_pct": 0.02
     },
     {
       "name": "Materials",
       "ticker": "XLB",
-      "change_pct": 1.52
+      "change_pct": 3.62
     },
     {
       "name": "Real Estate",
       "ticker": "XLRE",
-      "change_pct": 1.35
+      "change_pct": 2.29
     },
     {
       "name": "Utilities",
       "ticker": "XLU",
-      "change_pct": 0.91
+      "change_pct": 1.4
     }
   ]
 }
