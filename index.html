@@ -88,6 +88,9 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 .clock-zone{font-size:9px;color:var(--muted);font-weight:700;margin-left:5px;letter-spacing:0}
 .clock-status{flex:0 0 auto;border-radius:20px;padding:4px 7px;font-size:9px;line-height:1.2;font-weight:800;background:#fdecec;color:#b42318;white-space:nowrap}
 .clock-status.open{background:#e7f6ef;color:#08734e}
+.opening-bell-note{margin:-10px 0 17px;color:#78869a;font-size:10px;text-align:right}
+.opening-bell-note.ready{color:#08734e;font-weight:700}
+
 @media(max-width:560px){.market-clocks{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-bottom:14px}.market-clock{padding:8px 9px;display:block}.clock-time{font-size:17px}.clock-status{display:inline-block;margin-top:5px}.clock-zone{font-size:8px;margin-left:3px}}
 
 </style>
@@ -125,6 +128,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     <span class="clock-status" id="sg-market-status">Market Closed</span>
   </div>
 </div>
+<div class="opening-bell-note" id="opening-bell-note" aria-live="polite">Tap anywhere once to enable the market opening bell 🔔</div>
 <div class="headrow" id="overview"><div><div class="eyebrow">Weekly market briefing</div><h1>Markets at a glance</h1><p class="glance-hint">The full weekly report is available further down this page.</p></div><div class="date">WEEK ENDING<br><strong>Friday, 20 November 2026</strong></div></div>
 <div class="notice"><span>📉</span><div><strong>A sharp global risk-off week.</strong> AI and semiconductor selling weighed heavily on US equities, while Singapore's STI fell below 5,000. The full report includes market drivers, company developments and next week's catalysts.</div></div>
 <div class="grid">
@@ -353,7 +357,76 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     setStatus('us-market-status',usOpen);
     setStatus('sg-market-status',sgOpen);
   }
-  tick();setInterval(tick,1000);
+  // A short synthesized exchange-style bell; no external audio file is required.
+  let bellAudio=null;
+  let bellReady=false;
+  let lastMinuteKey=null;
+  const bellNote=document.getElementById('opening-bell-note');
+  function unlockBell(){
+    if(bellReady)return;
+    const AudioCtx=window.AudioContext||window.webkitAudioContext;
+    if(!AudioCtx)return;
+    try{
+      bellAudio=new AudioCtx();
+      bellAudio.resume().then(()=>{
+        bellReady=true;
+        if(bellNote){bellNote.textContent='🔔 Opening bell enabled';bellNote.classList.add('ready');}
+      }).catch(()=>{});
+    }catch(e){}
+  }
+  window.addEventListener('pointerdown',unlockBell,{once:true,passive:true});
+  window.addEventListener('keydown',unlockBell,{once:true});
+  function ringOpeningBell(){
+    if(!bellReady||!bellAudio||bellAudio.state!=='running')return;
+    const strikes=[0,0.34,0.72];
+    const partials=[
+      [660,0.13],[880,0.11],[1320,0.075],[1760,0.045],[2370,0.025]
+    ];
+    strikes.forEach((offset,index)=>{
+      partials.forEach(([frequency,level])=>{
+        const start=bellAudio.currentTime+offset;
+        const osc=bellAudio.createOscillator();
+        const gain=bellAudio.createGain();
+        osc.type='sine';
+        osc.frequency.value=frequency*(index===1?1.003:1);
+        gain.gain.setValueAtTime(0.0001,start);
+        gain.gain.exponentialRampToValueAtTime(level*(index===2?0.72:1),start+0.012);
+        gain.gain.exponentialRampToValueAtTime(0.0001,start+2.25);
+        osc.connect(gain);gain.connect(bellAudio.destination);
+        osc.start(start);osc.stop(start+2.3);
+      });
+    });
+  }
+  function checkOpeningBell(u,g){
+    const key=u.date+'|'+u.minute+'|'+g.date+'|'+g.minute;
+    if(lastMinuteKey!==null&&lastMinuteKey!==key){
+      const usOpening=weekday(u)&&!usHolidays.has(u.date)&&u.minute===570;
+      const sgOpening=weekday(g)&&!sgHolidays.has(g.date)&&g.minute===540;
+      if(usOpening||sgOpening){
+        const market=usOpening?'us':'sg';
+        const date=usOpening?u.date:g.date;
+        const storageKey='market-opening-bell-'+market+'-'+date;
+        let alreadyPlayed=false;
+        try{alreadyPlayed=localStorage.getItem(storageKey)==='1';}catch(e){}
+        if(!alreadyPlayed&&bellReady){
+          ringOpeningBell();
+          try{localStorage.setItem(storageKey,'1');}catch(e){}
+        }
+      }
+    }
+    lastMinuteKey=key;
+  }
+  tick();
+  const initialNow=new Date();
+  const initialUS=localParts(initialNow,'America/New_York');
+  const initialSG=localParts(initialNow,'Asia/Singapore');
+  lastMinuteKey=initialUS.date+'|'+initialUS.minute+'|'+initialSG.date+'|'+initialSG.minute;
+  setInterval(()=>{
+    const now=new Date();
+    const u=localParts(now,'America/New_York'),g=localParts(now,'Asia/Singapore');
+    checkOpeningBell(u,g);
+    tick();
+  },1000);
 })();
 </script>
 
