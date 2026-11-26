@@ -360,6 +360,21 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
   let bellAudio=null;
   let bellReady=false;
   let lastMinuteKey=null;
+  let pendingBell=null;
+  function attemptPendingBell(){
+    if(!pendingBell)return;
+    if(Date.now()>pendingBell.expires){pendingBell=null;return;}
+    if(!bellReady||!bellAudio||bellAudio.state!=='running')return;
+    const {market,date}=pendingBell;
+    const storageKey='market-opening-bell-'+market+'-'+date;
+    let alreadyPlayed=false;
+    try{alreadyPlayed=localStorage.getItem(storageKey)==='1';}catch(e){}
+    if(!alreadyPlayed){
+      ringOpeningBell();
+      try{localStorage.setItem(storageKey,'1');}catch(e){}
+    }
+    pendingBell=null;
+  }
   function prepareBell(){
     const AudioCtx=window.AudioContext||window.webkitAudioContext;
     if(!AudioCtx)return;
@@ -368,6 +383,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
       if(bellAudio.state==='running'){bellReady=true;return;}
       bellAudio.resume().then(()=>{
         bellReady=bellAudio.state==='running';
+        attemptPendingBell();
       }).catch(()=>{bellReady=false;});
     }catch(e){bellReady=false;}
   }
@@ -415,9 +431,9 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
         const storageKey='market-opening-bell-'+market+'-'+date;
         let alreadyPlayed=false;
         try{alreadyPlayed=localStorage.getItem(storageKey)==='1';}catch(e){}
-        if(!alreadyPlayed&&bellReady){
-          ringOpeningBell();
-          try{localStorage.setItem(storageKey,'1');}catch(e){}
+        if(!alreadyPlayed){
+          pendingBell={market,date,expires:Date.now()+120000};
+          attemptPendingBell();
         }
       }
     }
@@ -428,10 +444,18 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
   const initialUS=localParts(initialNow,'America/New_York');
   const initialSG=localParts(initialNow,'Asia/Singapore');
   lastMinuteKey=initialUS.date+'|'+initialUS.minute+'|'+initialSG.date+'|'+initialSG.minute;
+  // If the page is opened during the opening minute, queue the bell as well.
+  if(weekday(initialUS)&&!usHolidays.has(initialUS.date)&&initialUS.minute===570){
+    pendingBell={market:'us',date:initialUS.date,expires:Date.now()+120000};
+  }else if(weekday(initialSG)&&!sgHolidays.has(initialSG.date)&&initialSG.minute===540){
+    pendingBell={market:'sg',date:initialSG.date,expires:Date.now()+120000};
+  }
+  attemptPendingBell();
   setInterval(()=>{
     const now=new Date();
     const u=localParts(now,'America/New_York'),g=localParts(now,'Asia/Singapore');
     checkOpeningBell(u,g);
+    attemptPendingBell();
     tick();
   },1000);
   // Refresh immediately when a mobile browser restores the page after suspending it.
