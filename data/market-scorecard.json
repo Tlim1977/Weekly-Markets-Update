@@ -1,6 +1,6 @@
 {
-  "status": "verified",
-  "updated_at": "2026-11-25T20:00:52+00:00",
+  "status": "partial",
+  "updated_at": "2026-11-26T01:07:58+00:00",
   "market_data_as_of": {
     "us": "2026-11-25",
     "singapore": "2026-11-24"
@@ -25,7 +25,7 @@
           "day": "Wed",
           "date": "2026-11-25",
           "status": "down",
-          "change_pct": -0.28
+          "change_pct": -0.25
         },
         {
           "day": "Thu",
@@ -74,20 +74,20 @@
   },
   "us": {
     "market_state": "Neutral",
-    "summary": "304/482 S&P 500 stocks above their 50-day average; 7/11 sectors above their 50-day average; S&P 500 20-day momentum -7.3%.",
-    "volatility": "Elevated · VIX 28.2",
+    "summary": "281/482 S&P 500 stocks above their 50-day average; 6/11 sectors above their 50-day average; S&P 500 20-day momentum -7.2%.",
+    "volatility": "Elevated · VIX 28.3",
     "as_of": "2026-11-25",
-    "directional_score": -1.7,
+    "directional_score": -8.2,
     "indicators": {
-      "index_close": 7180.7,
-      "sma_50": 7602.49,
-      "sma_200": 7352.48,
-      "constituents_above_50d_pct": 63.1,
+      "index_close": 7182.78,
+      "sma_50": 7602.53,
+      "sma_200": 7352.49,
+      "constituents_above_50d_pct": 58.3,
       "constituents_covered": 482,
-      "sector_etfs_above_50d": 7,
+      "sector_etfs_above_50d": 6,
       "sector_etfs_covered": 11,
-      "momentum_20d_pct": -7.27,
-      "vix": 28.19
+      "momentum_20d_pct": -7.25,
+      "vix": 28.29
     }
   },
   "singapore": {
