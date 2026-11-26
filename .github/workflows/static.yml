@@ -42,7 +42,6 @@ jobs:
           image = Image.open('assets/weekly-markets-banner.png').convert('RGB')
           image.save('assets/weekly-markets-banner.webp', 'WEBP', quality=82, method=6)
           PY
-          rm assets/weekly-markets-banner.png
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
