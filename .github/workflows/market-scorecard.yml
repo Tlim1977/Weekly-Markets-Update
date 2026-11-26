@@ -10,8 +10,12 @@ on:
   schedule:
     # 06:00 Singapore time: 1–2 hours after the prior US close (depending on US daylight saving time).
     - cron: "0 22 * * 0-5"
-    # 18:30 Singapore time: 1.5 hours after the Singapore close.
+    # 18:30 Singapore time: first update after the Singapore close.
     - cron: "30 10 * * 1-6"
+    # Retry in case Yahoo Finance or the scheduled runner is delayed.
+    - cron: "45 10 * * 1-6"
+    - cron: "0,15,30,45 11 * * 1-6"
+    - cron: "0,15 12 * * 1-6"
   workflow_dispatch:
 
 # Manual one-off trigger for Singapore Yahoo freshness test.
