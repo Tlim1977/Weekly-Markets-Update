@@ -287,38 +287,33 @@ def build_us() -> tuple[dict, str]:
     }, as_of.strftime("%Y-%m-%d")
 
 
-def fetch_ft_sti_latest() -> tuple[pd.Timestamp, float]:
-    """Fetch the latest published STI close from FT/LSEG as a Yahoo fallback."""
-    url = "https://markets.ft.com/data/indices/tearsheet/historical?s=STI%3AFSI"
-    req = Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; MarketScorecard/1.0)"})
+def fetch_yahoo_sti_direct() -> tuple[pd.Timestamp, float]:
+    """Retry the STI through Yahoo's chart endpoint, bypassing yfinance batch/cache handling."""
+    url = (
+        "https://query1.finance.yahoo.com/v8/finance/chart/%5ESTI"
+        "?range=5y&interval=1d&events=history"
+        f"&_={int(datetime.now(timezone.utc).timestamp())}"
+    )
+    req = Request(url, headers={
+        "User-Agent": "Mozilla/5.0",
+        "Accept": "application/json",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+    })
     with urlopen(req, timeout=25) as response:
-        html = response.read().decode("utf-8", errors="replace")
-    from bs4 import BeautifulSoup
-    soup = BeautifulSoup(html, "html.parser")
-    for table in soup.find_all("table"):
-        header_row = table.find("tr")
-        if header_row is None:
-            continue
-        headers = [cell.get_text(" ", strip=True).lower()
-                   for cell in header_row.find_all(["th", "td"])]
-        date_idx = next((i for i, name in enumerate(headers) if name == "date" or "date" in name), None)
-        close_idx = next((i for i, name in enumerate(headers) if name == "close"), None)
-        if date_idx is None or close_idx is None:
-            continue
-        rows = []
-        for tr in table.find_all("tr")[1:]:
-            cells = [cell.get_text(" ", strip=True) for cell in tr.find_all(["td", "th"])]
-            if max(date_idx, close_idx) >= len(cells):
-                continue
-            raw_date = cells[date_idx]
-            match = re.search(r"([A-Z][a-z]{2}, [A-Z][a-z]{2} \\d{1,2}, \\d{4})", raw_date)
-            parsed = pd.to_datetime(match.group(1), format="%a, %b %d, %Y", errors="coerce") if match else pd.to_datetime(raw_date, errors="coerce")
-            close = pd.to_numeric(cells[close_idx].replace(",", ""), errors="coerce")
-            if pd.notna(parsed) and pd.notna(close):
-                rows.append((pd.Timestamp(parsed).normalize(), float(close)))
-        if rows:
-            return max(rows, key=lambda item: item[0])
-    raise RuntimeError("FT historical page did not contain a readable STI Date/Close table")
+        payload = json.loads(response.read().decode("utf-8"))
+    result = payload["chart"]["result"][0]
+    timestamps = result.get("timestamp") or []
+    closes = result["indicators"]["quote"][0].get("close") or []
+    observations = [
+        (pd.Timestamp(datetime.fromtimestamp(ts, timezone.utc).date()),
+         float(close))
+        for ts, close in zip(timestamps, closes)
+        if close is not None
+    ]
+    if not observations:
+        raise RuntimeError("Yahoo direct chart endpoint returned no STI closes")
+    return max(observations, key=lambda item: item[0])
 
 
 def latest_completed_session(calendar_name: str) -> pd.Timestamp:
@@ -346,19 +341,19 @@ def build_singapore() -> tuple[dict, str]:
     expected_session = latest_completed_session("XSES")
     if index.index[-1].normalize() < expected_session:
         print(
-            f"Yahoo STI is stale ({index.index[-1].date()}); trying FT/LSEG fallback "
-            f"for expected session {expected_session.date()}",
+            f"Yahoo yfinance STI is stale ({index.index[-1].date()}); "
+            f"retrying direct Yahoo chart endpoint for {expected_session.date()}",
             file=sys.stderr,
         )
-        ft_date, ft_close = fetch_ft_sti_latest()
-        if ft_date < expected_session:
+        direct_date, direct_close = fetch_yahoo_sti_direct()
+        if direct_date < expected_session:
             raise RuntimeError(
-                f"STI data stale: Yahoo through {index.index[-1].date()}, "
-                f"FT/LSEG through {ft_date.date()}, expected {expected_session.date()}"
+                f"STI data stale: yfinance through {index.index[-1].date()}, "
+                f"direct Yahoo through {direct_date.date()}, expected {expected_session.date()}"
             )
-        index.loc[ft_date] = ft_close
+        index.loc[direct_date] = direct_close
         index = index.sort_index()
-        print(f"STI latest close supplied by FT/LSEG: {ft_date.date()} = {ft_close:.2f}")
+        print(f"STI latest close refreshed from direct Yahoo endpoint: {direct_date.date()} = {direct_close:.2f}")
     as_of = index.index[-1]
     index = latest_on_or_before(index, as_of)
     trend, trend_detail = trend_score(index)
