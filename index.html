@@ -367,7 +367,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     if(!bellReady||!bellAudio||bellAudio.state!=='running')return;
     const {market,date}=pendingBell;
     const type=pendingBell.type||'open';
-    const storageKey='market-'+type+'-bell-'+market+'-'+date;
+    const storageKey=(type==='close'?'market-closing-bell-':'market-opening-bell-')+market+'-'+date;
     let alreadyPlayed=false;
     try{alreadyPlayed=localStorage.getItem(storageKey)==='1';}catch(e){}
     if(!alreadyPlayed){
