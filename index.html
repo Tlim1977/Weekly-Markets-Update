@@ -366,11 +366,12 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     if(Date.now()>pendingBell.expires){pendingBell=null;return;}
     if(!bellReady||!bellAudio||bellAudio.state!=='running')return;
     const {market,date}=pendingBell;
-    const storageKey='market-opening-bell-'+market+'-'+date;
+    const type=pendingBell.type||'open';
+    const storageKey='market-'+type+'-bell-'+market+'-'+date;
     let alreadyPlayed=false;
     try{alreadyPlayed=localStorage.getItem(storageKey)==='1';}catch(e){}
     if(!alreadyPlayed){
-      ringOpeningBell();
+      if(type==='close')ringClosingBell();else ringOpeningBell();
       try{localStorage.setItem(storageKey,'1');}catch(e){}
     }
     pendingBell=null;
@@ -420,22 +421,45 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
       });
     });
   }
-  function checkOpeningBell(u,g){
+  function ringClosingBell(){
+    if(!bellReady||!bellAudio||bellAudio.state!=='running')return;
+    // A softer two-strike finish, distinct from the three-strike opening bell.
+    const strikes=[0,0.48];
+    const partials=[[587,0.10],[784,0.085],[1175,0.055],[1568,0.032],[2100,0.018]];
+    strikes.forEach((offset,index)=>{
+      partials.forEach(([frequency,level])=>{
+        const start=bellAudio.currentTime+offset;
+        const osc=bellAudio.createOscillator();
+        const gain=bellAudio.createGain();
+        osc.type='sine';
+        osc.frequency.value=frequency*(index===1?1.002:1);
+        gain.gain.setValueAtTime(0.0001,start);
+        gain.gain.exponentialRampToValueAtTime(level*(index===1?0.78:1),start+0.012);
+        gain.gain.exponentialRampToValueAtTime(0.0001,start+2.1);
+        osc.connect(gain);gain.connect(bellAudio.destination);
+        osc.start(start);osc.stop(start+2.15);
+      });
+    });
+  }
+  function queueMarketBell(market,date,type){
+    const storageKey='market-'+type+'-bell-'+market+'-'+date;
+    let alreadyPlayed=false;
+    try{alreadyPlayed=localStorage.getItem(storageKey)==='1';}catch(e){}
+    if(!alreadyPlayed){
+      pendingBell={market,date,type,expires:Date.now()+120000};
+      attemptPendingBell();
+    }
+  }
+  function checkMarketBells(u,g){
     const key=u.date+'|'+u.minute+'|'+g.date+'|'+g.minute;
     if(lastMinuteKey!==null&&lastMinuteKey!==key){
-      const usOpening=weekday(u)&&!usHolidays.has(u.date)&&u.minute===570;
-      const sgOpening=weekday(g)&&!sgHolidays.has(g.date)&&g.minute===540;
-      if(usOpening||sgOpening){
-        const market=usOpening?'us':'sg';
-        const date=usOpening?u.date:g.date;
-        const storageKey='market-opening-bell-'+market+'-'+date;
-        let alreadyPlayed=false;
-        try{alreadyPlayed=localStorage.getItem(storageKey)==='1';}catch(e){}
-        if(!alreadyPlayed){
-          pendingBell={market,date,expires:Date.now()+120000};
-          attemptPendingBell();
-        }
-      }
+      const usTradingDay=weekday(u)&&!usHolidays.has(u.date);
+      const sgTradingDay=weekday(g)&&!sgHolidays.has(g.date);
+      const usClose=usEarlyCloses.has(u.date)?780:960;
+      if(usTradingDay&&u.minute===570)queueMarketBell('us',u.date,'open');
+      else if(sgTradingDay&&g.minute===540)queueMarketBell('sg',g.date,'open');
+      if(usTradingDay&&u.minute===usClose)queueMarketBell('us',u.date,'close');
+      else if(sgTradingDay&&g.minute===1020)queueMarketBell('sg',g.date,'close');
     }
     lastMinuteKey=key;
   }
@@ -444,17 +468,19 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
   const initialUS=localParts(initialNow,'America/New_York');
   const initialSG=localParts(initialNow,'Asia/Singapore');
   lastMinuteKey=initialUS.date+'|'+initialUS.minute+'|'+initialSG.date+'|'+initialSG.minute;
-  // If the page is opened during the opening minute, queue the bell as well.
-  if(weekday(initialUS)&&!usHolidays.has(initialUS.date)&&initialUS.minute===570){
-    pendingBell={market:'us',date:initialUS.date,expires:Date.now()+120000};
-  }else if(weekday(initialSG)&&!sgHolidays.has(initialSG.date)&&initialSG.minute===540){
-    pendingBell={market:'sg',date:initialSG.date,expires:Date.now()+120000};
-  }
+  // If the page is opened during an opening or closing minute, queue its chime.
+  const initialUsTradingDay=weekday(initialUS)&&!usHolidays.has(initialUS.date);
+  const initialSgTradingDay=weekday(initialSG)&&!sgHolidays.has(initialSG.date);
+  const initialUsClose=usEarlyCloses.has(initialUS.date)?780:960;
+  if(initialUsTradingDay&&initialUS.minute===570)queueMarketBell('us',initialUS.date,'open');
+  else if(initialSgTradingDay&&initialSG.minute===540)queueMarketBell('sg',initialSG.date,'open');
+  else if(initialUsTradingDay&&initialUS.minute===initialUsClose)queueMarketBell('us',initialUS.date,'close');
+  else if(initialSgTradingDay&&initialSG.minute===1020)queueMarketBell('sg',initialSG.date,'close');
   attemptPendingBell();
   setInterval(()=>{
     const now=new Date();
     const u=localParts(now,'America/New_York'),g=localParts(now,'Asia/Singapore');
-    checkOpeningBell(u,g);
+    checkMarketBells(u,g);
     attemptPendingBell();
     tick();
   },1000);
