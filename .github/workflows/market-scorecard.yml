@@ -11,7 +11,7 @@ on:
     # 06:00 Singapore time: 1–2 hours after the prior US close (depending on US daylight saving time).
     - cron: "0 22 * * 0-5"
     # 18:30 Singapore time: 1.5 hours after the Singapore close.
-    - cron: "40 10 * * 1-6"
+    - cron: "30 10 * * 1-6"
   workflow_dispatch:
 
 permissions:
