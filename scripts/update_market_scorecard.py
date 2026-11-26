@@ -15,6 +15,7 @@ import os
 import re
 import sys
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from urllib.request import Request, urlopen
 
@@ -292,21 +293,27 @@ def fetch_ft_sti_latest() -> tuple[pd.Timestamp, float]:
     req = Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; MarketScorecard/1.0)"})
     with urlopen(req, timeout=25) as response:
         html = response.read().decode("utf-8", errors="replace")
-    tables = pd.read_html(io.StringIO(html))
-    for table in tables:
-        table.columns = [str(c[0] if isinstance(c, tuple) else c).strip().lower()
-                         for c in table.columns]
-        date_col = next((c for c in table.columns if c == "date" or "date" in c), None)
-        close_col = next((c for c in table.columns if c == "close"), None)
-        if date_col is None or close_col is None:
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(html, "html.parser")
+    for table in soup.find_all("table"):
+        header_row = table.find("tr")
+        if header_row is None:
+            continue
+        headers = [cell.get_text(" ", strip=True).lower()
+                   for cell in header_row.find_all(["th", "td"])]
+        date_idx = next((i for i, name in enumerate(headers) if name == "date" or "date" in name), None)
+        close_idx = next((i for i, name in enumerate(headers) if name == "close"), None)
+        if date_idx is None or close_idx is None:
             continue
         rows = []
-        for _, row in table.iterrows():
-            raw_date = str(row[date_col])
-            # FT renders both a long and short date in the same cell.
+        for tr in table.find_all("tr")[1:]:
+            cells = [cell.get_text(" ", strip=True) for cell in tr.find_all(["td", "th"])]
+            if max(date_idx, close_idx) >= len(cells):
+                continue
+            raw_date = cells[date_idx]
             match = re.search(r"([A-Z][a-z]{2}, [A-Z][a-z]{2} \\d{1,2}, \\d{4})", raw_date)
             parsed = pd.to_datetime(match.group(1), format="%a, %b %d, %Y", errors="coerce") if match else pd.to_datetime(raw_date, errors="coerce")
-            close = pd.to_numeric(str(row[close_col]).replace(",", ""), errors="coerce")
+            close = pd.to_numeric(cells[close_idx].replace(",", ""), errors="coerce")
             if pd.notna(parsed) and pd.notna(close):
                 rows.append((pd.Timestamp(parsed).normalize(), float(close)))
         if rows:
@@ -315,7 +322,11 @@ def fetch_ft_sti_latest() -> tuple[pd.Timestamp, float]:
 
 
 def latest_completed_session(calendar_name: str) -> pd.Timestamp:
-    today = pd.Timestamp.now(tz="Asia/Singapore").date()
+    now_sg = datetime.now(ZoneInfo("Asia/Singapore"))
+    today = now_sg.date()
+    # A session is not complete until after the SGX closing auction.
+    if now_sg.hour < 17 or (now_sg.hour == 17 and now_sg.minute < 10):
+        today -= timedelta(days=1)
     calendar = xcals.get_calendar(calendar_name)
     start = (today - timedelta(days=10)).isoformat()
     sessions = calendar.sessions_in_range(start, today.isoformat())
