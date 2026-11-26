@@ -12,6 +12,7 @@ import io
 import json
 import math
 import os
+import re
 import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -285,6 +286,44 @@ def build_us() -> tuple[dict, str]:
     }, as_of.strftime("%Y-%m-%d")
 
 
+def fetch_ft_sti_latest() -> tuple[pd.Timestamp, float]:
+    """Fetch the latest published STI close from FT/LSEG as a Yahoo fallback."""
+    url = "https://markets.ft.com/data/indices/tearsheet/historical?s=STI%3AFSI"
+    req = Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; MarketScorecard/1.0)"})
+    with urlopen(req, timeout=25) as response:
+        html = response.read().decode("utf-8", errors="replace")
+    tables = pd.read_html(io.StringIO(html))
+    for table in tables:
+        table.columns = [str(c[0] if isinstance(c, tuple) else c).strip().lower()
+                         for c in table.columns]
+        date_col = next((c for c in table.columns if c == "date" or "date" in c), None)
+        close_col = next((c for c in table.columns if c == "close"), None)
+        if date_col is None or close_col is None:
+            continue
+        rows = []
+        for _, row in table.iterrows():
+            raw_date = str(row[date_col])
+            # FT renders both a long and short date in the same cell.
+            match = re.search(r"([A-Z][a-z]{2}, [A-Z][a-z]{2} \\d{1,2}, \\d{4})", raw_date)
+            parsed = pd.to_datetime(match.group(1), format="%a, %b %d, %Y", errors="coerce") if match else pd.to_datetime(raw_date, errors="coerce")
+            close = pd.to_numeric(str(row[close_col]).replace(",", ""), errors="coerce")
+            if pd.notna(parsed) and pd.notna(close):
+                rows.append((pd.Timestamp(parsed).normalize(), float(close)))
+        if rows:
+            return max(rows, key=lambda item: item[0])
+    raise RuntimeError("FT historical page did not contain a readable STI Date/Close table")
+
+
+def latest_completed_session(calendar_name: str) -> pd.Timestamp:
+    today = pd.Timestamp.now(tz="Asia/Singapore").date()
+    calendar = xcals.get_calendar(calendar_name)
+    start = (today - timedelta(days=10)).isoformat()
+    sessions = calendar.sessions_in_range(start, today.isoformat())
+    if len(sessions) == 0:
+        raise RuntimeError(f"No recent sessions returned for {calendar_name}")
+    return pd.Timestamp(sessions[-1]).tz_localize(None).normalize()
+
+
 def build_singapore() -> tuple[dict, str]:
     sti_data = json.loads(STI_FILE.read_text(encoding="utf-8"))
     constituents = sti_data["tickers"]
@@ -292,7 +331,23 @@ def build_singapore() -> tuple[dict, str]:
     prices = download_prices(["^STI"] + symbols, "5y")
     if "^STI" not in prices:
         raise RuntimeError("STI index history unavailable")
-    index = prices["^STI"]
+    index = prices["^STI"].copy()
+    expected_session = latest_completed_session("XSES")
+    if index.index[-1].normalize() < expected_session:
+        print(
+            f"Yahoo STI is stale ({index.index[-1].date()}); trying FT/LSEG fallback "
+            f"for expected session {expected_session.date()}",
+            file=sys.stderr,
+        )
+        ft_date, ft_close = fetch_ft_sti_latest()
+        if ft_date < expected_session:
+            raise RuntimeError(
+                f"STI data stale: Yahoo through {index.index[-1].date()}, "
+                f"FT/LSEG through {ft_date.date()}, expected {expected_session.date()}"
+            )
+        index.loc[ft_date] = ft_close
+        index = index.sort_index()
+        print(f"STI latest close supplied by FT/LSEG: {ft_date.date()} = {ft_close:.2f}")
     as_of = index.index[-1]
     index = latest_on_or_before(index, as_of)
     trend, trend_detail = trend_score(index)
