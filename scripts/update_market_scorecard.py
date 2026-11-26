@@ -339,22 +339,30 @@ def build_singapore() -> tuple[dict, str]:
         raise RuntimeError("STI index history unavailable")
     index = prices["^STI"].copy()
     expected_session = latest_completed_session("XSES")
-    if index.index[-1].normalize() < expected_session:
+
+    # Never use an in-progress/current Singapore trading day's candle. The
+    # scorecard must reflect the latest completed SGX session, even if Yahoo
+    # publishes a row dated today before the market has closed.
+    index = index.loc[index.index.normalize() <= expected_session]
+    if index.empty or index.index[-1].normalize() < expected_session:
+        yfinance_date = index.index[-1].date() if not index.empty else "none"
         print(
-            f"Yahoo yfinance STI is stale ({index.index[-1].date()}); "
+            f"Yahoo yfinance STI is stale ({yfinance_date}); "
             f"retrying direct Yahoo chart endpoint for {expected_session.date()}",
             file=sys.stderr,
         )
         direct_date, direct_close = fetch_yahoo_sti_direct()
-        if direct_date < expected_session:
+        if direct_date == expected_session:
+            index.loc[direct_date] = direct_close
+            index = index.sort_index()
+            print(f"STI latest completed close refreshed from direct Yahoo endpoint: {direct_date.date()} = {direct_close:.2f}")
+        else:
             raise RuntimeError(
-                f"STI data stale: yfinance through {index.index[-1].date()}, "
-                f"direct Yahoo through {direct_date.date()}, expected {expected_session.date()}"
+                f"STI data stale: yfinance through {yfinance_date}, "
+                f"direct Yahoo through {direct_date.date()}, expected completed session {expected_session.date()}"
             )
-        index.loc[direct_date] = direct_close
-        index = index.sort_index()
-        print(f"STI latest close refreshed from direct Yahoo endpoint: {direct_date.date()} = {direct_close:.2f}")
-    as_of = index.index[-1]
+    as_of = expected_session
+    index = latest_on_or_before(index, as_of)
     index = latest_on_or_before(index, as_of)
     trend, trend_detail = trend_score(index)
     pct_above, above, covered = breadth(prices, symbols, as_of, 0.75)
