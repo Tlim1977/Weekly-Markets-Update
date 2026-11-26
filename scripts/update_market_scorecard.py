@@ -287,8 +287,9 @@ def build_us() -> tuple[dict, str]:
     }, as_of.strftime("%Y-%m-%d")
 
 
-def fetch_yahoo_sti_direct() -> tuple[pd.Timestamp, float]:
-    """Retry the STI through Yahoo's chart endpoint, bypassing yfinance batch/cache handling."""
+def fetch_yahoo_sti_direct(target_date: pd.Timestamp) -> tuple[pd.Timestamp, float]:
+    """Fetch the exact requested completed STI session from Yahoo's chart endpoint."""
+
     url = (
         "https://query1.finance.yahoo.com/v8/finance/chart/%5ESTI"
         "?range=5y&interval=1d&events=history"
@@ -311,9 +312,15 @@ def fetch_yahoo_sti_direct() -> tuple[pd.Timestamp, float]:
         for ts, close in zip(timestamps, closes)
         if close is not None
     ]
-    if not observations:
-        raise RuntimeError("Yahoo direct chart endpoint returned no STI closes")
-    return max(observations, key=lambda item: item[0])
+    target = target_date.normalize()
+    matching = [item for item in observations if item[0] == target]
+    if not matching:
+        latest = max((item[0] for item in observations), default=None)
+        raise RuntimeError(
+            f"Yahoo direct chart endpoint has no close for {target.date()} "
+            f"(latest available row: {latest.date() if latest is not None else 'none'})"
+        )
+    return matching[-1]
 
 
 def latest_completed_session(calendar_name: str) -> pd.Timestamp:
@@ -351,7 +358,7 @@ def build_singapore() -> tuple[dict, str]:
             f"retrying direct Yahoo chart endpoint for {expected_session.date()}",
             file=sys.stderr,
         )
-        direct_date, direct_close = fetch_yahoo_sti_direct()
+        direct_date, direct_close = fetch_yahoo_sti_direct(expected_session)
         if direct_date == expected_session:
             index.loc[direct_date] = direct_close
             index = index.sort_index()
