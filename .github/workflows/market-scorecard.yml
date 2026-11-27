@@ -18,7 +18,7 @@ on:
     - cron: "0,15 12 * * 1-6"
   workflow_dispatch:
 
-# Manual one-off trigger for Singapore Yahoo freshness test.
+# Manual one-off trigger for Singapore Yahoo freshness test; the workflow also runs on push.
 
 permissions:
   contents: write
