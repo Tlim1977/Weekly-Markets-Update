@@ -90,6 +90,21 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 .clock-status.open{background:#e7f6ef;color:#08734e}
 @media(max-width:560px){.market-clocks{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-bottom:14px}.market-clock{padding:8px 9px;display:block}.clock-time{font-size:17px}.clock-status{display:inline-block;margin-top:5px}.clock-zone{font-size:8px;margin-left:3px}}
 
+
+.site-updates{padding:17px 18px;margin:0 0 20px}
+.site-updates-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:11px}
+.site-updates-head h2{margin:0;color:var(--navy);font-size:17px}
+.site-updates-head .sub{margin:3px 0 0;font-size:11px}
+.site-updates-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.site-update{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe;min-width:0}
+.site-update-icon{flex:0 0 30px;width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:#edf5ff;font-size:16px}
+.site-update-copy{min-width:0}
+.site-update-copy a{display:block;color:#1265a5;font-size:12px;font-weight:800;line-height:1.35;text-decoration:none}
+.site-update-copy a:hover{text-decoration:underline}
+.site-update-copy p{margin:3px 0 0;color:var(--muted);font-size:10px;line-height:1.4}
+.site-update-date{display:block;margin-top:4px;color:#8793a5;font-size:9px;font-weight:700}
+@media(max-width:560px){.site-updates{padding:14px}.site-updates-list{grid-template-columns:1fr}.site-updates-head{display:block}}
+
 </style>
 <!-- homepage-content-refresh-2026-11-22 -->
 
@@ -125,6 +140,18 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
     <span class="clock-status" id="sg-market-status">Market Closed</span>
   </div>
 </div>
+
+<section class="section site-updates" id="site-updates" aria-labelledby="site-updates-title">
+  <div class="site-updates-head">
+    <div><h2 id="site-updates-title">🆕 Site updates</h2><div class="sub">New content added this week · refreshed with each weekly market update</div></div>
+  </div>
+  <div class="site-updates-list">
+    <div class="site-update"><span class="site-update-icon" aria-hidden="true">🗯️</span><div class="site-update-copy"><a href="comics.html">Average Down Investor — New comic</a><p>A fresh investing comic joins the collection.</p><span class="site-update-date">27 Nov 2026</span></div></div>
+    <div class="site-update"><span class="site-update-icon" aria-hidden="true">🎧</span><div class="site-update-copy"><a href="podcasts.html">Tariffs Are Back — Podcast episode 2</a><p>Why the proposed tariffs are not law yet, and what happens next.</p><span class="site-update-date">26 Nov 2026</span></div></div>
+    <div class="site-update"><span class="site-update-icon" aria-hidden="true">🗯️</span><div class="site-update-copy"><a href="comics.html">The Semiconductor Stocks Investor — Comic</a><p>A new strip about the semiconductor investing theme.</p><span class="site-update-date">26 Nov 2026</span></div></div>
+    <div class="site-update"><span class="site-update-icon" aria-hidden="true">🎧</span><div class="site-update-copy"><a href="podcasts.html">Jensen Huang Is Back at NVIDIA — Podcast episode 1</a><p>The board's decision, the open investigation and the new oversight.</p><span class="site-update-date">25 Nov 2026</span></div></div>
+  </div>
+</section>
 
 <div class="headrow" id="overview"><div><div class="eyebrow">Weekly market briefing</div><h1>Markets at a glance</h1><p class="glance-hint">The full weekly report is available further down this page.</p></div><div class="date">WEEK ENDING<br><strong>Friday, 20 November 2026</strong></div></div>
 <div class="notice"><span>📉</span><div><strong>A sharp global risk-off week.</strong> AI and semiconductor selling weighed heavily on US equities, while Singapore's STI fell below 5,000. The full report includes market drivers, company developments and next week's catalysts.</div></div>
