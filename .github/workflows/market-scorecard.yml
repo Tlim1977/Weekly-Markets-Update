@@ -12,7 +12,9 @@ on:
     - cron: "0 22 * * 0-5"
     # 18:30 Singapore time: first update after the Singapore close.
     - cron: "30 10 * * 1-6"
-    # Retry in case Yahoo Finance or the scheduled runner is delayed.
+    # First fallback: retry 5 minutes later if the main run is delayed or missed.
+    - cron: "35 10 * * 1-6"
+    # Further retries in case Yahoo Finance or the scheduled runner is delayed.
     - cron: "45 10 * * 1-6"
     - cron: "0,15,30,45 11 * * 1-6"
     - cron: "0,15 12 * * 1-6"
