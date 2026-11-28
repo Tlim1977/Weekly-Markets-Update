@@ -104,6 +104,15 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 .site-update-copy p{margin:3px 0 0;color:var(--muted);font-size:10px;line-height:1.4}
 .site-update-date{display:block;margin-top:4px;color:#8793a5;font-size:9px;font-weight:700}
 @media(max-width:560px){.site-updates{padding:14px}.site-updates-list{grid-template-columns:1fr}.site-updates-head{display:block}}
+.site-update-title{display:block;color:var(--navy);font-size:12px;font-weight:800;line-height:1.35}
+.site-updates-more{margin-top:10px}
+.site-updates-more summary{cursor:pointer;list-style:none;text-align:center;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#f6f8fb;color:#1265a5;font-size:11px;font-weight:800}
+.site-updates-more summary::-webkit-details-marker{display:none}
+.site-updates-more summary:after{content:"⌄";margin-left:7px;font-size:14px}
+.site-updates-more[open] summary:after{content:"⌃"}
+.site-updates-older{margin-top:9px}
+@media(min-width:561px){.site-updates-more summary{display:none}.site-updates-more .site-updates-older{margin-top:9px}}
+
 
 </style>
 <!-- homepage-content-refresh-2026-11-22 -->
@@ -143,15 +152,20 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 
 <section class="section site-updates" id="site-updates" aria-labelledby="site-updates-title">
   <div class="site-updates-head">
-    <div><h2 id="site-updates-title">🆕 Site updates</h2><div class="sub">New content added this week · refreshed with each weekly market update</div></div>
+    <div><h2 id="site-updates-title">🆕 Site updates</h2><div class="sub">Latest additions this week · newest first</div></div>
   </div>
   <div class="site-updates-list">
-    <div class="site-update"><span class="site-update-icon" aria-hidden="true">📊</span><div class="site-update-copy"><a href="reports/2026-11-27.html">Weekly US &amp; Singapore Market Report — 27 November 2026</a><p>The latest weekly briefing, with market performance, key developments and the week ahead.</p><span class="site-update-date">28 Nov 2026</span></div></div>
-    <div class="site-update"><span class="site-update-icon" aria-hidden="true">🗯️</span><div class="site-update-copy"><a href="comics.html">Average Down Investor — New comic</a><p>A fresh investing comic joins the collection.</p><span class="site-update-date">27 Nov 2026</span></div></div>
-    <div class="site-update"><span class="site-update-icon" aria-hidden="true">🎧</span><div class="site-update-copy"><a href="podcasts.html">Tariffs Are Back — Podcast episode 2</a><p>Why the proposed tariffs are not law yet, and what happens next.</p><span class="site-update-date">26 Nov 2026</span></div></div>
-    <div class="site-update"><span class="site-update-icon" aria-hidden="true">🗯️</span><div class="site-update-copy"><a href="comics.html">The Semiconductor Stocks Investor — Comic</a><p>A new strip about the semiconductor investing theme.</p><span class="site-update-date">26 Nov 2026</span></div></div>
-    <div class="site-update"><span class="site-update-icon" aria-hidden="true">🎧</span><div class="site-update-copy"><a href="podcasts.html">Jensen Huang Is Back at NVIDIA — Podcast episode 1</a><p>The board's decision, the open investigation and the new oversight.</p><span class="site-update-date">25 Nov 2026</span></div></div>
+    <div class="site-update"><span class="site-update-icon" aria-hidden="true">📊</span><div class="site-update-copy"><strong class="site-update-title">Weekly US &amp; Singapore Market Report — 27 November 2026</strong><p>The latest weekly briefing is now available. Read the market summary below before opening the full report.</p><span class="site-update-date">28 Nov 2026 · Weekly report</span></div></div>
+    <div class="site-update"><span class="site-update-icon" aria-hidden="true">🗯️</span><div class="site-update-copy"><a href="comics.html">Average Down Investor — New comic</a><p>A fresh investing comic joins the collection.</p><span class="site-update-date">27 Nov 2026 · Comic</span></div></div>
+    <div class="site-update"><span class="site-update-icon" aria-hidden="true">🎧</span><div class="site-update-copy"><a href="podcasts.html">Tariffs Are Back — Podcast episode 2</a><p>Why the proposed tariffs are not law yet, and what happens next.</p><span class="site-update-date">26 Nov 2026 · Podcast</span></div></div>
   </div>
+  <details class="site-updates-more" open>
+    <summary>Show older updates (2)</summary>
+    <div class="site-updates-list site-updates-older">
+      <div class="site-update"><span class="site-update-icon" aria-hidden="true">🗯️</span><div class="site-update-copy"><a href="comics.html">The Semiconductor Stocks Investor — Comic</a><p>A new strip about the semiconductor investing theme.</p><span class="site-update-date">26 Nov 2026 · Comic</span></div></div>
+      <div class="site-update"><span class="site-update-icon" aria-hidden="true">🎧</span><div class="site-update-copy"><a href="podcasts.html">Jensen Huang Is Back at NVIDIA — Podcast episode 1</a><p>The board's decision, the open investigation and the new oversight.</p><span class="site-update-date">25 Nov 2026 · Podcast</span></div></div>
+    </div>
+  </details>
 </section>
 
 <div class="headrow" id="overview"><div><div class="eyebrow">Weekly market briefing</div><h1>Markets at a glance</h1><p class="glance-hint">The full weekly report is available further down this page.</p></div><div class="date">WEEK ENDING<br><strong>Friday, 27 November 2026</strong></div></div>
