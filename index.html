@@ -527,4 +527,18 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;colo
 })();
 </script>
 
+<script>
+(function(){
+  const older=document.querySelector('.site-updates-more');
+  if(!older)return;
+  const mobile=window.matchMedia('(max-width:560px)');
+  function syncOlderUpdates(){
+    if(mobile.matches)older.removeAttribute('open');
+    else older.setAttribute('open','');
+  }
+  syncOlderUpdates();
+  if(mobile.addEventListener)mobile.addEventListener('change',syncOlderUpdates);
+  else window.addEventListener('resize',syncOlderUpdates);
+})();
+</script>
 </body></html>
